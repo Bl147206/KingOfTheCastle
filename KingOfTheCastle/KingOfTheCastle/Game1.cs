@@ -19,6 +19,8 @@ namespace KingOfTheCastle
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        int x = 0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
