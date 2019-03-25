@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KingOfTheCastle", "KingOfTheCastle\KingOfTheCastle\KingOfTheCastle.csproj", "{8945D603-162F-498D-AF2F-E3301E3D9F46}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "KingOfTheCastleContent", "KingOfTheCastle\KingOfTheCastleContent\KingOfTheCastleContent.contentproj", "{CC6A3DCF-C4A4-4FE7-9663-C1DBAD2400CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8945D603-162F-498D-AF2F-E3301E3D9F46}.Debug|x86.ActiveCfg = Debug|x86
+		{8945D603-162F-498D-AF2F-E3301E3D9F46}.Debug|x86.Build.0 = Debug|x86
+		{8945D603-162F-498D-AF2F-E3301E3D9F46}.Release|x86.ActiveCfg = Release|x86
+		{8945D603-162F-498D-AF2F-E3301E3D9F46}.Release|x86.Build.0 = Release|x86
+		{CC6A3DCF-C4A4-4FE7-9663-C1DBAD2400CC}.Debug|x86.ActiveCfg = Debug|x86
+		{CC6A3DCF-C4A4-4FE7-9663-C1DBAD2400CC}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
