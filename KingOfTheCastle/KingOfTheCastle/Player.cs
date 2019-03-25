@@ -16,14 +16,26 @@ namespace KingOfTheCastle
         Rectangle location;
         Texture2D texture;
         int playerIndex;
+        //more specific x and y coords
+        double x;
+        double y;
 
         public Player(Rectangle spawnLocation, Texture2D texture,int playerIndex)
         {
             location = spawnLocation;
             this.texture = texture;
             this.playerIndex = playerIndex;
+            x = location.X;
+            y = location.Y;
         }
 
+        public void UpdatePosition(float x, float y)
+        {
+            this.y -= y;
+            this.x += x;
+            location.X = (int)this.x;
+            location.Y = (int)this.y;
+        }
 
     }
 }
