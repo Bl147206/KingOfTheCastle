@@ -19,7 +19,7 @@ namespace KingOfTheCastle
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        
+        Screen currentScreen;
 
         public KingOfTheCastle()
         {
@@ -36,6 +36,8 @@ namespace KingOfTheCastle
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            currentScreen = new TitleScreen();
 
             base.Initialize();
         }
@@ -73,7 +75,7 @@ namespace KingOfTheCastle
                 this.Exit();
 
             // TODO: Add your update logic here
-            
+            currentScreen.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -87,6 +89,12 @@ namespace KingOfTheCastle
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+
+            currentScreen.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
