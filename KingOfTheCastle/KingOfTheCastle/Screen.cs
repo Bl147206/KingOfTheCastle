@@ -6,8 +6,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace KingOfTheCastle {
-  interface Screen {
-    void Update(GameTime gameTime);
-    void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+  abstract class Screen {
+    public KingOfTheCastle game;
+    
+    public abstract void Update(GameTime gameTime);
+    public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
   }
 }
