@@ -13,10 +13,13 @@ namespace KingOfTheCastle
 {
     class Platform
     {
+
         Rectangle destination;
+
         public Platform(Vector2 Center, int Width, int Height)
         {
             destination = new Rectangle((int)Center.X - (Width / 2), (int)Center.Y - (Height / 2), Width, Height);
         }
+
     }
 }
