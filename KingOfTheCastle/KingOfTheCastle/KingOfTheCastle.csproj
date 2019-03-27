@@ -77,6 +77,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="KingOfTheCastle.cs" />
+    <Compile Include="Screen.cs" />
+    <Compile Include="Screens\TitleScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
