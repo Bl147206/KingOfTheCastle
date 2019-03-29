@@ -79,6 +79,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="KingOfTheCastle.cs" />
     <Compile Include="Screen.cs" />
+    <Compile Include="Screens\LevelScreen.cs" />
     <Compile Include="Screens\TitleScreen.cs" />
   </ItemGroup>
   <ItemGroup>
