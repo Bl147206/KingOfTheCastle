@@ -20,7 +20,7 @@ namespace KingOfTheCastle
         double x;
         double y;
 
-        public Player(Rectangle spawnLocation, Texture2D texture,int playerIndex)
+        public Player(Rectangle spawnLocation, Texture2D texture, int playerIndex)
         {
             location = spawnLocation;
             this.texture = texture;
