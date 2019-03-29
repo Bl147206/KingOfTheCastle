@@ -14,6 +14,8 @@ namespace KingOfTheCastle {
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
 
+
+
         }
     }
 }
