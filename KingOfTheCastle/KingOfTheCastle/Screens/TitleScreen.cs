@@ -8,11 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 namespace KingOfTheCastle {
     class TitleScreen: Screen {
 
-        public override void Update(GameTime gameTime) {
+        public override void Update(GameTime gameTime)
+        {
 
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
 
         }
     }
