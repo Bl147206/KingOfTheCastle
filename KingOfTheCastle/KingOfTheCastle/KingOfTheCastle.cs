@@ -18,7 +18,7 @@ namespace KingOfTheCastle
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        public Texture2D test;
         Screen currentScreen;
 
 
@@ -27,6 +27,8 @@ namespace KingOfTheCastle
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -39,7 +41,8 @@ namespace KingOfTheCastle
         {
             // TODO: Add your initialization logic here
 
-            currentScreen = new TitleScreen();
+            //currentScreen = new TitleScreen();
+            currentScreen = new StageScreen();
             currentScreen.game = this;
 
             base.Initialize();
@@ -53,7 +56,7 @@ namespace KingOfTheCastle
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            test = Content.Load<Texture2D>("blank");
             // TODO: use this.Content to load your game content here
         }
 
@@ -89,8 +92,6 @@ namespace KingOfTheCastle
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
