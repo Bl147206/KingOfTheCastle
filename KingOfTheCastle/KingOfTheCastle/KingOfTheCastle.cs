@@ -21,6 +21,8 @@ namespace KingOfTheCastle
 
         Screen currentScreen;
 
+
+
         public KingOfTheCastle()
         {
             graphics = new GraphicsDeviceManager(this);
