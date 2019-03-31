@@ -18,12 +18,12 @@ namespace KingOfTheCastle
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
         public StageScreen()
         {
-            platforms = new Platform[Globals.rng.Next(3)+3];
+            platforms = new Platform[Globals.rng.Next(4)+3];
 
-            platforms[0] = new Platform(new Vector2(750,1000), 800, 5);
+            platforms[0] = new Platform(new Vector2(800,800), 800, 5);
             for(int x = 1; x<platforms.Length; x++)
             {
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(1500), (float)Globals.rng.Next(1500)), Globals.rng.Next(100, 750), 5);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(1600), (float)Globals.rng.Next(900)), Globals.rng.Next(100, 750), 5);
             }
             
         }

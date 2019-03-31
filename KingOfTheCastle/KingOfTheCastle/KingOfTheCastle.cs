@@ -28,8 +28,8 @@ namespace KingOfTheCastle
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 1500;
-            graphics.PreferredBackBufferWidth = 1500;
+            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1600;
             graphics.ApplyChanges();
         }
 
