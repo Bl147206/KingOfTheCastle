@@ -14,20 +14,22 @@ namespace KingOfTheCastle
     class StageScreen : Screen
     {
         Platform[] platforms;
+        KeyboardState kb;
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
         public StageScreen()
         {
-            platforms = new Platform[3];
-            platforms[0] = new Platform(new Vector2(20, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 500), 40, 5);
+            platforms = new Platform[Globals.rng.Next(3)+3];
 
-            platforms[1] = new Platform(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 20,
-                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 500), 40, 5);
-
-            platforms[2] = new Platform(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2,
-                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 200), GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 200, 5);
+            platforms[0] = new Platform(new Vector2(750,1000), 800, 5);
+            for(int x = 1; x<platforms.Length; x++)
+            {
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(1500), (float)Globals.rng.Next(1500)), Globals.rng.Next(100, 750), 5);
+            }
+            
         }
         public override void Update(GameTime gameTime)
         {
+            kb = Keyboard.GetState();
 
         }
 

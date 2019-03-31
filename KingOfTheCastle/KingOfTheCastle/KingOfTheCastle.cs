@@ -20,6 +20,7 @@ namespace KingOfTheCastle
         SpriteBatch spriteBatch;
         public Texture2D test;
         Screen currentScreen;
+        KeyboardState kb;
 
 
 
@@ -27,7 +28,8 @@ namespace KingOfTheCastle
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferHeight = 1500;
+            graphics.PreferredBackBufferWidth = 1500;
             graphics.ApplyChanges();
         }
 
@@ -77,8 +79,9 @@ namespace KingOfTheCastle
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed||kb.IsKeyDown(Keys.Escape))
                 this.Exit();
+            kb = Keyboard.GetState();
 
             // TODO: Add your update logic here
             currentScreen.Update(gameTime);

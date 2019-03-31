@@ -18,8 +18,7 @@ namespace KingOfTheCastle
 
         public Platform(Vector2 Center, int Width, int Height)
         {
-            destination = new Rectangle(0, 0, 20, 20);
-            //destination = new Rectangle((int)Center.X - (Width / 2), (int)Center.Y - (Height / 2), Width, Height);
+            destination = new Rectangle((int)Center.X - (Width / 2), (int)Center.Y - (Height / 2), Width, Height);
         }
 
     }
