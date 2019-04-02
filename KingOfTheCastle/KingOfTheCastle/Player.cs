@@ -13,20 +13,67 @@ namespace KingOfTheCastle
 {
     class Player
     {
+        KingOfTheCastle game;
         Rectangle location;
+        Rectangle window;
         Texture2D texture;
-        int playerIndex;
+        PlayerIndex playerIndex;
+        bool onGround;
+        int maxXVelocity, jumpForce;
         //more specific x and y coords
-        double x;
-        double y;
+        double x, y, xVelocity, yVelocity, xAccel, gravity;
 
-        public Player(Rectangle spawnLocation, Texture2D texture, int playerIndex)
+        public Player(KingOfTheCastle game, Rectangle window, Rectangle spawnLocation, Texture2D texture, int playerIndex)
         {
+            this.game = game;
             location = spawnLocation;
             this.texture = texture;
-            this.playerIndex = playerIndex;
+            switch (playerIndex)
+            {
+                case 1:
+                    this.playerIndex = PlayerIndex.One;
+                    break;
+                case 2:
+                    this.playerIndex = PlayerIndex.One;
+                    break;
+                case 3:
+                    this.playerIndex = PlayerIndex.One;
+                    break;
+                case 4:
+                    this.playerIndex = PlayerIndex.One;
+                    break;
+            }
+            window = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             x = location.X;
             y = location.Y;
+        }
+
+        public void Update(Platform[] platforms)
+        {
+            GamePadState gamePad = GamePad.GetState(playerIndex);
+            foreach (Platform p in platforms)
+            {
+                if (location.Y + location.Height == p.destination.Y)
+                {
+                    onGround = true;
+                    break;
+                }
+            }
+            //on ground movement 
+            if (onGround)
+            {
+                //jumping
+                if (gamePad.IsButtonDown(Buttons.A))
+                {
+                    yVelocity = jumpForce;
+                }
+            }
+            //in air movement
+            if (!onGround)
+            {
+                //gravity decreasing y movement
+                yVelocity += gravity;
+            }
         }
 
         public void UpdatePosition(float x, float y)
@@ -35,6 +82,11 @@ namespace KingOfTheCastle
             this.x += x;
             location.X = (int)this.x;
             location.Y = (int)this.y;
+        }
+
+        public void ResetPos(int x, int y)
+        {
+            UpdatePosition(x, y);
         }
 
     }
