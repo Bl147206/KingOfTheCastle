@@ -11,13 +11,13 @@ using Microsoft.Xna.Framework.Media;
 
 namespace KingOfTheCastle
 {
-    class StageScreen : Screen
+    class Stage: Screen
     {
         Platform[] platforms;
         KeyboardState kb;
         bool intersections;
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
-        public StageScreen()
+        public Stage()
         {
             platforms = new Platform[Globals.rng.Next(4)+3];
             intersections = false;
