@@ -17,9 +17,9 @@ namespace KingOfTheCastle
         KeyboardState kb;
         bool intersections;
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
-        public StageScreen()
+        public StageScreen(int round)
         {
-            platforms = new Platform[Globals.rng.Next(4)+3];
+            platforms = new Platform[Globals.rng.Next(round+1)+3];
             intersections = false;
             platforms[0] = new Platform(new Vector2(800,800), 800, 5);
             for(int x = 1; x<platforms.Length; x++)
@@ -54,10 +54,10 @@ namespace KingOfTheCastle
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             game.GraphicsDevice.Clear(Color.Blue);
-            spriteBatch.Draw(game.test, platforms[0].destination, Color.Red);
-            spriteBatch.Draw(game.test, platforms[1].destination, Color.Red);
-            spriteBatch.Draw(game.test, platforms[2].destination, Color.Red);
-            //spriteBatch.Draw(game.test, rect, Color.Black);
+            for (int x = 0; x < platforms.Length; x++)
+            {
+                spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
+            }
 
         }
     }
