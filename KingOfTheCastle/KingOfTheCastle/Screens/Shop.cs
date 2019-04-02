@@ -9,15 +9,13 @@ namespace KingOfTheCastle
 {
     class Shop: Screen
     {
+        public override void Update(GameTime gameTime) {
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            game.GraphicsDevice.Clear(Color.Beige);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-
+            game.GraphicsDevice.Clear(Color.Beige);
         }
     }
 }

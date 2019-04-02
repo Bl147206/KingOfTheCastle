@@ -17,12 +17,10 @@ namespace KingOfTheCastle
     public class KingOfTheCastle : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public SpriteBatch spriteBatch;
         public Texture2D test;
         Screen currentScreen;
         KeyboardState kb;
-
-
 
         public KingOfTheCastle()
         {
@@ -99,7 +97,7 @@ namespace KingOfTheCastle
 
             spriteBatch.Begin();
 
-            currentScreen.Draw(gameTime, spriteBatch);
+            currentScreen.Draw(gameTime);
 
             spriteBatch.End();
 

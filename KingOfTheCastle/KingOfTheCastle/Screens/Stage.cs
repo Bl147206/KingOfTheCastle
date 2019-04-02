@@ -51,12 +51,12 @@ namespace KingOfTheCastle
 
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.Blue);
             for (int x = 0; x < platforms.Length; x++)
             {
-                spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
+                game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
             }
 
         }

@@ -10,6 +10,6 @@ namespace KingOfTheCastle {
     public KingOfTheCastle game;
     
     public abstract void Update(GameTime gameTime);
-    public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+    public abstract void Draw(GameTime gameTime);
   }
 }
