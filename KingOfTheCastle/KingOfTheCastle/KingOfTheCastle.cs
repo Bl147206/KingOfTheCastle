@@ -44,7 +44,7 @@ namespace KingOfTheCastle
             // TODO: Add your initialization logic here
 
             //currentScreen = new TitleScreen();
-            currentScreen = new StageScreen();
+            currentScreen = new Stage();
             currentScreen.game = this;
 
             base.Initialize();
