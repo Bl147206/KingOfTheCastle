@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace KingOfTheCastle {
-  abstract class Screen {
+  public abstract class Screen {
     public KingOfTheCastle game;
     
     public abstract void Update(GameTime gameTime);

@@ -17,9 +17,10 @@ namespace KingOfTheCastle
     public class KingOfTheCastle : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
+        public SpriteFont font;
         public SpriteBatch spriteBatch;
         public Texture2D test;
-        Screen currentScreen;
+        public Screen currentScreen;
         KeyboardState kb;
         public int round=1;
 
@@ -41,9 +42,10 @@ namespace KingOfTheCastle
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            //currentScreen = new TitleScreen();
-            currentScreen = new Stage(round);
+            
+            
+            currentScreen = new TitleScreen(this);
+            //currentScreen = new Stage(0);
             currentScreen.game = this;
             base.Initialize();
         }
@@ -58,6 +60,7 @@ namespace KingOfTheCastle
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
             // TODO: use this.Content to load your game content here
+            font = Content.Load<SpriteFont>("SpriteFont1");
         }
 
         /// <summary>

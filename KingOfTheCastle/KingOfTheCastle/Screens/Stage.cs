@@ -17,6 +17,7 @@ namespace KingOfTheCastle
         KeyboardState kb;
         bool intersections;
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
+
         public Stage(int round)
         {
             platforms = new Platform[Globals.rng.Next(round+1)+3];
