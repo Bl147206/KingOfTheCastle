@@ -79,10 +79,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="KingOfTheCastle.cs" />
     <Compile Include="Screen.cs" />
-    <Compile Include="Screens\StageScreen.cs" />
+    <Compile Include="Screens\Stage.cs" />
     <Compile Include="Screens\TitleScreen.cs" />
-    <Compile Include="Shops\Shop.cs" />
-    <Compile Include="Stages\Stage.cs" />
+    <Compile Include="Screens\Shop.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
