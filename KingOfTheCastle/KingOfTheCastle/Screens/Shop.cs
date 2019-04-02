@@ -9,12 +9,11 @@ namespace KingOfTheCastle
 {
     class Shop: Screen
     {
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
+        public override void Update(GameTime gameTime) {
 
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
 
         }
