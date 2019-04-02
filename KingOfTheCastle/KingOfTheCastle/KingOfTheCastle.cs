@@ -21,6 +21,7 @@ namespace KingOfTheCastle
         public Texture2D test;
         Screen currentScreen;
         KeyboardState kb;
+        public int round=1;
 
         public KingOfTheCastle()
         {
@@ -42,9 +43,8 @@ namespace KingOfTheCastle
             // TODO: Add your initialization logic here
 
             //currentScreen = new TitleScreen();
-            currentScreen = new Stage(1);
+            currentScreen = new Stage(round);
             currentScreen.game = this;
-
             base.Initialize();
         }
 
