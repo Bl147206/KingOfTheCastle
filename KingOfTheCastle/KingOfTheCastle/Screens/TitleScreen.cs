@@ -21,7 +21,7 @@ namespace KingOfTheCastle
         {
             logo = game.Content.Load<Texture2D>("logo");
             logoPos = new Rectangle(400, 100, 800, 700);
-            textpos = new Vector2(600, 800);
+            textpos = new Vector2(475, 770);
         }
 
         public override void Update(GameTime gameTime)
@@ -38,9 +38,9 @@ namespace KingOfTheCastle
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.Maroon);
+            game.GraphicsDevice.Clear(new Color(Globals.rng.Next(200),Globals.rng.Next(200),Globals.rng.Next(200)));
             game.spriteBatch.Draw(logo, logoPos, Color.White);
-            game.spriteBatch.DrawString(game.font, "Press Start or A...", textpos, Color.White);
+            game.spriteBatch.DrawString(game.font, "     Press Start or A...\nPress Back or Escape to exit", textpos, Color.White);
 
 
         }
