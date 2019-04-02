@@ -19,6 +19,7 @@ namespace KingOfTheCastle
         //more specific x and y coords
         double x;
         double y;
+        Inventory inventory;
 
         public Player(Rectangle spawnLocation, Texture2D texture, int playerIndex)
         {
