@@ -38,7 +38,7 @@ namespace KingOfTheCastle
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.Blue);
+            game.GraphicsDevice.Clear(Color.Navy);
             for (int x = 0; x < platforms.Length; x++)
             {
                 game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
