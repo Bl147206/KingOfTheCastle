@@ -26,7 +26,7 @@ namespace KingOfTheCastle
             for(int x = 1; x<platforms.Length; x++)
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(1600), (float)(platforms[0].destination.Y-z*120)), Globals.rng.Next(100, 750), 5);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(1600), (float)(platforms[0].destination.Y-z*120-120)), Globals.rng.Next(100, 750), 5);
             }
             
         }
