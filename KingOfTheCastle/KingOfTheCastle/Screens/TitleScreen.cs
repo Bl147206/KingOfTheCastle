@@ -33,8 +33,8 @@ namespace KingOfTheCastle
         public TitleScreen(KingOfTheCastle game)
         {
             logo = game.Content.Load<Texture2D>("logo");
-            logoPos = new Rectangle(400, 100, 800, 700);
-            textpos = new Vector2(475, 770);
+            logoPos = new Rectangle(game.GraphicsDevice.Viewport.Width/2-400, game.GraphicsDevice.Viewport.Height/2-350, 800, 700);
+            textpos = new Vector2(game.GraphicsDevice.Viewport.Width/2-335, (float)(game.GraphicsDevice.Viewport.Height-game.GraphicsDevice.Viewport.Height/9));
             bg = new Color(255,0,0);
             currentColor = incColor.green;
         }
@@ -45,7 +45,7 @@ namespace KingOfTheCastle
             kb = Keyboard.GetState();
             if (pad1.IsButtonDown(Buttons.Start) || pad1.IsButtonDown(Buttons.A)||kb.IsKeyDown(Keys.Space))//Will added this so he does not have to get a controller to test
             {
-                game.currentScreen = new Stage(game.round);
+                game.currentScreen = new Stage(game.round, this.game);
                 game.currentScreen.game = game;
             }
             switch(currentColor)
