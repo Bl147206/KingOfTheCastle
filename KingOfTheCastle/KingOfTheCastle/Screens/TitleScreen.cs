@@ -34,7 +34,7 @@ namespace KingOfTheCastle
         {
             logo = game.Content.Load<Texture2D>("logo");
             logoPos = new Rectangle(game.GraphicsDevice.Viewport.Width/2-400, game.GraphicsDevice.Viewport.Height/2-350, 800, 700);
-            textpos = new Vector2(game.GraphicsDevice.Viewport.Width/2-335, game.GraphicsDevice.Viewport.Height-200);
+            textpos = new Vector2(game.GraphicsDevice.Viewport.Width/2-335, (float)(game.GraphicsDevice.Viewport.Height-game.GraphicsDevice.Viewport.Height/9));
             bg = new Color(255,0,0);
             currentColor = incColor.green;
         }
