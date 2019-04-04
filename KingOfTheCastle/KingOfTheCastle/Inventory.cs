@@ -7,26 +7,29 @@ namespace KingOfTheCastle {
     class Inventory {
         public List<Weapon> weapons;
 
-        public Inventory() {
+        public Inventory(int currentRound) {
             this.weapons = new List<Weapon>();
 
             // generate 3 weapons
             while (this.weapons.Count != 3) {
-                string name = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)] + " " + Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];
+                string part1 = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];
+                string part2 = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];
+                string name = part1 + " " + part2;
 
                 if (this.weapons.All(weapon => name == weapon.name))
                     continue;
 
-                int type = Globals.rng.Next(2);
+                var kind = (Weapon.Kind) Globals.rng.Next(2);
 
-                switch (type) {
-                    case 0:
-                        weapons.Add(new Melee());
+                int attack = Globals.rng.Next(currentRound * 3) + currentRound;
+                double attackSpeed = Globals.rng.NextDouble() + .75 * currentRound;
+
+                switch (kind) {
+                    case Weapon.Kind.melee:
+                        weapons.Add(new Melee(name, attack, attackSpeed, 10 * currentRound));
                         break;
-                    case 1:
-                        weapons.Add(new Ranged());
-                        break;
-                    default:
+                    case Weapon.Kind.ranged:
+                        weapons.Add(new Ranged(name, attack, attackSpeed, 10 * currentRound));
                         break;
                 }
             }

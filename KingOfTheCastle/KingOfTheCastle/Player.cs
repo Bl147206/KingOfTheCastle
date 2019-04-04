@@ -21,13 +21,14 @@ namespace KingOfTheCastle
         bool onGround;
         int maxXVelocity, jumpForce;
         //more specific x and y coords
-        double x, y, xVelocity, yVelocity, xAccel, gravity;
+        double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce;
 
         public Player(KingOfTheCastle game, Rectangle window, Rectangle spawnLocation, Texture2D texture, int playerIndex)
         {
             this.game = game;
             location = spawnLocation;
             this.texture = texture;
+            
             switch (playerIndex)
             {
                 case 1:
@@ -62,10 +63,24 @@ namespace KingOfTheCastle
             //on ground movement 
             if (onGround)
             {
-                //jumping
-                if (gamePad.IsButtonDown(Buttons.A))
+                if (gamePad.IsButtonDown(Buttons.A)) //jumping
                 {
                     yVelocity = jumpForce;
+                }
+                if (Math.Abs(gamePad.ThumbSticks.Right.X) > 0) //When holding down a stick x change
+                {
+                    xVelocity += gamePad.ThumbSticks.Right.X * xAccel;
+                }
+                else if (Math.Abs(xVelocity) > 0) //Slowing down when not holding a direction
+                {
+                    if(Math.Abs(xVelocity) < groundFrictionForce && xVelocity != 0) //Making sure the player actaully stops
+                    {
+                        xVelocity = 0;
+                    }
+                    else
+                    {
+                        xVelocity += xVelocity - ((xVelocity / Math.Abs(xVelocity)) * groundFrictionForce);
+                    }
                 }
             }
             //in air movement
@@ -74,6 +89,8 @@ namespace KingOfTheCastle
                 //gravity decreasing y movement
                 yVelocity += gravity;
             }
+            location.X += (int)xVelocity;
+            location.Y += (int)yVelocity;
         }
 
         public void UpdatePosition(float x, float y)
