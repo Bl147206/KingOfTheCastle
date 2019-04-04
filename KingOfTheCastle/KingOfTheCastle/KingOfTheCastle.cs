@@ -22,7 +22,7 @@ namespace KingOfTheCastle
         public Texture2D test;
         public Screen currentScreen;
         KeyboardState kb;
-        public int round=1;
+        public int round=5;
 
         public KingOfTheCastle()
         {
