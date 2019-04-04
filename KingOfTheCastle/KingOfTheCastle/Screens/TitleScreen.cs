@@ -29,6 +29,7 @@ namespace KingOfTheCastle
         Vector2 textpos;
         Color bg;
         incColor currentColor;
+        KeyboardState kb;
         public TitleScreen(KingOfTheCastle game)
         {
             logo = game.Content.Load<Texture2D>("logo");
@@ -41,9 +42,10 @@ namespace KingOfTheCastle
         public override void Update(GameTime gameTime)
         {
             GamePadState pad1 = GamePad.GetState(0);
-            if (pad1.IsButtonDown(Buttons.Start) || pad1.IsButtonDown(Buttons.A))
+            kb = Keyboard.GetState();
+            if (pad1.IsButtonDown(Buttons.Start) || pad1.IsButtonDown(Buttons.A)||kb.IsKeyDown(Keys.Space))//Will added this so he does not have to get a controller to test
             {
-                game.currentScreen = new Stage(0);
+                game.currentScreen = new Stage(game.round);
                 game.currentScreen.game = game;
             }
             switch(currentColor)
