@@ -29,8 +29,10 @@ namespace KingOfTheCastle
             xVelocity = 0;
             yVelocity = 0;
             xAccel = 3;
-            gravity = 6;
+            gravity = -6;
             groundFrictionForce = 5;
+            jumpForce = 20;
+            maxXVelocity = 10;
 
             this.game = game;
             location = spawnLocation;
@@ -116,9 +118,7 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-            game.spriteBatch.Begin();
             game.spriteBatch.Draw(texture, location, Color.Black);
-            game.spriteBatch.End();
         }
 
     }

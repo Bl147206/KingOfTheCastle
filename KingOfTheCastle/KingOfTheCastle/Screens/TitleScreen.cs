@@ -45,7 +45,7 @@ namespace KingOfTheCastle
             kb = Keyboard.GetState();
             if (pad1.IsButtonDown(Buttons.Start) || pad1.IsButtonDown(Buttons.A)||kb.IsKeyDown(Keys.Space))//Will added this so he does not have to get a controller to test
             {
-                game.currentScreen = new Stage(game.round);
+                game.currentScreen = new Stage(game.round, game);
                 game.currentScreen.game = game;
             }
             switch(currentColor)
