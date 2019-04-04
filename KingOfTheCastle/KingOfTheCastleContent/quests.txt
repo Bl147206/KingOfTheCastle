@@ -1,3 +1,4 @@
 Kill an enemy with a Ranged Weapon
 Knock somebody off the map
 Jump 40 times
+Fire your ranged weapon 10 times
