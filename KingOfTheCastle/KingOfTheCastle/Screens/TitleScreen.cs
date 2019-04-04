@@ -14,14 +14,28 @@ namespace KingOfTheCastle
 {
     class TitleScreen: Screen
     {
+        enum incColor
+        {
+            red,
+            dRed,
+            green,
+            dGreen,
+            blue,
+            dBlue
+        };
+
         Texture2D logo;
         Rectangle logoPos;
         Vector2 textpos;
+        Color bg;
+        incColor currentColor;
         public TitleScreen(KingOfTheCastle game)
         {
             logo = game.Content.Load<Texture2D>("logo");
             logoPos = new Rectangle(400, 100, 800, 700);
             textpos = new Vector2(475, 770);
+            bg = new Color(255,0,0);
+            currentColor = incColor.green;
         }
 
         public override void Update(GameTime gameTime)
@@ -32,13 +46,46 @@ namespace KingOfTheCastle
                 game.currentScreen = new Stage(0);
                 game.currentScreen.game = game;
             }
+            switch(currentColor)
+            {
+                case incColor.green:
+                    bg.G+=3;
+                    if (bg.G == 255)
+                        currentColor=incColor.dRed;
+                    break;
+                case incColor.dRed:
+                    bg.R-=3;
+                    if (bg.R == 0)
+                        currentColor = incColor.blue;
+                    break;
+                case incColor.blue:
+                    bg.B+=3;
+                    if (bg.B == 255)
+                        currentColor = incColor.dGreen;
+                    break;
+                case incColor.dGreen:
+                    bg.G-=3;
+                    if (bg.G == 0)
+                        currentColor = incColor.red;
+                    break;
+                case incColor.red:
+                    bg.R+=3;
+                    if (bg.R == 255)
+                        currentColor = incColor.dBlue;
+                    break;
+                case incColor.dBlue:
+                    bg.B-=3;
+                    if (bg.B == 0)
+                        currentColor = incColor.green;
+                    break;
+            }
             
 
         }
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(new Color(Globals.rng.Next(200),Globals.rng.Next(200),Globals.rng.Next(200)));
+            game.GraphicsDevice.Clear(bg);
             game.spriteBatch.Draw(logo, logoPos, Color.White);
             game.spriteBatch.DrawString(game.font, "     Press Start or A...\nPress Back or Escape to exit", textpos, Color.White);
 
