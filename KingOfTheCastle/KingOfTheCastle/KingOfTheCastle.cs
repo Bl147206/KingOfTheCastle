@@ -22,6 +22,7 @@ namespace KingOfTheCastle
         public Texture2D test;
         public Screen currentScreen;
         KeyboardState kb;
+        public Texture2D shopText;
         public int round=5;
 
         public KingOfTheCastle()
@@ -59,6 +60,7 @@ namespace KingOfTheCastle
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
+            shopText = Content.Load<Texture2D>("Shop");
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("SpriteFont1");
         }
