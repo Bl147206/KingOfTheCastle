@@ -30,6 +30,7 @@ namespace KingOfTheCastle
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            IsMouseVisible = true;
             graphics.ApplyChanges();
         }
 
