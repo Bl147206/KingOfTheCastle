@@ -19,9 +19,10 @@ namespace KingOfTheCastle
         Texture2D texture;
         PlayerIndex playerIndex;
         bool onGround;
-        int maxXVelocity, jumpForce, gold, health;
+        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack;
         //more specific x and y coords
-        double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce;
+        double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed;
+        Inventory inventory;
 
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex)
         {
@@ -30,9 +31,15 @@ namespace KingOfTheCastle
             yVelocity = 0;
             xAccel = 3;
             gravity = -6;
-            groundFrictionForce = 5;
+            groundFrictionForce = 2;
             jumpForce = 20;
-            maxXVelocity = 10;
+            maxXVelocity = 15;
+
+            mAttack = 2;
+            mAttackSpeed = 0.65;
+
+            rAttack = 2;
+            rAttackSpeed = 0.75;
 
             this.game = game;
             location = spawnLocation;
@@ -63,50 +70,60 @@ namespace KingOfTheCastle
             GamePadState gamePad = GamePad.GetState(playerIndex);
             foreach (Platform p in platforms)
             {
-                if (location.Y + location.Height == p.destination.Y)
+                if(p != null)
                 {
-                    onGround = true;
-                    break;
+                    if (location.Intersects(p.destination))
+                    {
+                        onGround = true;
+                        y = p.destination.Y - location.Height;
+                        yVelocity = 0;
+                        break;
+                    }
                 }
+                onGround = false;
+            }
+            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0) //When holding down a stick x change
+            {
+                xVelocity += gamePad.ThumbSticks.Left.X * xAccel;
+            }
+            else if (Math.Abs(xVelocity) > 0) //Slowing down when not holding a direction
+            {
+                if (Math.Abs(xVelocity) < groundFrictionForce && xVelocity != 0) //Making sure the player actaully stops
+                {
+                    xVelocity = 0;
+                }
+                else
+                {
+                    xVelocity -= Math.Sign(xVelocity) * groundFrictionForce;
+                }
+            }
+            if (Math.Abs(xVelocity) > maxXVelocity)
+            {
+                xVelocity = Math.Sign(xVelocity) * maxXVelocity;
             }
             //on ground movement 
             if (onGround)
             {
                 if (gamePad.IsButtonDown(Buttons.A)) //jumping
                 {
-                    yVelocity = jumpForce;
-                }
-                if (Math.Abs(gamePad.ThumbSticks.Right.X) > 0) //When holding down a stick x change
-                {
-                    xVelocity += gamePad.ThumbSticks.Right.X * xAccel;
-                }
-                else if (Math.Abs(xVelocity) > 0) //Slowing down when not holding a direction
-                {
-                    if(Math.Abs(xVelocity) < groundFrictionForce && xVelocity != 0) //Making sure the player actaully stops
-                    {
-                        xVelocity = 0;
-                    }
-                    else
-                    {
-                        xVelocity += xVelocity - ((xVelocity / Math.Abs(xVelocity)) * groundFrictionForce);
-                    }
+                    yVelocity -= jumpForce;
                 }
             }
             //in air movement
             if (!onGround)
             {
-                //gravity decreasing y movement
-                yVelocity += gravity;
+                //yVelocity += gravity; //gravity decreasing y movement
+                yVelocity = 1;
             }
-            x = x + xVelocity;
-            y = y + yVelocity;
+            x += xVelocity;
+            y += yVelocity;
             UpdatePosition(x, y);
         }
 
         public void UpdatePosition(double x, double y)
         {
-            this.y -= y;
-            this.x += x;
+            this.y = y;
+            this.x = x;
             location.X = (int)this.x;
             location.Y = (int)this.y;
         }
