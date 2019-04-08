@@ -23,15 +23,15 @@ namespace KingOfTheCastle
         {
             platforms = new Platform[Globals.rng.Next(round+1)+2];
             platforms[0] = new Platform(new Vector2(Globals.screenW/2, Globals.screenH - 100), Globals.screenW - 200, 5);
-            for(int x = 1; x<platforms.Length; x++)
+            for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(Globals.screenW), (float)(platforms[0].destination.Y-z*120-120)), Globals.rng.Next(100, 750), 5);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(Globals.screenW), (float)(platforms[0].destination.Y - z * 120 - 120)), Globals.rng.Next(100, 750), 5);
             }
             //temp player stuff
             players = new Player[4];
             Rectangle tempRec = new Rectangle(Globals.screenW / 2, Globals.screenH - 250, 100, 100);
-            players[0] = new Player(game, tempRec, game.test,1);
+            players[0] = new Player(game, tempRec, game.test, 1);
         }
         public override void Update(GameTime gameTime)
         {
@@ -40,7 +40,7 @@ namespace KingOfTheCastle
             {
                 if (p != null)
                 {
-                    //p.Update(platforms);
+                    p.Update(platforms);
                 }
             }
         }
@@ -50,13 +50,16 @@ namespace KingOfTheCastle
             game.GraphicsDevice.Clear(Color.Navy);
             for (int x = 0; x < platforms.Length; x++)
             {
-                game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
-            }
-            foreach(Player p in players)
-            {
-                if(p != null)
+                if(platforms[x] != null)
                 {
-                    //p.draw();
+                    game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
+                }
+            }
+            foreach (Player p in players)
+            {
+                if (p != null)
+                {
+                    p.draw();
                 }
             }
         }
