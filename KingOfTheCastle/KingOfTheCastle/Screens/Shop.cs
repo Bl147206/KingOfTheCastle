@@ -9,10 +9,24 @@ namespace KingOfTheCastle
 {
     class Shop: Screen
     {
+        enum playerSelection
+        {
+            One,
+            Two,
+            Three
+        };
+        playerSelection p1;
+        playerSelection p2;
+        playerSelection p3;
+        playerSelection p4;
         Texture2D background;
         public Shop(KingOfTheCastle game)
         {
             background = game.shopText;
+            p1 = playerSelection.One;
+            p2 = playerSelection.One;
+            p3 = playerSelection.One;
+            p4 = playerSelection.One;
         }
         public override void Update(GameTime gameTime) {
 
