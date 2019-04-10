@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace KingOfTheCastle
 {
-    class Platform
+    public class Platform
     {
 
         public Rectangle destination;
