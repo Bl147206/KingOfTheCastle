@@ -23,8 +23,9 @@ namespace KingOfTheCastle
         public Screen currentScreen;
         KeyboardState kb;
         public Texture2D shopText;
-        public int round=5;
         public Texture2D shopHighlight;
+        public Texture2D swordTexture;
+        public int round = 5;
         public Player[] players;
 
         public KingOfTheCastle()
@@ -54,7 +55,7 @@ namespace KingOfTheCastle
 
             players = new Player[4];
 
-            for (int i = 0; i < 4; i += 1) {
+            for (int i = 0; i < getControllerCount(); i += 1) {
                 Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * i), 60, 60);
                 players[i] = new Player(this, tempRec, test, /*index*/ i + 1);
             }
@@ -101,10 +102,18 @@ namespace KingOfTheCastle
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
+            foreach (Player p in players)
+            {
+                if(p != null)
+                {
+                    p.texture = test;
+                }
+            }
             shopText = Content.Load<Texture2D>("Shop");
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("SpriteFont1");
             shopHighlight = Content.Load<Texture2D>("border");
+            swordTexture = Content.Load<Texture2D>("sword");
         }
 
         /// <summary>

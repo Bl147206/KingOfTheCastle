@@ -16,7 +16,8 @@ namespace KingOfTheCastle
         KingOfTheCastle game;
         Rectangle location;
         Rectangle window;
-        Texture2D texture;
+        Rectangle fallingRectangle;
+        public Texture2D texture;
         PlayerIndex playerIndex;
         bool onGround, fallingThroughPlatform;
         int maxXVelocity, jumpForce, gold, health, mAttack, rAttack;
@@ -87,6 +88,7 @@ namespace KingOfTheCastle
                         if (!location.Intersects(p.destination))
                         {
                             fallingThroughPlatform = false;
+                            break;
                         }
                     }
                     else
