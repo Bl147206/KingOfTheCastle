@@ -23,6 +23,8 @@ namespace KingOfTheCastle
         public Screen currentScreen;
         KeyboardState kb;
         public Texture2D shopText;
+        public int round=5;
+        public Texture2D shopHighlight;
         public int round = 5;
         public Player[] players;
 
@@ -103,6 +105,7 @@ namespace KingOfTheCastle
             shopText = Content.Load<Texture2D>("Shop");
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("SpriteFont1");
+            shopHighlight = Content.Load<Texture2D>("border");
         }
 
         /// <summary>

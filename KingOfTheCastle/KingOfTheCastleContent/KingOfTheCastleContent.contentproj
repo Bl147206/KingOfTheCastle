@@ -64,6 +64,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="border.png">
+      <Name>border</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="sword.png">
       <Name>sword</Name>
       <Importer>TextureImporter</Importer>
