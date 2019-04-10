@@ -25,7 +25,6 @@ namespace KingOfTheCastle
         public Texture2D shopText;
         public int round=5;
         public Texture2D shopHighlight;
-        public int round = 5;
         public Player[] players;
 
         public KingOfTheCastle()
