@@ -36,6 +36,7 @@ namespace KingOfTheCastle
             logoPos = new Rectangle(Globals.screenW/2-400, Globals.screenH/2-350, 800, 700);
             textpos = new Vector2(Globals.screenW/2-335, (float)(Globals.screenH-Globals.screenH/9));
             bg = new Color(255,0,0);
+          
             currentColor = incColor.green;
         }
 
@@ -53,31 +54,37 @@ namespace KingOfTheCastle
             {
                 case incColor.green:
                     bg.G+=3;
+               
                     if (bg.G == 255)
                         currentColor=incColor.dRed;
                     break;
                 case incColor.dRed:
                     bg.R-=3;
+                 
                     if (bg.R == 0)
                         currentColor = incColor.blue;
                     break;
                 case incColor.blue:
                     bg.B+=3;
+                    
                     if (bg.B == 255)
                         currentColor = incColor.dGreen;
                     break;
                 case incColor.dGreen:
                     bg.G-=3;
+                   
                     if (bg.G == 0)
                         currentColor = incColor.red;
                     break;
                 case incColor.red:
                     bg.R+=3;
+                    
                     if (bg.R == 255)
                         currentColor = incColor.dBlue;
                     break;
                 case incColor.dBlue:
                     bg.B-=3;
+                    
                     if (bg.B == 0)
                         currentColor = incColor.green;
                     break;
@@ -90,7 +97,7 @@ namespace KingOfTheCastle
         {
             game.GraphicsDevice.Clear(bg);
             game.spriteBatch.Draw(logo, logoPos, Color.White);
-            game.spriteBatch.DrawString(game.font, "     Press Start or A...\nPress Back or Escape to exit", textpos, Color.White);
+            game.spriteBatch.DrawString(game.font, "     Press Start or A...\nPress Back or Escape to exit", textpos, Color.Black);
 
 
         }

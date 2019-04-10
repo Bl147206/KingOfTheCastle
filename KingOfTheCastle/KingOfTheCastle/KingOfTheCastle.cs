@@ -25,6 +25,8 @@ namespace KingOfTheCastle
         public Texture2D shopText;
         public int round=5;
         public Texture2D shopHighlight;
+        public int round = 5;
+        public Player[] players;
 
         public KingOfTheCastle()
         {
@@ -50,7 +52,45 @@ namespace KingOfTheCastle
             currentScreen = new TitleScreen(this);
             //currentScreen = new Stage(0);
             currentScreen.game = this;
+
+            players = new Player[4];
+
+            for (int i = 0; i < 4; i += 1) {
+                Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * i), 60, 60);
+                players[i] = new Player(this, tempRec, test, /*index*/ i + 1);
+            }
+
             base.Initialize();
+        }
+
+        private int getControllerCount() {
+            int result = 0;
+
+            for (int i = 0; i < 4; i += 1) {
+                PlayerIndex idx;
+
+                switch (i + 1) {
+                    case 1:
+                        idx = PlayerIndex.One;
+                        break;
+                    case 2:
+                        idx = PlayerIndex.Two;
+                        break;
+                    case 3:
+                        idx = PlayerIndex.Three;
+                        break;
+                    case 4:
+                        idx = PlayerIndex.Four;
+                        break;
+                    default:
+                        idx = PlayerIndex.One;
+                        break;
+                }
+
+                result += GamePad.GetState(idx).IsConnected ? 1 : 0;
+            }
+
+            return result;
         }
 
         /// <summary>

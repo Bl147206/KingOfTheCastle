@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace KingOfTheCastle {
     abstract class Weapon {
@@ -14,6 +15,7 @@ namespace KingOfTheCastle {
         public string name;
         public int cost;
         public Kind kind;
+        public Texture2D texture;
     }
 
     class Melee: Weapon {

@@ -11,17 +11,17 @@ using Microsoft.Xna.Framework.Media;
 
 namespace KingOfTheCastle
 {
-    class Player
+    public class Player
     {
         KingOfTheCastle game;
         Rectangle location;
         Rectangle window;
         Texture2D texture;
         PlayerIndex playerIndex;
-        bool onGround;
+        bool onGround, fallingThroughPlatform;
         int maxXVelocity, jumpForce, gold, health, mAttack, rAttack;
         //more specific x and y coords
-        double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed;
+        double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
         Inventory inventory;
 
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex)
@@ -30,10 +30,12 @@ namespace KingOfTheCastle
             xVelocity = 0;
             yVelocity = 0;
             xAccel = 3;
-            gravity = -6;
+            gravity = 1;
             groundFrictionForce = 2;
-            jumpForce = 20;
+            jumpForce = 30;
             maxXVelocity = 15;
+            terminalVelocity = 20;
+            fallingThroughPlatform = false;
 
             mAttack = 2;
             mAttackSpeed = 0.65;
@@ -51,13 +53,17 @@ namespace KingOfTheCastle
                     this.playerIndex = PlayerIndex.One;
                     break;
                 case 2:
-                    this.playerIndex = PlayerIndex.One;
+                    this.playerIndex = PlayerIndex.Two;
                     break;
                 case 3:
-                    this.playerIndex = PlayerIndex.One;
+                    this.playerIndex = PlayerIndex.Three;
                     break;
                 case 4:
-                    this.playerIndex = PlayerIndex.One;
+                    this.playerIndex = PlayerIndex.Four;
+                    break;
+                default:
+                    Console.WriteLine("invalid player created");
+                    Environment.Exit(0);
                     break;
             }
             window = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
@@ -68,16 +74,33 @@ namespace KingOfTheCastle
         public void Update(Platform[] platforms)
         {
             GamePadState gamePad = GamePad.GetState(playerIndex);
+            if(gamePad.ThumbSticks.Left.Y < 0)
+            {
+                fallingThroughPlatform = true;
+            }
             foreach (Platform p in platforms)
             {
                 if(p != null)
                 {
-                    if (location.Intersects(p.destination))
+                    if (fallingThroughPlatform)
                     {
-                        onGround = true;
-                        y = p.destination.Y - location.Height;
-                        yVelocity = 0;
-                        break;
+                        if (!location.Intersects(p.destination))
+                        {
+                            fallingThroughPlatform = false;
+                        }
+                    }
+                    else
+                    {
+                        if (yVelocity >= 0)
+                        {
+                            if (location.Intersects(p.destination))
+                            {
+                                onGround = true;
+                                y = p.destination.Y - location.Height;
+                                yVelocity = 0;
+                                break;
+                            }
+                        }
                     }
                 }
                 onGround = false;
@@ -112,8 +135,12 @@ namespace KingOfTheCastle
             //in air movement
             if (!onGround)
             {
-                //yVelocity += gravity; //gravity decreasing y movement
-                yVelocity = 1;
+                yVelocity += gravity; //gravity decreasing y movement
+                //yVelocity = 1;
+                if(yVelocity > terminalVelocity)
+                {
+                    yVelocity = terminalVelocity;
+                }
             }
             x += xVelocity;
             y += yVelocity;
