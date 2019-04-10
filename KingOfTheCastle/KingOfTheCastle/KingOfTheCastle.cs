@@ -61,6 +61,36 @@ namespace KingOfTheCastle
             base.Initialize();
         }
 
+        private int getControllerCount() {
+            int result = 0;
+
+            for (int i = 0; i < 4; i += 1) {
+                PlayerIndex idx;
+
+                switch (i + 1) {
+                    case 1:
+                        idx = PlayerIndex.One;
+                        break;
+                    case 2:
+                        idx = PlayerIndex.Two;
+                        break;
+                    case 3:
+                        idx = PlayerIndex.Three;
+                        break;
+                    case 4:
+                        idx = PlayerIndex.Four;
+                        break;
+                    default:
+                        idx = PlayerIndex.One;
+                        break;
+                }
+
+                result += GamePad.GetState(idx).IsConnected ? 1 : 0;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
