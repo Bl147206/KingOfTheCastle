@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace KingOfTheCastle
 {
-    class Player
+    public class Player
     {
         KingOfTheCastle game;
         Rectangle location;
