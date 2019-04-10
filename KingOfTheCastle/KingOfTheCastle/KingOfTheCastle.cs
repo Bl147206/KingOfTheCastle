@@ -53,8 +53,8 @@ namespace KingOfTheCastle
 
             players = new Player[4];
 
-            for (int i = 0; i < getControllerCount(); i += 1) {
-                Rectangle tempRec = new Rectangle(Globals.screenW / (2 * i), Globals.screenH - (250 * i), 60, 60);
+            for (int i = 0; i < 4; i += 1) {
+                Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * i), 60, 60);
                 players[i] = new Player(this, tempRec, test, /*index*/ i + 1);
             }
 
