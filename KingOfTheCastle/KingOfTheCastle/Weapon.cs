@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace KingOfTheCastle {
     abstract class Weapon {
@@ -14,6 +21,8 @@ namespace KingOfTheCastle {
         public string name;
         public int cost;
         public Kind kind;
+        public Texture2D texture;
+
     }
 
     class Melee: Weapon {
