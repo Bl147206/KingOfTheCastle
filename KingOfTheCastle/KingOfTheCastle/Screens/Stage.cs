@@ -30,8 +30,9 @@ namespace KingOfTheCastle
             }
             //temp player stuff
             players = new Player[4];
-            Rectangle tempRec = new Rectangle(Globals.screenW / 2, Globals.screenH - 250, 100, 100);
+            Rectangle tempRec = new Rectangle(Globals.screenW / 2, Globals.screenH - 300, 60, 60);
             players[0] = new Player(game, tempRec, game.test, 1);
+            players[1] = new Player(game, tempRec, game.test, 2);
         }
         public override void Update(GameTime gameTime)
         {
