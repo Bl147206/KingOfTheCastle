@@ -15,7 +15,6 @@ namespace KingOfTheCastle
     {
         Platform[] platforms;
         KeyboardState kb;
-        Player[] players;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -28,16 +27,11 @@ namespace KingOfTheCastle
                 int z = x % 4;
                 platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(Globals.screenW), (float)(platforms[0].destination.Y - z * 120 - 120)), Globals.rng.Next(100, 750), 5);
             }
-            //temp player stuff
-            players = new Player[4];
-            Rectangle tempRec = new Rectangle(Globals.screenW / 2, Globals.screenH - 300, 60, 60);
-            players[0] = new Player(game, tempRec, game.test, 1);
-            players[1] = new Player(game, tempRec, game.test, 2);
         }
         public override void Update(GameTime gameTime)
         {
             kb = Keyboard.GetState();
-            foreach (Player p in players)
+            foreach (Player p in game.players)
             {
                 if (p != null)
                 {
@@ -56,7 +50,7 @@ namespace KingOfTheCastle
                     game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
                 }
             }
-            foreach (Player p in players)
+            foreach (Player p in game.players)
             {
                 if (p != null)
                 {
