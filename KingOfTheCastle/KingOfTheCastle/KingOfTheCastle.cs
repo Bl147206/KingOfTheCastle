@@ -53,7 +53,7 @@ namespace KingOfTheCastle
             currentScreen.game = this;
 
             players = new Player[4];
-
+            Console.WriteLine(getControllerCount());
             for (int i = 0; i < 4; i += 1) {
                 Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * i), 60, 60);
                 players[i] = new Player(this, tempRec, test, /*index*/ i + 1);
@@ -101,6 +101,13 @@ namespace KingOfTheCastle
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
+            foreach (Player p in players)
+            {
+                if(p != null)
+                {
+                    p.texture = test;
+                }
+            }
             shopText = Content.Load<Texture2D>("Shop");
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("SpriteFont1");
