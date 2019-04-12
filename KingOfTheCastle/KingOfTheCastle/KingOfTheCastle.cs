@@ -27,6 +27,7 @@ namespace KingOfTheCastle
         public Texture2D swordTexture;
         public int round = 5;
         public Player[] players;
+        public Texture2D bowTexture;
 
         public KingOfTheCastle()
         {
@@ -114,6 +115,7 @@ namespace KingOfTheCastle
             font = Content.Load<SpriteFont>("SpriteFont1");
             shopHighlight = Content.Load<Texture2D>("border");
             swordTexture = Content.Load<Texture2D>("sword");
+            bowTexture = Content.Load<Texture2D>("bow");
         }
 
         /// <summary>
