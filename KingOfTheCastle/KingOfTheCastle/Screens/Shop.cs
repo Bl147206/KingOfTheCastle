@@ -43,9 +43,28 @@ namespace KingOfTheCastle
             playerPad[3] = GamePad.GetState(PlayerIndex.Four);
             if (playerPad[0].DPad.Down==ButtonState.Pressed&& playerPad0[0].DPad.Down != ButtonState.Pressed)
             {
-                p[0]++;
+                if (p[0] != playerSelection.Three)
+                {
+                    p[0]++;
+                }
+                else
+                {
+                    p[0] = playerSelection.One;
+                }
             }
 
+            if (playerPad[0].DPad.Up == ButtonState.Pressed && playerPad0[0].DPad.Up != ButtonState.Pressed)
+            {
+                if (p[0] != playerSelection.One)
+                {
+                    p[0]--;
+                }
+                else
+                {
+                    p[0] = playerSelection.Three;
+                }
+            }
+            //Player 1
             if (p[0] == playerSelection.One)
             {
                 pSelect[0].Y = 20;
@@ -58,21 +77,46 @@ namespace KingOfTheCastle
             {
                 pSelect[0].Y = 360;
             }
-            //foreach(playerSelection x in p)
-            //{
-            //    if(x==playerSelection.One)
-            //    {
+            //Player 2
+            if (p[1] == playerSelection.One)
+            {
+                pSelect[1].Y = 15;
+            }
+            if (p[1] == playerSelection.Two)
+            {
+                pSelect[1].Y = 175;
+            }
+            if (p[1] == playerSelection.Three)
+            {
+                pSelect[1].Y = 350;
+            }
+            //Player 3
+            if (p[2] == playerSelection.One)
+            {
+                pSelect[2].Y = 610;
+            }
+            if (p[2] == playerSelection.Two)
+            {
+                pSelect[2].Y = 770;
+            }
+            if (p[2] == playerSelection.Three)
+            {
+                pSelect[2].Y = 945;
+            }
+            //Player 4
+            if (p[3] == playerSelection.One)
+            {
+                pSelect[3].Y = 600;
+            }
+            if (p[3] == playerSelection.Two)
+            {
+                pSelect[3].Y = 770;
+            }
+            if (p[3] == playerSelection.Three)
+            {
+                pSelect[3].Y = 945;
+            }
 
-            //    }
-            //    if (x == playerSelection.Two)
-            //    {
-
-            //    }
-            //    if (x == playerSelection.Three)
-            //    {
-
-            //    }
-            //}
             playerPad0[0] = playerPad[0];
             playerPad0[1] = playerPad[1];
             playerPad0[2] = playerPad[2];
