@@ -31,6 +31,13 @@ namespace KingOfTheCastle
             }
             frames = 0;
             this.game = game;
+
+            foreach(Player p in game.players)
+            {
+                if(p!=null)
+                    if (!p.IsAlive())
+                        p.revive();
+            }
         }
         public override void Update(GameTime gameTime)
         {
@@ -46,20 +53,27 @@ namespace KingOfTheCastle
                     }
                     else
                     {
+                        dead++;
                         GamePadState gamePad = GamePad.GetState(p.playerIndex);
                         if (gamePad.DPad.Down == ButtonState.Pressed)
                         {
                             p.revive();
+                            dead--;
                         }
+                        
                     }
                 }
                 
 
             }
             frames++;
-            if (frames >= 60 * (10)||dead>=3)
+            if (frames >= 60 * (60)/*seconds*/ || dead >= 3)
+            {
+                foreach (Player p in game.players)
+                    if(p!=null)
+                        p.kill();
                 game.currentScreen = new Shop(this.game);
-            
+            }
         }
 
         public override void Draw(GameTime gameTime)
