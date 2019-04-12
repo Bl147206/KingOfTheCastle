@@ -20,7 +20,7 @@ namespace KingOfTheCastle
         public Texture2D texture;
         PlayerIndex playerIndex;
         bool onGround, fallingThroughPlatform;
-        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack;
+        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack, intersectingPlatforms;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
         Inventory inventory;
@@ -74,7 +74,7 @@ namespace KingOfTheCastle
         public void Update(Platform[] platforms)
         {
             GamePadState gamePad = GamePad.GetState(playerIndex);
-            if(gamePad.ThumbSticks.Left.Y < 0)
+            if(gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - 180)
             {
                 fallingThroughPlatform = true;
             }
@@ -84,10 +84,9 @@ namespace KingOfTheCastle
                 {
                     if (fallingThroughPlatform)
                     {
-                        if (!location.Intersects(p.destination))
+                        if (location.Intersects(p.destination))
                         {
-                            fallingThroughPlatform = false;
-                            break;
+                            intersectingPlatforms++;
                         }
                     }
                     else
@@ -106,6 +105,12 @@ namespace KingOfTheCastle
                 }
                 onGround = false;
             }
+            if(fallingThroughPlatform && intersectingPlatforms == 0)
+            {
+                fallingThroughPlatform = false;
+            }
+            intersectingPlatforms = 0;
+
             if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0) //When holding down a stick x change
             {
                 xVelocity += gamePad.ThumbSticks.Left.X * xAccel;
@@ -131,6 +136,10 @@ namespace KingOfTheCastle
                 if (gamePad.IsButtonDown(Buttons.A)) //jumping
                 {
                     yVelocity -= jumpForce;
+                }
+                if (gamePad.IsButtonDown(Buttons.B)) //short jumping
+                {
+                    yVelocity -= jumpForce / 2;
                 }
             }
             //in air movement
