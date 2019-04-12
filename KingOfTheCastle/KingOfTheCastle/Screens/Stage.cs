@@ -35,7 +35,18 @@ namespace KingOfTheCastle
             {
                 if (p != null)
                 {
-                    p.Update(platforms);
+                    if (p.IsAlive())
+                    {
+                        p.Update(platforms);
+                    }
+                    else
+                    {
+                        GamePadState gamePad = GamePad.GetState(p.playerIndex);
+                        if (gamePad.DPad.Down == ButtonState.Pressed)
+                        {
+                            p.revive();
+                        }
+                    }
                 }
             }
         }
@@ -52,7 +63,7 @@ namespace KingOfTheCastle
             }
             foreach (Player p in game.players)
             {
-                if (p != null)
+                if (p != null && p.IsAlive())
                 {
                     p.draw();
                 }
