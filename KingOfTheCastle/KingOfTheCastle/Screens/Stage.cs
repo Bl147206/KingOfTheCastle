@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Timers;
 
 namespace KingOfTheCastle
 {
@@ -15,6 +16,7 @@ namespace KingOfTheCastle
     {
         Platform[] platforms;
         KeyboardState kb;
+        int frames;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -27,16 +29,50 @@ namespace KingOfTheCastle
                 int z = x % 4;
                 platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(Globals.screenW), (float)(platforms[0].destination.Y - z * 120 - 120)), Globals.rng.Next(100, 750), 5);
             }
+            frames = 0;
+            this.game = game;
+
+            foreach(Player p in game.players)
+            {
+                if(p!=null)
+                    if (!p.IsAlive())
+                        p.revive();
+            }
         }
         public override void Update(GameTime gameTime)
         {
             kb = Keyboard.GetState();
+            int dead = 0;
             foreach (Player p in game.players)
             {
                 if (p != null)
                 {
-                    p.Update(platforms);
+                    if (p.IsAlive())
+                    {
+                        p.Update(platforms);
+                    }
+                    else
+                    {
+                        dead++;
+                        GamePadState gamePad = GamePad.GetState(p.playerIndex);
+                        if (gamePad.DPad.Down == ButtonState.Pressed)
+                        {
+                            p.revive();
+                            dead--;
+                        }
+                        
+                    }
                 }
+                
+
+            }
+            frames++;
+            if (frames >= 60 * (60)/*seconds*/ || dead >= 3)
+            {
+                foreach (Player p in game.players)
+                    if(p!=null)
+                        p.kill();
+                game.currentScreen = new Shop(this.game);
             }
         }
 
@@ -52,7 +88,7 @@ namespace KingOfTheCastle
             }
             foreach (Player p in game.players)
             {
-                if (p != null)
+                if (p != null && p.IsAlive())
                 {
                     p.draw();
                 }

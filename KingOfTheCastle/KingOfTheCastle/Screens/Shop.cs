@@ -25,6 +25,7 @@ namespace KingOfTheCastle
         GamePadState[] playerPad0 = new GamePadState[4];
         Rectangle[,] items = new Rectangle[4,3];
         Texture2D background;
+        int frames;
         Inventory[] inventories = new Inventory[4];
         public Shop(KingOfTheCastle game)
         {
@@ -54,6 +55,10 @@ namespace KingOfTheCastle
             items[3, 0] = new Rectangle(1095, 600, 140, 135);
             items[3, 1] = new Rectangle(1095, 770, 140, 135);
             items[3, 2] = new Rectangle(1095, 945, 140, 135);
+
+            this.game = game;
+            frames = 0;
+            game.round++;
         }
         public override void Update(GameTime gameTime) {
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
@@ -140,6 +145,9 @@ namespace KingOfTheCastle
             playerPad0[1] = playerPad[1];
             playerPad0[2] = playerPad[2];
             playerPad0[3] = playerPad[3];
+            frames++;
+            if (frames >= 60 * (20))
+                game.currentScreen = new Stage(game.round, this.game);
         }
 
         public override void Draw(GameTime gameTime)

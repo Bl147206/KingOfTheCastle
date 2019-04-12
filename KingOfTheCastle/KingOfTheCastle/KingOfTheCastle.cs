@@ -25,7 +25,7 @@ namespace KingOfTheCastle
         public Texture2D shopText;
         public Texture2D shopHighlight;
         public Texture2D swordTexture;
-        public int round = 5;
+        public int round = 1;
         public Player[] players;
         public Texture2D bowTexture;
 
@@ -57,8 +57,8 @@ namespace KingOfTheCastle
             players = new Player[4];
 
             for (int i = 0; i < getControllerCount(); i += 1) {
-                Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i + 1)), Globals.screenH - (250 * (i + 1)), 60, 60);
-                players[i] = new Player(this, tempRec, test, /*index*/ i + 1);
+                Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * (i+1)), 60, 60);
+                players[i] = new Player(this, tempRec, test, /*index*/ i + 1, new Color(Globals.rng.Next() % 255, Globals.rng.Next() % 255, Globals.rng.Next() % 255));
             }
 
             base.Initialize();

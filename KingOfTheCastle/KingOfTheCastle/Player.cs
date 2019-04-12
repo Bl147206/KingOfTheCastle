@@ -16,16 +16,16 @@ namespace KingOfTheCastle
         KingOfTheCastle game;
         Rectangle location;
         Rectangle window;
-        Rectangle fallingRectangle;
         public Texture2D texture;
-        PlayerIndex playerIndex;
-        bool onGround, fallingThroughPlatform;
-        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack;
+        public PlayerIndex playerIndex;
+        bool onGround, fallingThroughPlatform, isAlive;
+        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack, intersectingPlatforms;
+        Color color;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
         Inventory inventory;
 
-        public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex)
+        public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
             //stuff that gets shared by all players at the start
             xVelocity = 0;
@@ -37,6 +37,9 @@ namespace KingOfTheCastle
             maxXVelocity = 15;
             terminalVelocity = 20;
             fallingThroughPlatform = false;
+            isAlive = true;
+
+            this.color = color;
 
             mAttack = 2;
             mAttackSpeed = 0.65;
@@ -74,7 +77,12 @@ namespace KingOfTheCastle
         public void Update(Platform[] platforms)
         {
             GamePadState gamePad = GamePad.GetState(playerIndex);
-            if(gamePad.ThumbSticks.Left.Y < 0)
+            //temp life testing stuff
+            if(gamePad.DPad.Up == ButtonState.Pressed)
+            {
+                kill();
+            }
+            if(gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - 180)
             {
                 fallingThroughPlatform = true;
             }
@@ -84,17 +92,18 @@ namespace KingOfTheCastle
                 {
                     if (fallingThroughPlatform)
                     {
-                        if (!location.Intersects(p.destination))
+                        if (location.Intersects(p.destination))
                         {
-                            fallingThroughPlatform = false;
-                            break;
+                            intersectingPlatforms++;
                         }
                     }
                     else
                     {
                         if (yVelocity >= 0)
                         {
-                            if (location.Intersects(p.destination))
+                            Rectangle tempRec = location;
+                            tempRec.Y += (int) yVelocity;
+                            if (tempRec.Intersects(p.destination))
                             {
                                 onGround = true;
                                 y = p.destination.Y - location.Height;
@@ -106,6 +115,12 @@ namespace KingOfTheCastle
                 }
                 onGround = false;
             }
+            if(fallingThroughPlatform && intersectingPlatforms == 0)
+            {
+                fallingThroughPlatform = false;
+            }
+            intersectingPlatforms = 0;
+
             if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0) //When holding down a stick x change
             {
                 xVelocity += gamePad.ThumbSticks.Left.X * xAccel;
@@ -131,6 +146,10 @@ namespace KingOfTheCastle
                 if (gamePad.IsButtonDown(Buttons.A)) //jumping
                 {
                     yVelocity -= jumpForce;
+                }
+                else if (gamePad.IsButtonDown(Buttons.B)) //short jumping
+                {
+                    yVelocity -= jumpForce / 2;
                 }
             }
             //in air movement
@@ -163,7 +182,28 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-            game.spriteBatch.Draw(texture, location, Color.Black);
+            game.spriteBatch.Draw(texture, location, color);
+        }
+
+        public bool IsAlive()
+        {
+            return isAlive;
+        }
+
+        public void kill()
+        {
+
+            isAlive = false;
+        }
+
+        public void revive()
+        {
+            isAlive = true;
+            location = new Rectangle(Globals.screenW / 2, Globals.screenH - 250, 60, 60);
+            yVelocity = 0;
+            xVelocity = 0;
+            y = location.Y;
+            x = location.X;
         }
 
     }
