@@ -47,7 +47,6 @@ namespace KingOfTheCastle
             this.game = game;
             location = spawnLocation;
             this.texture = texture;
-            
             switch (playerIndex)
             {
                 case 1:
