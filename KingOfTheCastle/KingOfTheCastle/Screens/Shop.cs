@@ -35,6 +35,7 @@ namespace KingOfTheCastle
             pSelect[1] = new Rectangle(1095, 15, 140, 135);
             pSelect[2] = new Rectangle(80, 610, 140, 135);
             pSelect[3] = new Rectangle(1095, 600, 140, 135);
+            this.game = game;
         }
         public override void Update(GameTime gameTime) {
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
