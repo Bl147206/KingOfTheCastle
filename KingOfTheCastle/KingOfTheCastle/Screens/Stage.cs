@@ -15,6 +15,7 @@ namespace KingOfTheCastle
     {
         Platform[] platforms;
         KeyboardState kb;
+        int start;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -27,10 +28,12 @@ namespace KingOfTheCastle
                 int z = x % 4;
                 platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(Globals.screenW), (float)(platforms[0].destination.Y - z * 120 - 120)), Globals.rng.Next(100, 750), 5);
             }
+            start = DateTime.Now.Second;
         }
         public override void Update(GameTime gameTime)
         {
             kb = Keyboard.GetState();
+            
             foreach (Player p in game.players)
             {
                 if (p != null)
@@ -49,6 +52,8 @@ namespace KingOfTheCastle
                     }
                 }
             }
+            if (DateTime.Now.Second - 60 >= start)
+                game.currentScreen = new Shop(this.game);
         }
 
         public override void Draw(GameTime gameTime)
