@@ -19,7 +19,7 @@ namespace KingOfTheCastle
         public Texture2D texture;
         public PlayerIndex playerIndex;
         bool onGround, fallingThroughPlatform, isAlive;
-        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack, intersectingPlatforms;
+        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack, intersectingPlatforms, heightUpToNotFallThrough;
         Color color;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -36,6 +36,7 @@ namespace KingOfTheCastle
             jumpForce = 30;
             maxXVelocity = 15;
             terminalVelocity = 20;
+            heightUpToNotFallThrough = 180;
             fallingThroughPlatform = false;
             isAlive = true;
 
@@ -82,7 +83,7 @@ namespace KingOfTheCastle
             {
                 kill();
             }
-            if(gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - 180)
+            if(gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - heightUpToNotFallThrough)
             {
                 fallingThroughPlatform = true;
             }
@@ -101,14 +102,17 @@ namespace KingOfTheCastle
                     {
                         if (yVelocity >= 0)
                         {
-                            Rectangle tempRec = location;
-                            tempRec.Y += (int) yVelocity;
-                            if (tempRec.Intersects(p.destination))
+                            location.Y += (int)yVelocity;
+                            if (location.Intersects(p.destination))
                             {
                                 onGround = true;
                                 y = p.destination.Y - location.Height;
                                 yVelocity = 0;
                                 break;
+                            }
+                            else
+                            {
+                                location.Y -= (int)yVelocity;
                             }
                         }
                     }
