@@ -19,7 +19,7 @@ namespace KingOfTheCastle
         public Texture2D texture;
         public PlayerIndex playerIndex;
         bool onGround, fallingThroughPlatform, isAlive;
-        int maxXVelocity, jumpForce, gold, health, mAttack, rAttack, intersectingPlatforms, heightUpToNotFallThrough;
+        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, mAttack, rAttack, intersectingPlatforms, heightUpToNotFallThrough;
         Color color;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -28,6 +28,8 @@ namespace KingOfTheCastle
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
             //stuff that gets shared by all players at the start
+            health = 20;
+            maxHealth = 20;
             xVelocity = 0;
             yVelocity = 0;
             xAccel = 3;
@@ -51,6 +53,7 @@ namespace KingOfTheCastle
             this.game = game;
             location = spawnLocation;
             this.texture = texture;
+            this.playerNumber = playerIndex;
             switch (playerIndex)
             {
                 case 1:
@@ -83,16 +86,37 @@ namespace KingOfTheCastle
             {
                 kill();
             }
-            if(gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - heightUpToNotFallThrough)
+
+            if(health <= 0)
             {
+                kill();
+            }
+
+            platformLogic(gamePad, platforms);
+
+            horizontalMovement(gamePad);
+
+            jumpLogic(gamePad);
+
+            gravityLogic();
+
+            x += xVelocity;
+            y += yVelocity;
+            UpdatePosition(x, y);
+        }
+
+        public void platformLogic(GamePadState gamePad, Platform[] platforms)
+        {
+            if (gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - heightUpToNotFallThrough)
+            {// let the player fall through platforms when they're holding down
                 fallingThroughPlatform = true;
             }
             foreach (Platform p in platforms)
             {
-                if(p != null)
+                if (p != null)
                 {
                     if (fallingThroughPlatform)
-                    {
+                    {// check if the player has cleared the platform they're falling through
                         if (location.Intersects(p.destination))
                         {
                             intersectingPlatforms++;
@@ -104,7 +128,7 @@ namespace KingOfTheCastle
                         {
                             location.Y += (int)yVelocity;
                             if (location.Intersects(p.destination))
-                            {
+                            {// if a player is falling and they're in a platform snap them to the top
                                 onGround = true;
                                 y = p.destination.Y - location.Height;
                                 yVelocity = 0;
@@ -119,12 +143,16 @@ namespace KingOfTheCastle
                 }
                 onGround = false;
             }
-            if(fallingThroughPlatform && intersectingPlatforms == 0)
+
+            if (fallingThroughPlatform && intersectingPlatforms == 0)
             {
                 fallingThroughPlatform = false;
             }
             intersectingPlatforms = 0;
+        }
 
+        public void horizontalMovement(GamePadState gamePad)
+        {
             if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0) //When holding down a stick x change
             {
                 xVelocity += gamePad.ThumbSticks.Left.X * xAccel;
@@ -144,7 +172,10 @@ namespace KingOfTheCastle
             {
                 xVelocity = Math.Sign(xVelocity) * maxXVelocity;
             }
-            //on ground movement 
+        }
+
+        public void jumpLogic(GamePadState gamePad)
+        {
             if (onGround)
             {
                 if (gamePad.IsButtonDown(Buttons.A)) //jumping
@@ -156,19 +187,18 @@ namespace KingOfTheCastle
                     yVelocity -= jumpForce / 2;
                 }
             }
-            //in air movement
+        }
+
+        public void gravityLogic()
+        {
             if (!onGround)
             {
                 yVelocity += gravity; //gravity decreasing y movement
-                //yVelocity = 1;
-                if(yVelocity > terminalVelocity)
+                if (yVelocity > terminalVelocity)
                 {
                     yVelocity = terminalVelocity;
                 }
             }
-            x += xVelocity;
-            y += yVelocity;
-            UpdatePosition(x, y);
         }
 
         public void UpdatePosition(double x, double y)
@@ -187,6 +217,8 @@ namespace KingOfTheCastle
         public void draw()
         {
             game.spriteBatch.Draw(texture, location, color);
+            game.spriteBatch.DrawString(game.font, health.ToString(), 
+                new Vector2(playerNumber * 50, Globals.screenH - game.font.LineSpacing * 1), Color.Red);
         }
 
         public bool IsAlive()
@@ -196,13 +228,19 @@ namespace KingOfTheCastle
 
         public void kill()
         {
-
             isAlive = false;
+            health = 0;
+        }
+
+        public void damage(int damageAmount)
+        {
+            health -= damageAmount;
         }
 
         public void revive()
         {
             isAlive = true;
+            health = maxHealth;
             location = new Rectangle(Globals.screenW / 2, Globals.screenH - 250, 60, 60);
             yVelocity = 0;
             xVelocity = 0;
@@ -210,5 +248,18 @@ namespace KingOfTheCastle
             x = location.X;
         }
 
+        public void meleeAttack(Rectangle weaponHitbox, int weaponDamage)
+        {
+            foreach(Player p in game.players)
+            {
+                if(p != null && p != this)
+                {
+                    if (weaponHitbox.Intersects(p.location))
+                    {
+                        p.damage(weaponDamage);
+                    }
+                }
+            }
+        }
     }
 }

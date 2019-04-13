@@ -56,15 +56,12 @@ namespace KingOfTheCastle
                         dead++;
                         GamePadState gamePad = GamePad.GetState(p.playerIndex);
                         if (gamePad.DPad.Down == ButtonState.Pressed)
-                        {
+                        {// temp stuff to let a person revive themself
                             p.revive();
                             dead--;
                         }
-                        
                     }
                 }
-                
-
             }
             frames++;
             if (frames >= 60 * (60)/*seconds*/ || dead >= 3)
