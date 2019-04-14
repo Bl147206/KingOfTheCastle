@@ -15,7 +15,7 @@ namespace KingOfTheCastle
     class Stage: Screen
     {
         Platform[] platforms;
-        ProjectileHandler projectiles;
+        public ProjectileHandler projectiles;
         KeyboardState kb;
         int frames;
 
@@ -74,6 +74,7 @@ namespace KingOfTheCastle
                         p.kill();
                 game.currentScreen = new Shop(this.game);
             }
+            projectiles.Update();
         }
 
         public override void Draw(GameTime gameTime)

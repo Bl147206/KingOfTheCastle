@@ -36,6 +36,7 @@ namespace KingOfTheCastle
                     projectiles.RemoveAt(projectile--);
                 }
             }
+            Console.WriteLine(projectiles.Count);
         }
 
         public void draw()
@@ -46,7 +47,12 @@ namespace KingOfTheCastle
             }
         }
 
-        class Projectile
+        public void add(Projectile p)
+        {
+            projectiles.Add(p);
+        }
+
+        public class Projectile
         {
             public Rectangle hitBox;
             List<int> playersHits;
@@ -80,7 +86,7 @@ namespace KingOfTheCastle
 
             public void draw(SpriteBatch spriteBatch)
             {
-                spriteBatch.Draw(texture, hitBox, Color.Black);
+                spriteBatch.Draw(texture, hitBox, Color.Red);
             }
         }
     }

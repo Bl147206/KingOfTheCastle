@@ -22,8 +22,8 @@ namespace KingOfTheCastle
         Direction facing;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        bool onGround, fallingThroughPlatform, isAlive, isAttacking;
-        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, 
+        bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking;
+        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
         Color color;
         //more specific x and y coords
@@ -99,6 +99,8 @@ namespace KingOfTheCastle
                 kill();
             }
 
+            rangedLogic(gamePad);
+
             meleeLogic(gamePad);
 
             platformLogic(gamePad, platforms);
@@ -114,14 +116,32 @@ namespace KingOfTheCastle
             UpdatePosition(x, y);
         }
 
+        public void rangedLogic(GamePadState gamePad)
+        {
+            isRAttacking = false;
+            if(rAttackTimer == 0)
+            {
+                if (gamePad.Triggers.Left > 0)
+                {
+                    isRAttacking = true;
+                    rangedAttack();
+                    rAttackTimer = (int)(60 * rAttackSpeed);
+                }
+            }
+            else
+            {
+                rAttackTimer--;
+            }
+        }
+
         public void meleeLogic(GamePadState gamePad)
         {
-            isAttacking = false;
+            isMAttacking = false;
             if(mAttackTimer == 0)
             {
                 if (gamePad.Triggers.Right > 0)
                 {
-                    isAttacking = true;
+                    isMAttacking = true;
                     meleeAttack(new Rectangle(location.X, location.Y, 200, 200), 10);
                     mAttackTimer = (int) (60 * mAttackSpeed);
                 }
@@ -259,7 +279,7 @@ namespace KingOfTheCastle
             game.spriteBatch.Draw(texture, location, color);
             game.spriteBatch.DrawString(game.font, health.ToString(), 
                 new Vector2(playerNumber * 50, Globals.screenH - game.font.LineSpacing * 1), Color.Red);
-            if (isAttacking)
+            if (isMAttacking)
             {// temp stuff for weapon testing
                 game.spriteBatch.Draw(game.test, attackRec, color);
             }
@@ -315,6 +335,28 @@ namespace KingOfTheCastle
                     }
                 }
             }
+        }
+
+        public void rangedAttack()
+        {
+            Stage stage = (Stage) game.currentScreen;
+            int pXVel = 0;
+            Rectangle pHitBox = new Rectangle(0,0,40,10);
+            switch (facing)
+            {
+                case Direction.Left:
+                    pXVel = -10;
+                    pHitBox.X = location.X - pHitBox.Width;
+                    break;
+                case Direction.Right:
+                    pXVel = 10;
+                    pHitBox.X = location.X + location.Width;
+                    break;
+            }
+            pHitBox.Y = (int)((double)location.Y + ((double)location.Height / 2) - ((double)pHitBox.Height / 2));
+            ProjectileHandler.Projectile projectile;
+            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, 10);
+            stage.projectiles.add(projectile);
         }
     }
 }
