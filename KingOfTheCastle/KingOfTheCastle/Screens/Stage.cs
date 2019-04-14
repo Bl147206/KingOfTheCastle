@@ -15,6 +15,7 @@ namespace KingOfTheCastle
     class Stage: Screen
     {
         Platform[] platforms;
+        ProjectileHandler projectiles;
         KeyboardState kb;
         int frames;
 
@@ -31,6 +32,8 @@ namespace KingOfTheCastle
             }
             frames = 0;
             this.game = game;
+
+            projectiles = new ProjectileHandler(game);
 
             foreach(Player p in game.players)
             {
@@ -90,6 +93,7 @@ namespace KingOfTheCastle
                     p.draw();
                 }
             }
+            projectiles.draw();
         }
     }
 }
