@@ -13,13 +13,18 @@ namespace KingOfTheCastle
 {
     public class Player
     {
+        enum Direction { Left, Right}
+
         KingOfTheCastle game;
         Rectangle location;
         Rectangle window;
+        Rectangle attackRec; //temp for testing
+        Direction facing;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        bool onGround, fallingThroughPlatform, isAlive;
-        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, mAttack, rAttack, intersectingPlatforms, heightUpToNotFallThrough;
+        bool onGround, fallingThroughPlatform, isAlive, isAttacking;
+        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, 
+            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
         Color color;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -34,13 +39,15 @@ namespace KingOfTheCastle
             yVelocity = 0;
             xAccel = 3;
             gravity = 1;
-            groundFrictionForce = 2;
-            jumpForce = 30;
+            groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
+            jumpForce = 30; //intial force of a jump
             maxXVelocity = 15;
             terminalVelocity = 20;
-            heightUpToNotFallThrough = 180;
+            heightUpToNotFallThrough = 180; //distance from the bottom of the screen you stop being able to fall through platforms at
             fallingThroughPlatform = false;
             isAlive = true;
+            mAttackSpeed = .5;
+            facing = Direction.Right;
 
             this.color = color;
 
@@ -92,6 +99,8 @@ namespace KingOfTheCastle
                 kill();
             }
 
+            meleeLogic(gamePad);
+
             platformLogic(gamePad, platforms);
 
             horizontalMovement(gamePad);
@@ -103,6 +112,24 @@ namespace KingOfTheCastle
             x += xVelocity;
             y += yVelocity;
             UpdatePosition(x, y);
+        }
+
+        public void meleeLogic(GamePadState gamePad)
+        {
+            isAttacking = false;
+            if(mAttackTimer == 0)
+            {
+                if (gamePad.Triggers.Right > 0)
+                {
+                    isAttacking = true;
+                    meleeAttack(new Rectangle(location.X, location.Y, 200, 200), 10);
+                    mAttackTimer = (int) (60 * mAttackSpeed);
+                }
+            }
+            else
+            {
+                mAttackTimer--;
+            }
         }
 
         public void platformLogic(GamePadState gamePad, Platform[] platforms)
@@ -155,7 +182,20 @@ namespace KingOfTheCastle
         {
             if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0) //When holding down a stick x change
             {
+                if(Math.Sign(xVelocity) != Math.Sign(gamePad.ThumbSticks.Left.X))
+                {
+                    xVelocity = 0;
+                }
                 xVelocity += gamePad.ThumbSticks.Left.X * xAccel;
+                switch (Math.Sign(gamePad.ThumbSticks.Left.X))
+                {
+                    case 1:
+                        facing = Direction.Right;
+                        break;
+                    case -1:
+                        facing = Direction.Left;
+                        break;
+                }
             }
             else if (Math.Abs(xVelocity) > 0) //Slowing down when not holding a direction
             {
@@ -219,6 +259,10 @@ namespace KingOfTheCastle
             game.spriteBatch.Draw(texture, location, color);
             game.spriteBatch.DrawString(game.font, health.ToString(), 
                 new Vector2(playerNumber * 50, Globals.screenH - game.font.LineSpacing * 1), Color.Red);
+            if (isAttacking)
+            {// temp stuff for weapon testing
+                game.spriteBatch.Draw(game.test, attackRec, color);
+            }
         }
 
         public bool IsAlive()
@@ -250,6 +294,17 @@ namespace KingOfTheCastle
 
         public void meleeAttack(Rectangle weaponHitbox, int weaponDamage)
         {
+            weaponHitbox.Y = (int)((double)location.Y + ((double)location.Height / 2) - ((double)weaponHitbox.Height / 2));
+            switch (facing)
+            {
+                case Direction.Left:
+                    weaponHitbox.X = location.X - weaponHitbox.Width;
+                    break;
+                case Direction.Right:
+                    weaponHitbox.X = location.X + location.Width;
+                    break;
+            }
+            attackRec = weaponHitbox;
             foreach(Player p in game.players)
             {
                 if(p != null && p != this)
