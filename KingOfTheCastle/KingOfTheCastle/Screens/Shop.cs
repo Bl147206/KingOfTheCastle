@@ -26,6 +26,8 @@ namespace KingOfTheCastle
         Rectangle[,] items = new Rectangle[4,3];
         Texture2D background;
         int frames;
+        int seconds;
+        String timeleft;
         Inventory[] inventories = new Inventory[4];
         public Shop(KingOfTheCastle game)
         {
@@ -58,6 +60,8 @@ namespace KingOfTheCastle
 
             this.game = game;
             frames = 0;
+            seconds = 20;
+            timeleft = "" + seconds;
             game.round++;
         }
         public override void Update(GameTime gameTime) {
@@ -153,6 +157,7 @@ namespace KingOfTheCastle
             playerPad0[2] = playerPad[2];
             playerPad0[3] = playerPad[3];
             frames++;
+            timeleft = "" + ((60 * seconds - frames) / 60 + 1);
             if (frames >= 60 * (20))
                 game.currentScreen = new Stage(game.round, this.game);
         }
@@ -172,6 +177,8 @@ namespace KingOfTheCastle
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
+
+            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
 
 
             //80        20,185,360

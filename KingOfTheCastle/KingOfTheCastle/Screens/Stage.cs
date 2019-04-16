@@ -30,14 +30,14 @@ namespace KingOfTheCastle
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(Globals.screenW), (float)(platforms[0].destination.Y - z * 120 - 120)), Globals.rng.Next(100, 750), 5);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"y") - screenAdjust(120,"y"))), Globals.rng.Next(100, 750), 5);
             }
             frames = 0;
             this.game = game;
 
             projectiles = new ProjectileHandler(game);
             
-            seconds = 10;
+            seconds = 99;
             timeleft = ""+seconds;
 
             foreach (Player p in game.players)
@@ -51,12 +51,14 @@ namespace KingOfTheCastle
         {
             kb = Keyboard.GetState();
             int dead = 0;
+            int alive = 0;
             foreach (Player p in game.players)
             {
                 if (p != null)
                 {
                     if (p.IsAlive())
                     {
+                        alive++;
                         p.Update(platforms);
                     }
                     else
@@ -73,7 +75,7 @@ namespace KingOfTheCastle
             }
             frames++;
             timeleft = "" + ((60 * seconds - frames)/60+1);
-            if (frames >= 60 * seconds || dead >= 3)
+            if (frames >= 60 * seconds || alive<=1)
             {
                 
                 foreach (Player p in game.players)
@@ -104,6 +106,20 @@ namespace KingOfTheCastle
             }
             game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
             projectiles.draw();
+        }
+
+        public int screenAdjust(int value, string WorH)
+        {
+            int final = 0;
+            if (WorH == "H")
+            {
+                final = value * (Globals.screenH / 1080);
+            }
+            if (WorH == "W")
+            {
+                final = value * (Globals.screenW / 1920);
+            }
+            return final;
         }
     }
 }
