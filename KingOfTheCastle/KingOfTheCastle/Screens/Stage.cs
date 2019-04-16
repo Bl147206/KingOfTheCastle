@@ -30,7 +30,7 @@ namespace KingOfTheCastle
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"y") - screenAdjust(120,"y"))), Globals.rng.Next(100, 750), 5);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"H") - screenAdjust(120,"H"))), Globals.rng.Next(100, 750), 5);
             }
             frames = 0;
             this.game = game;
