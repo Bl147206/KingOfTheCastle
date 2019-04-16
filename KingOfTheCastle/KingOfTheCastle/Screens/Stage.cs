@@ -18,6 +18,8 @@ namespace KingOfTheCastle
         public ProjectileHandler projectiles;
         KeyboardState kb;
         int frames;
+        int seconds;
+        String timeleft;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -34,12 +36,15 @@ namespace KingOfTheCastle
             this.game = game;
 
             projectiles = new ProjectileHandler(game);
+            
+            seconds = 10;
+            timeleft = ""+seconds;
 
-            foreach(Player p in game.players)
+            foreach (Player p in game.players)
             {
                 if(p!=null)
                     if (!p.IsAlive())
-                        p.revive();
+                        p.spawn();
             }
         }
         public override void Update(GameTime gameTime)
@@ -67,13 +72,16 @@ namespace KingOfTheCastle
                 }
             }
             frames++;
-            if (frames >= 60 * (60)/*seconds*/ || dead >= 3)
+            timeleft = "" + ((60 * seconds - frames)/60+1);
+            if (frames >= 60 * seconds || dead >= 3)
             {
+                
                 foreach (Player p in game.players)
-                    if(p!=null)
+                    if (p != null)
                         p.kill();
                 game.currentScreen = new Shop(this.game);
             }
+            
             projectiles.Update();
         }
 
@@ -94,6 +102,7 @@ namespace KingOfTheCastle
                     p.draw();
                 }
             }
+            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
             projectiles.draw();
         }
     }
