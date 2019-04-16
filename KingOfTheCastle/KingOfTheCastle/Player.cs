@@ -16,19 +16,18 @@ namespace KingOfTheCastle
         enum Direction { Left, Right}
 
         KingOfTheCastle game;
-        Rectangle location;
+        public Rectangle location;
         Rectangle window;
         Rectangle attackRec; //temp for testing
         Direction facing;
         public Texture2D texture;
         public PlayerIndex playerIndex;
         bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking;
-        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer,
+        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
         Color color;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
-        Inventory inventory;
 
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
@@ -40,7 +39,8 @@ namespace KingOfTheCastle
             xAccel = 3;
             gravity = 1;
             groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
-            jumpForce = 30; //intial force of a jump
+            jumpForce = 20; //intial force of a jump
+            shortJumpForce = 15;
             maxXVelocity = 15;
             terminalVelocity = 20;
             heightUpToNotFallThrough = 180; //distance from the bottom of the screen you stop being able to fall through platforms at
@@ -244,7 +244,7 @@ namespace KingOfTheCastle
                 }
                 else if (gamePad.IsButtonDown(Buttons.B)) //short jumping
                 {
-                    yVelocity -= jumpForce / 2;
+                    yVelocity -= shortJumpForce;
                 }
             }
         }
@@ -366,7 +366,7 @@ namespace KingOfTheCastle
             }
             pHitBox.Y = (int)((double)location.Y + ((double)location.Height / 2) - ((double)pHitBox.Height / 2));
             ProjectileHandler.Projectile projectile;
-            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, 10);
+            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, 10, color);
             stage.projectiles.add(projectile);
         }
     }
