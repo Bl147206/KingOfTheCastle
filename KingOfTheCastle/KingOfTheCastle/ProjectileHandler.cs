@@ -31,12 +31,12 @@ namespace KingOfTheCastle
                 if(projectiles[projectile].hitBox.X > Globals.screenW ||
                     projectiles[projectile].hitBox.X + projectiles[projectile].hitBox.Width < 0 ||
                     projectiles[projectile].hitBox.Y + projectiles[projectile].hitBox.Height < 0 ||
-                    projectiles[projectile].hitBox.Y > Globals.screenH)
+                    projectiles[projectile].hitBox.Y > Globals.screenH ||
+                    projectiles[projectile].dispose)
                 { //removing a projectile that's off the screen
                     projectiles.RemoveAt(projectile--);
                 }
             }
-            Console.WriteLine(projectiles.Count);
         }
 
         public void draw()
@@ -60,6 +60,7 @@ namespace KingOfTheCastle
             int xVelocity;
             int damageValue;
             Texture2D texture;
+            public bool dispose;
 
             public Projectile(Texture2D texture, Rectangle hitBox, int playerWhoFired, int xVelocity, int damageValue)
             {
@@ -69,6 +70,7 @@ namespace KingOfTheCastle
                 this.xVelocity = xVelocity;
                 this.damageValue = damageValue;
                 this.texture = texture;
+                this.dispose = false;
             }
 
             public void Update(Player[] players)
