@@ -20,9 +20,10 @@ namespace KingOfTheCastle
         Rectangle window;
         Rectangle attackRec; //temp for testing
         Direction facing;
+        GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking;
+        bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
         public Color playerColor, rangedColor, meleeColor;
@@ -51,11 +52,11 @@ namespace KingOfTheCastle
 
             this.playerColor = rangedColor = meleeColor = color;
 
-            mAttack = 2;
+            mAttack = 5;
             mAttackSpeed = 0.65;
 
-            rAttack = 2;
-            rAttackSpeed = 0.0;
+            rAttack = 5;
+            rAttackSpeed = 0.75;
 
             this.game = game;
             location = spawnLocation;
@@ -114,6 +115,8 @@ namespace KingOfTheCastle
             x += xVelocity;
             y += yVelocity;
             UpdatePosition(x, y);
+
+            oldGamePad = gamePad;
         }
 
         public void rangedLogic(GamePadState gamePad)
@@ -177,6 +180,7 @@ namespace KingOfTheCastle
                             if (location.Intersects(p.destination))
                             {// if a player is falling and they're in a platform snap them to the top
                                 onGround = true;
+                                airJumpUsed = false;
                                 y = p.destination.Y - location.Height;
                                 yVelocity = 0;
                                 break;
@@ -247,6 +251,13 @@ namespace KingOfTheCastle
                     yVelocity -= shortJumpForce;
                 }
             }
+            else
+            {
+                if (!airJumpUsed)
+                {
+
+                }
+            }
         }
 
         public void gravityLogic()
@@ -278,7 +289,7 @@ namespace KingOfTheCastle
         {
             game.spriteBatch.Draw(texture, location, playerColor);
             game.spriteBatch.DrawString(game.font, health.ToString(), 
-                new Vector2(playerNumber * 50, Globals.screenH - game.font.LineSpacing * 1), Color.Red);
+                new Vector2(playerNumber * 50, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
             {// temp stuff for weapon testing
                 game.spriteBatch.Draw(game.test, attackRec, meleeColor);

@@ -73,7 +73,7 @@ namespace KingOfTheCastle
             }
             frames++;
             timeleft = "" + ((60 * seconds - frames)/60+1);
-            if ( /* frames >= 60 * seconds || */ dead >= 3)
+            if ( /* frames >= 60 * seconds ||/ dead >= 3 */ false)
             {
                 
                 foreach (Player p in game.players)
