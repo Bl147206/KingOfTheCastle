@@ -24,13 +24,19 @@ namespace KingOfTheCastle
         GamePadState[] playerPad= new GamePadState[4];
         GamePadState[] playerPad0 = new GamePadState[4];
         Rectangle[,] items = new Rectangle[4,3];
+        Texture2D[,] itemsT = new Texture2D[4, 3];
+        Color[,] itemsC = new Color[4, 3];
         Texture2D background;
         int frames;
+        int seconds;
+        String timeleft;
+        Texture2D blank;
         Inventory[] inventories = new Inventory[4];
         public Shop(KingOfTheCastle game)
         {
             background = game.shopText;
             this.game = game;
+            blank = game.test;
             for(int x = 0; x<pSelect.Length; x++)
             {
                 p[x] = playerSelection.One;
@@ -42,6 +48,11 @@ namespace KingOfTheCastle
             for (int x = 0; x<inventories.Length; x++)
             {
                 inventories[x] = new Inventory(game.round, this.game);
+                for(int y = 0; y<itemsT.GetLength(1);y++)
+                {
+                    itemsT[x, y] = inventories[x].weapons[y].texture;
+                    itemsC[x, y] = inventories[x].weapons[y].color;
+                }
             }
             items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
             items[0, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(185, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//185
@@ -58,6 +69,8 @@ namespace KingOfTheCastle
 
             this.game = game;
             frames = 0;
+            seconds = 20;
+            timeleft = "" + seconds;
             game.round++;
         }
         public override void Update(GameTime gameTime) {
@@ -90,9 +103,65 @@ namespace KingOfTheCastle
                         p[x] = playerSelection.Three;
                     }
                 }
-                if(playerPad[x].Buttons.A == ButtonState.Pressed && playerPad[x].Buttons.A != ButtonState.Pressed)
+                if(playerPad[x].Buttons.A == ButtonState.Pressed && playerPad0[x].Buttons.A != ButtonState.Pressed)
                 {
-
+                    if(p[x]==playerSelection.One)
+                    {
+                        if (itemsT[x, 0] != blank&&game.players[x].gold>= inventories[x].weapons[0].cost)
+                        {
+                            if (inventories[x].weapons[0].kind == Weapon.Kind.melee)
+                            {
+                                game.players[x].mAttack = inventories[x].weapons[0].attack;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[0].attackSpeed;
+                            }
+                            if (inventories[x].weapons[0].kind == Weapon.Kind.ranged)
+                            {
+                                game.players[x].rAttack = inventories[x].weapons[0].attack;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
+                            }
+                            game.players[x].gold -= inventories[x].weapons[0].cost;
+                        }
+                        itemsT[x, 0] = blank;
+                        itemsC[x, 0] = Color.Brown;
+                    }
+                    if (p[x] == playerSelection.Two)
+                    {
+                        if (itemsT[x, 1] != blank && game.players[x].gold >= inventories[x].weapons[1].cost)
+                        {
+                            if (inventories[x].weapons[1].kind == Weapon.Kind.melee)
+                            {
+                                game.players[x].mAttack = inventories[x].weapons[1].attack;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[1].attackSpeed;
+                            }
+                            if (inventories[x].weapons[1].kind == Weapon.Kind.ranged)
+                            {
+                                game.players[x].rAttack = inventories[x].weapons[1].attack;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
+                            }
+                            game.players[x].gold -= inventories[x].weapons[1].cost;
+                        }
+                        itemsT[x, 1] = blank;
+                        itemsC[x, 1] = Color.Brown;
+                    }
+                    if (p[x] == playerSelection.Three)
+                    {
+                        if (itemsT[x, 2] != blank && game.players[x].gold >= inventories[x].weapons[2].cost)
+                        {
+                            if (inventories[x].weapons[2].kind == Weapon.Kind.melee)
+                            {
+                                game.players[x].mAttack = inventories[x].weapons[2].attack;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[2].attackSpeed;
+                            }
+                            if (inventories[x].weapons[2].kind == Weapon.Kind.ranged)
+                            {
+                                game.players[x].rAttack = inventories[x].weapons[2].attack;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
+                            }
+                            game.players[x].gold -= inventories[x].weapons[2].cost;
+                        }
+                        itemsT[x, 2] = blank;
+                        itemsC[x, 2] = Color.Brown;
+                    }
                 }
             }
             //Player 1
@@ -153,6 +222,7 @@ namespace KingOfTheCastle
             playerPad0[2] = playerPad[2];
             playerPad0[3] = playerPad[3];
             frames++;
+            timeleft = "" + ((60 * seconds - frames) / 60 + 1);
             if (frames >= 60 * (20))
                 game.currentScreen = new Stage(game.round, this.game);
         }
@@ -165,13 +235,15 @@ namespace KingOfTheCastle
             {
                 for (int z = 0; z < inventories[y].weapons.Length; z++)
                 {
-                    game.spriteBatch.Draw(inventories[y].weapons[z].texture, items[y, z], inventories[y].weapons[z].color);
+                        game.spriteBatch.Draw(itemsT[y, z], items[y, z], itemsC[y,z]);
                 }
             }
             foreach (Rectangle x in pSelect)
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
+
+            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
 
 
             //80        20,185,360

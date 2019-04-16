@@ -28,7 +28,7 @@ namespace KingOfTheCastle
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
-        double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
+        public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
@@ -39,6 +39,7 @@ namespace KingOfTheCastle
             yVelocity = 0;
             xAccel = 3;
             gravity = 1;
+            gold = 0;
             groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
             jumpForce = 25; //intial force of a jump
             shortJumpForce = 15;
