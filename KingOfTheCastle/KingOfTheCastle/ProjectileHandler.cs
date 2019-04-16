@@ -61,8 +61,9 @@ namespace KingOfTheCastle
             int damageValue;
             Texture2D texture;
             public bool dispose;
+            Color color;
 
-            public Projectile(Texture2D texture, Rectangle hitBox, int playerWhoFired, int xVelocity, int damageValue)
+            public Projectile(Texture2D texture, Rectangle hitBox, int playerWhoFired, int xVelocity, int damageValue, Color color)
             {
                 this.hitBox = hitBox;
                 playersHits = new List<int>();
@@ -71,6 +72,7 @@ namespace KingOfTheCastle
                 this.damageValue = damageValue;
                 this.texture = texture;
                 this.dispose = false;
+                this.color = color;
             }
 
             public void Update(Player[] players)
@@ -89,7 +91,7 @@ namespace KingOfTheCastle
 
             public void draw(SpriteBatch spriteBatch)
             {
-                spriteBatch.Draw(texture, hitBox, Color.Red);
+                spriteBatch.Draw(texture, hitBox, color);
             }
         }
     }
