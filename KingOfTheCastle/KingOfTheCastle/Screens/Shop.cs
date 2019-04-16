@@ -26,6 +26,8 @@ namespace KingOfTheCastle
         Rectangle[,] items = new Rectangle[4,3];
         Texture2D background;
         int frames;
+        int seconds;
+        String timeleft;
         Inventory[] inventories = new Inventory[4];
         public Shop(KingOfTheCastle game)
         {
@@ -35,29 +37,31 @@ namespace KingOfTheCastle
             {
                 p[x] = playerSelection.One;
             }
-            pSelect[0] = new Rectangle(80, 20, 140, 135);//20,185,360
-            pSelect[1] = new Rectangle(1095, 15, 140, 135);//15,175,350
-            pSelect[2] = new Rectangle(80, 610, 140, 135);//610,770,945
-            pSelect[3] = new Rectangle(1095, 600, 140, 135);//600,770,945
-            for(int x = 0; x<inventories.Length; x++)
+            pSelect[0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//20,20,140,135
+            pSelect[1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,15,140,135
+            pSelect[2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//80,610,140,135
+            pSelect[3] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,600,140,135
+            for (int x = 0; x<inventories.Length; x++)
             {
                 inventories[x] = new Inventory(game.round, this.game);
             }
-            items[0, 0] = new Rectangle(80, 20, 140, 135);
-            items[0, 1] = new Rectangle(80, 185, 140, 135);
-            items[0, 2] = new Rectangle(80, 360, 140, 135);
-            items[1, 0] = new Rectangle(1095, 15, 140, 135);
-            items[1, 1] = new Rectangle(1095, 175, 140, 135);
-            items[1, 2] = new Rectangle(1095, 350, 140, 135);
-            items[2, 0] = new Rectangle(80, 610, 140, 135);
-            items[2, 1] = new Rectangle(80, 770, 140, 135);
-            items[2, 2] = new Rectangle(80, 945, 140, 135);
-            items[3, 0] = new Rectangle(1095, 600, 140, 135);
-            items[3, 1] = new Rectangle(1095, 770, 140, 135);
-            items[3, 2] = new Rectangle(1095, 945, 140, 135);
+            items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
+            items[0, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(185, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//185
+            items[0, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(360, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//360
+            items[1, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
+            items[1, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(175, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//175
+            items[1, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(350, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//350
+            items[2, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
+            items[2, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//770
+            items[2, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
+            items[3, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
+            items[3, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//770
+            items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
 
             this.game = game;
             frames = 0;
+            seconds = 20;
+            timeleft = "" + seconds;
             game.round++;
         }
         public override void Update(GameTime gameTime) {
@@ -90,58 +94,62 @@ namespace KingOfTheCastle
                         p[x] = playerSelection.Three;
                     }
                 }
+                if(playerPad[x].Buttons.A == ButtonState.Pressed && playerPad[x].Buttons.A != ButtonState.Pressed)
+                {
+
+                }
             }
             //Player 1
             if (p[0] == playerSelection.One)
             {
-                pSelect[0].Y = 20;
+                pSelect[0].Y = screenAdjust(20, "H");
             }
             if (p[0] == playerSelection.Two)
             {
-                pSelect[0].Y = 185;
+                pSelect[0].Y = screenAdjust(185, "H");
             }
             if (p[0] == playerSelection.Three)
             {
-                pSelect[0].Y = 360;
+                pSelect[0].Y = screenAdjust(360, "H");
             }
             //Player 2
             if (p[1] == playerSelection.One)
             {
-                pSelect[1].Y = 15;
+                pSelect[1].Y = screenAdjust(15, "H");
             }
             if (p[1] == playerSelection.Two)
             {
-                pSelect[1].Y = 175;
+                pSelect[1].Y = screenAdjust(175, "H");
             }
             if (p[1] == playerSelection.Three)
             {
-                pSelect[1].Y = 350;
+                pSelect[1].Y = screenAdjust(350, "H");
             }
             //Player 3
             if (p[2] == playerSelection.One)
             {
-                pSelect[2].Y = 610;
+                pSelect[2].Y = screenAdjust(610, "H");
             }
             if (p[2] == playerSelection.Two)
             {
-                pSelect[2].Y = 770;
+                pSelect[2].Y = screenAdjust(770, "H");
             }
             if (p[2] == playerSelection.Three)
             {
-                pSelect[2].Y = 945;
+                pSelect[2].Y = screenAdjust(945, "H");
             }
             //Player 4
             if (p[3] == playerSelection.One)
             {
-                pSelect[3].Y = 600;
+                pSelect[3].Y = screenAdjust(600, "H");
             }
             if (p[3] == playerSelection.Two)
             {
-                pSelect[3].Y = 770;
+                pSelect[3].Y = screenAdjust(770, "H");
             }
             if (p[3] == playerSelection.Three)
             {
-                pSelect[3].Y = 945;
+                pSelect[3].Y = screenAdjust(945,"H");
             }
 
             playerPad0[0] = playerPad[0];
@@ -149,6 +157,7 @@ namespace KingOfTheCastle
             playerPad0[2] = playerPad[2];
             playerPad0[3] = playerPad[3];
             frames++;
+            timeleft = "" + ((60 * seconds - frames) / 60 + 1);
             if (frames >= 60 * (20))
                 game.currentScreen = new Stage(game.round, this.game);
         }
@@ -169,12 +178,27 @@ namespace KingOfTheCastle
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
 
+            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
+
 
             //80        20,185,360
             //1095      15,175,300
             //80        610,770,945
             //1095      600,770,945
 
+        }
+        public int screenAdjust(int value, string WorH)
+        {
+            int final = 0;
+            if(WorH=="H")
+            {
+                final = value*(Globals.screenH / 1080);
+            }
+            if(WorH =="W")
+            {
+                final = value*(Globals.screenW / 1920);
+            }
+            return final;
         }
     }
 }
