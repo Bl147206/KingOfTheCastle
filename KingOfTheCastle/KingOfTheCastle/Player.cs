@@ -25,7 +25,7 @@ namespace KingOfTheCastle
         bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
-        Color color;
+        public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
@@ -39,7 +39,7 @@ namespace KingOfTheCastle
             xAccel = 3;
             gravity = 1;
             groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
-            jumpForce = 20; //intial force of a jump
+            jumpForce = 25; //intial force of a jump
             shortJumpForce = 15;
             maxXVelocity = 15;
             terminalVelocity = 20;
@@ -49,7 +49,7 @@ namespace KingOfTheCastle
             mAttackSpeed = .5;
             facing = Direction.Right;
 
-            this.color = color;
+            this.playerColor = rangedColor = meleeColor = color;
 
             mAttack = 2;
             mAttackSpeed = 0.65;
@@ -142,7 +142,7 @@ namespace KingOfTheCastle
                 if (gamePad.Triggers.Right > 0)
                 {
                     isMAttacking = true;
-                    meleeAttack(new Rectangle(location.X, location.Y, 200, 200), 10);
+                    meleeAttack(new Rectangle(location.X, location.Y, 200, 200), mAttack);
                     mAttackTimer = (int) (60 * mAttackSpeed);
                 }
             }
@@ -276,12 +276,12 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-            game.spriteBatch.Draw(texture, location, color);
+            game.spriteBatch.Draw(texture, location, playerColor);
             game.spriteBatch.DrawString(game.font, health.ToString(), 
                 new Vector2(playerNumber * 50, Globals.screenH - game.font.LineSpacing * 1), Color.Red);
             if (isMAttacking)
             {// temp stuff for weapon testing
-                game.spriteBatch.Draw(game.test, attackRec, color);
+                game.spriteBatch.Draw(game.test, attackRec, meleeColor);
             }
         }
 
@@ -366,7 +366,7 @@ namespace KingOfTheCastle
             }
             pHitBox.Y = (int)((double)location.Y + ((double)location.Height / 2) - ((double)pHitBox.Height / 2));
             ProjectileHandler.Projectile projectile;
-            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, 10, color);
+            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, rAttack, rangedColor);
             stage.projectiles.add(projectile);
         }
     }
