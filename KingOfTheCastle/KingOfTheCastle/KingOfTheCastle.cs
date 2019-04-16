@@ -141,7 +141,6 @@ namespace KingOfTheCastle
 
             // TODO: Add your update logic here
             currentScreen.Update(gameTime);
-
             base.Update(gameTime);
         }
 

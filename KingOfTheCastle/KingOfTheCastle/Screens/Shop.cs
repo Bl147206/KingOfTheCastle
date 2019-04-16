@@ -65,27 +65,30 @@ namespace KingOfTheCastle
             playerPad[1] = GamePad.GetState(PlayerIndex.Two);
             playerPad[2] = GamePad.GetState(PlayerIndex.Three);
             playerPad[3] = GamePad.GetState(PlayerIndex.Four);
-            if (playerPad[0].DPad.Down==ButtonState.Pressed&& playerPad0[0].DPad.Down != ButtonState.Pressed)
+            for (int x = 0; x < playerPad.Length; x++)
             {
-                if (p[0] != playerSelection.Three)
+                if (playerPad[x].DPad.Down == ButtonState.Pressed && playerPad0[x].DPad.Down != ButtonState.Pressed)
                 {
-                    p[0]++;
+                    if (p[x] != playerSelection.Three)
+                    {
+                        p[x]++;
+                    }
+                    else
+                    {
+                        p[x] = playerSelection.One;
+                    }
                 }
-                else
-                {
-                    p[0] = playerSelection.One;
-                }
-            }
 
-            if (playerPad[0].DPad.Up == ButtonState.Pressed && playerPad0[0].DPad.Up != ButtonState.Pressed)
-            {
-                if (p[0] != playerSelection.One)
+                if (playerPad[x].DPad.Up == ButtonState.Pressed && playerPad0[x].DPad.Up != ButtonState.Pressed)
                 {
-                    p[0]--;
-                }
-                else
-                {
-                    p[0] = playerSelection.Three;
+                    if (p[x] != playerSelection.One)
+                    {
+                        p[x]--;
+                    }
+                    else
+                    {
+                        p[x] = playerSelection.Three;
+                    }
                 }
             }
             //Player 1
@@ -165,6 +168,7 @@ namespace KingOfTheCastle
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
+
 
             //80        20,185,360
             //1095      15,175,300
