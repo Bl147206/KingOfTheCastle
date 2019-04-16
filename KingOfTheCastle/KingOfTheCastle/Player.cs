@@ -23,11 +23,11 @@ namespace KingOfTheCastle
         public Texture2D texture;
         public PlayerIndex playerIndex;
         bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking;
-        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer,
+        public int playerNumber, maxXVelocity, jumpForce, gold=0, maxHealth, health, rAttackTimer,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
         Color color;
         //more specific x and y coords
-        double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
+        public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
