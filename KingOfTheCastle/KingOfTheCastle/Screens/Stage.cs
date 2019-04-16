@@ -82,6 +82,11 @@ namespace KingOfTheCastle
                             p.revive();
                             dead--;
                         }
+                        if (gamePad.DPad.Left==ButtonState.Pressed)
+                        {
+                            p.spawn();
+                            dead--;
+                        }
                     }
                 }
             }
