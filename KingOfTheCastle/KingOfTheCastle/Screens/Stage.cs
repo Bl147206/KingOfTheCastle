@@ -18,6 +18,8 @@ namespace KingOfTheCastle
         public ProjectileHandler projectiles;
         KeyboardState kb;
         int frames;
+        int seconds;
+        String timeleft;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -28,36 +30,53 @@ namespace KingOfTheCastle
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(Globals.screenW), (float)(platforms[0].destination.Y - z * 120 - 120)), Globals.rng.Next(100, 750), 5);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"y") - screenAdjust(120,"y"))), Globals.rng.Next(100, 750), 5);
             }
             frames = 0;
             this.game = game;
 
             projectiles = new ProjectileHandler(game);
+            
+            seconds = 99;
+            timeleft = ""+seconds;
 
-            foreach(Player p in game.players)
+            foreach (Player p in game.players)
             {
                 if(p!=null)
                     if (!p.IsAlive())
-                        p.revive();
+                        p.spawn();
             }
         }
         public override void Update(GameTime gameTime)
         {
             kb = Keyboard.GetState();
+
             int dead = 0;
+            int alive = 0;
             foreach (Player p in game.players)
             {
                 if (p != null)
                 {
+
+                    GamePadState gamePad = GamePad.GetState(p.playerIndex);
+
+                    if (gamePad.Buttons.Start == ButtonState.Pressed && !isPaused) {
+                        isPaused = true;
+                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && isPaused) {
+                        isPaused = false;
+                    }
+
+                    if (isPaused)
+                        return;
+
                     if (p.IsAlive())
                     {
+                        alive++;
                         p.Update(platforms);
                     }
                     else
                     {
                         dead++;
-                        GamePadState gamePad = GamePad.GetState(p.playerIndex);
                         if (gamePad.DPad.Down == ButtonState.Pressed)
                         {// temp stuff to let a person revive themself
                             p.revive();
@@ -66,14 +85,20 @@ namespace KingOfTheCastle
                     }
                 }
             }
+
+
+
             frames++;
-            if (frames >= 60 * (60)/*seconds*/ || dead >= 3)
+            timeleft = "" + ((60 * seconds - frames)/60+1);
+            if ( /* frames >= 60 * seconds || */ dead >= 3)
             {
+                
                 foreach (Player p in game.players)
-                    if(p!=null)
+                    if (p != null)
                         p.kill();
                 game.currentScreen = new Shop(this.game);
             }
+            
             projectiles.Update();
         }
 
@@ -94,7 +119,22 @@ namespace KingOfTheCastle
                     p.draw();
                 }
             }
+            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
             projectiles.draw();
+        }
+
+        public int screenAdjust(int value, string WorH)
+        {
+            int final = 0;
+            if (WorH == "H")
+            {
+                final = value * (Globals.screenH / 1080);
+            }
+            if (WorH == "W")
+            {
+                final = value * (Globals.screenW / 1920);
+            }
+            return final;
         }
     }
 }

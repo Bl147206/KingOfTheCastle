@@ -80,10 +80,11 @@ namespace KingOfTheCastle
                 hitBox.X += xVelocity;
                 foreach(Player p in players)
                 {
-                    if(p != null && p.playerNumber != playerWhoFired && !playersHits.Contains(p.playerNumber))
+                    if(p != null && p.IsAlive() && p.location.Intersects(hitBox) && p.playerNumber != playerWhoFired && !playersHits.Contains(p.playerNumber))
                     {
                         p.damage(damageValue);
                         playersHits.Add(p.playerNumber);
+                        dispose = true;
                     }
                 }
             }
