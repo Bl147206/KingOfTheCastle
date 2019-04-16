@@ -45,11 +45,24 @@ namespace KingOfTheCastle
         public override void Update(GameTime gameTime)
         {
             kb = Keyboard.GetState();
+
             int dead = 0;
             foreach (Player p in game.players)
             {
                 if (p != null)
                 {
+
+                    GamePadState gamePad = GamePad.GetState(p.playerIndex);
+
+                    if (gamePad.Buttons.Start == ButtonState.Pressed && !isPaused) {
+                        isPaused = true;
+                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && isPaused) {
+                        isPaused = false;
+                    }
+
+                    if (isPaused)
+                        return;
+
                     if (p.IsAlive())
                     {
                         p.Update(platforms);
@@ -57,7 +70,6 @@ namespace KingOfTheCastle
                     else
                     {
                         dead++;
-                        GamePadState gamePad = GamePad.GetState(p.playerIndex);
                         if (gamePad.DPad.Down == ButtonState.Pressed)
                         {// temp stuff to let a person revive themself
                             p.revive();
@@ -66,6 +78,9 @@ namespace KingOfTheCastle
                     }
                 }
             }
+
+
+
             frames++;
             if (frames >= 60 * (60)/*seconds*/ || dead >= 3)
             {
