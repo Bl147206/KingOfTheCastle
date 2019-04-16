@@ -55,7 +55,7 @@ namespace KingOfTheCastle
             mAttackSpeed = 0.65;
 
             rAttack = 2;
-            rAttackSpeed = 0.75;
+            rAttackSpeed = 0.0;
 
             this.game = game;
             location = spawnLocation;
@@ -306,6 +306,17 @@ namespace KingOfTheCastle
             isAlive = true;
             health = maxHealth;
             location = new Rectangle(Globals.screenW / 2, Globals.screenH - 250, 60, 60);
+            yVelocity = 0;
+            xVelocity = 0;
+            y = location.Y;
+            x = location.X;
+        }
+
+        public void spawn()
+        {
+            isAlive = true;
+            health = maxHealth;
+            location = new Rectangle(Globals.screenW / (2 * (playerNumber + 1)), Globals.screenH - (250 * (playerNumber + 1)), 60, 60);
             yVelocity = 0;
             xVelocity = 0;
             y = location.Y;
