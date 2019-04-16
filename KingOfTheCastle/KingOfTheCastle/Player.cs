@@ -28,7 +28,6 @@ namespace KingOfTheCastle
         Color color;
         //more specific x and y coords
         double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
-        Inventory inventory;
 
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
@@ -355,7 +354,7 @@ namespace KingOfTheCastle
             }
             pHitBox.Y = (int)((double)location.Y + ((double)location.Height / 2) - ((double)pHitBox.Height / 2));
             ProjectileHandler.Projectile projectile;
-            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, 10);
+            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, 10, color);
             stage.projectiles.add(projectile);
         }
     }
