@@ -30,6 +30,7 @@ namespace KingOfTheCastle
         public Player[] players;
         public Texture2D bowTexture;
         public GamePadState[] oldGamePadStates;
+        public Texture2D questBackdrop;
 
         public KingOfTheCastle()
         {
@@ -121,6 +122,7 @@ namespace KingOfTheCastle
             shopHighlight = Content.Load<Texture2D>("border");
             swordTexture = Content.Load<Texture2D>("sword");
             bowTexture = Content.Load<Texture2D>("bow");
+            questBackdrop = Content.Load<Texture2D>("questback");
         }
 
         /// <summary>
