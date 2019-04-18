@@ -20,6 +20,7 @@ namespace KingOfTheCastle
         int frames;
         int seconds;
         String timeleft;
+        Quest quest;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -39,6 +40,8 @@ namespace KingOfTheCastle
             
             seconds = 99;
             timeleft = ""+seconds;
+
+            quest = new JumpQuest(this.game);
 
             foreach (Player p in game.players)
             {
@@ -60,9 +63,9 @@ namespace KingOfTheCastle
 
                     GamePadState gamePad = GamePad.GetState(p.playerIndex);
 
-                    if (gamePad.Buttons.Start == ButtonState.Pressed && !isPaused) {
+                    if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused) {
                         isPaused = true;
-                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && isPaused) {
+                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused) {
                         isPaused = false;
                     }
 
@@ -105,6 +108,7 @@ namespace KingOfTheCastle
             }
             
             projectiles.Update();
+            quest.check();
         }
 
         public override void Draw(GameTime gameTime)
@@ -124,6 +128,7 @@ namespace KingOfTheCastle
                     p.draw();
                 }
             }
+            quest.Draw();
             game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
             projectiles.draw();
         }

@@ -32,7 +32,7 @@ namespace KingOfTheCastle
         String timeleft;
         Texture2D blank;
         Inventory[] inventories = new Inventory[4];
-        int[] costs = new int[4];
+        string[,] stats = new string[4, 3];
         public Shop(KingOfTheCastle game)
         {
             background = game.shopText;
@@ -53,6 +53,15 @@ namespace KingOfTheCastle
                 {
                     itemsT[x, y] = inventories[x].weapons[y].texture;
                     itemsC[x, y] = inventories[x].weapons[y].color;
+                    string type = "";
+                    string speed = inventories[x].weapons[y].attackSpeed+"";
+                    speed = speed.Substring(0, 5);
+                    if (inventories[x].weapons[y].kind == Weapon.Kind.melee)
+                        type = "Melee";
+                    else
+                        type = "Ranged";
+                    stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nAttack Speed: " + speed + "\nDamage: " 
+                        + inventories[x].weapons[y].attack;
                 }
             }
             items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
@@ -72,10 +81,6 @@ namespace KingOfTheCastle
             seconds = 20;
             timeleft = "" + seconds;
             game.round++;
-            for (int x = 0; x < costs.Length; x++)
-            {
-                costs[x] = inventories[0].weapons[x].cost;
-            }
         }
         public override void Update(GameTime gameTime) {
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
@@ -111,7 +116,7 @@ namespace KingOfTheCastle
                 {
                     if(p[x]==playerSelection.One)
                     {
-                        if (itemsT[x, 0] != blank&&game.players[x].gold>= inventories[x].weapons[0].cost)
+                        if (itemsT[x, 0] != blank && game.players[x].gold >= inventories[x].weapons[0].cost)
                         {
                             if (inventories[x].weapons[0].kind == Weapon.Kind.melee)
                             {
@@ -124,9 +129,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
+
+                            itemsT[x, 0] = blank;
+                            itemsC[x, 0] = Color.Brown;
                         }
-                        itemsT[x, 0] = blank;
-                        itemsC[x, 0] = Color.Brown;
                     }
                     if (p[x] == playerSelection.Two)
                     {
@@ -143,9 +149,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
+
+                            itemsT[x, 1] = blank;
+                            itemsC[x, 1] = Color.Brown;
                         }
-                        itemsT[x, 1] = blank;
-                        itemsC[x, 1] = Color.Brown;
                     }
                     if (p[x] == playerSelection.Three)
                     {
@@ -162,9 +169,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
+
+                            itemsT[x, 2] = blank;
+                            itemsC[x, 2] = Color.Brown;
                         }
-                        itemsT[x, 2] = blank;
-                        itemsC[x, 2] = Color.Brown;
                     }
                 }
             }
@@ -246,12 +254,14 @@ namespace KingOfTheCastle
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
-            foreach (int cost in costs)
+            for(int x = 0; x<p.Length; x++)
             {
-                game.spriteBatch.DrawString(game.font, cost + "", new Vector2(300, 500), Color.Black);
-            }
 
-            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
+            }
+            //game.spriteBatch.Draw(game.test, new Rectangle(270, 10, 400, 180), Color.Black);
+            //game.spriteBatch.DrawString(game.smallFont, stats[0, 0], new Vector2(280, 20), Color.AntiqueWhite);
+            drawStats(stats[0, 0], new Vector2(270, 10));
+
 
 
             //80        20,185,360
@@ -272,6 +282,12 @@ namespace KingOfTheCastle
                 final = value*(Globals.screenW / 1920);
             }
             return final;
+        }
+
+        public void drawStats(string stats, Vector2 destination)
+        {
+            game.spriteBatch.Draw(game.test, new Rectangle(screenAdjust((int)destination.X,"W"), screenAdjust((int)destination.Y,"H"), screenAdjust(400,"W"), screenAdjust(180,"H")), Color.Black);
+            game.spriteBatch.DrawString(game.smallFont, stats, new Vector2(screenAdjust((int)destination.X+10, "W"), screenAdjust((int)destination.Y+10, "H")), Color.AntiqueWhite);
         }
     }
 }
