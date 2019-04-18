@@ -47,7 +47,7 @@ namespace KingOfTheCastle
             pSelect[3] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,600,140,135
             for (int x = 0; x<inventories.Length; x++)
             {
-                inventories[x] = new Inventory(game.round, this.game);
+                inventories[x] = new Inventory(game.round, game);
                 for(int y = 0; y<itemsT.GetLength(1);y++)
                 {
                     itemsT[x, y] = inventories[x].weapons[y].texture;
