@@ -20,7 +20,7 @@ namespace KingOfTheCastle
         Rectangle window;
         Rectangle attackRec; //temp for testing
         Direction facing;
-        GamePadState oldGamePad;
+        public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, completedMainQuest;
@@ -327,11 +327,11 @@ namespace KingOfTheCastle
         public void damage(int damageAmount, int playerIndex)
         {
             health -= damageAmount;
-            if (health <= 0)
+            if(health <= 0)
             {
-
-            }
+                kill();
                 
+            }
         }
 
         public void revive()
@@ -377,8 +377,7 @@ namespace KingOfTheCastle
                 {
                     if (weaponHitbox.Intersects(p.location))
                     {
-                        
-                        p.damage(weaponDamage);
+                        p.damage(weaponDamage, playerNumber);
                     }
                 }
             }

@@ -63,9 +63,9 @@ namespace KingOfTheCastle
 
                     GamePadState gamePad = GamePad.GetState(p.playerIndex);
 
-                    if (gamePad.Buttons.Start == ButtonState.Pressed && !isPaused) {
+                    if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused) {
                         isPaused = true;
-                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && isPaused) {
+                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused) {
                         isPaused = false;
                     }
 

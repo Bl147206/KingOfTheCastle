@@ -26,8 +26,10 @@ namespace KingOfTheCastle
         public Texture2D shopHighlight;
         public Texture2D swordTexture;
         public int round = 1;
+        public SpriteFont smallFont;
         public Player[] players;
         public Texture2D bowTexture;
+        public GamePadState[] oldGamePadStates;
         public Texture2D questBackdrop;
 
         public KingOfTheCastle()
@@ -61,6 +63,8 @@ namespace KingOfTheCastle
                 Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * (i+1)), 60, 60);
                 players[i] = new Player(this, tempRec, test, /*index*/ i + 1, new Color(Globals.rng.Next() % 255, Globals.rng.Next() % 255, Globals.rng.Next() % 255));
             }
+
+            oldGamePadStates = new GamePadState[4];
 
             base.Initialize();
         }
@@ -104,6 +108,7 @@ namespace KingOfTheCastle
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
+            smallFont = Content.Load<SpriteFont>("sFont");
             foreach (Player p in players)
             {
                 if(p != null)
@@ -142,7 +147,16 @@ namespace KingOfTheCastle
             kb = Keyboard.GetState();
 
             // TODO: Add your update logic here
+
             currentScreen.Update(gameTime);
+
+            for (int i = 0; i < 4; i++) {
+                if (oldGamePadStates == null)
+                    break;
+
+                oldGamePadStates[i] = GamePad.GetState((PlayerIndex) i);
+            }
+
             base.Update(gameTime);
         }
 

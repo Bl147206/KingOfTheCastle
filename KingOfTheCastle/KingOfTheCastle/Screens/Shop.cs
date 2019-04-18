@@ -32,12 +32,13 @@ namespace KingOfTheCastle
         String timeleft;
         Texture2D blank;
         Inventory[] inventories = new Inventory[4];
+        string[,] stats = new string[4, 3];
         public Shop(KingOfTheCastle game)
         {
             background = game.shopText;
             this.game = game;
             blank = game.test;
-            for(int x = 0; x<pSelect.Length; x++)
+            for (int x = 0; x < pSelect.Length; x++)
             {
                 p[x] = playerSelection.One;
             }
@@ -45,13 +46,22 @@ namespace KingOfTheCastle
             pSelect[1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,15,140,135
             pSelect[2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//80,610,140,135
             pSelect[3] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,600,140,135
-            for (int x = 0; x<inventories.Length; x++)
+            for (int x = 0; x < inventories.Length; x++)
             {
                 inventories[x] = new Inventory(game.round, game);
-                for(int y = 0; y<itemsT.GetLength(1);y++)
+                for (int y = 0; y < itemsT.GetLength(1); y++)
                 {
                     itemsT[x, y] = inventories[x].weapons[y].texture;
                     itemsC[x, y] = inventories[x].weapons[y].color;
+                    string type = "";
+                    string speed = inventories[x].weapons[y].attackSpeed+"";
+                    speed = speed.Substring(0, 5);
+                    if (inventories[x].weapons[y].kind == Weapon.Kind.melee)
+                        type = "Melee";
+                    else
+                        type = "Ranged";
+                    stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nAttack Speed: " + speed + "\nDamage: " 
+                        + inventories[x].weapons[y].attack;
                 }
             }
             items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
@@ -67,7 +77,6 @@ namespace KingOfTheCastle
             items[3, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//770
             items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
 
-            this.game = game;
             frames = 0;
             seconds = 20;
             timeleft = "" + seconds;
@@ -107,7 +116,7 @@ namespace KingOfTheCastle
                 {
                     if(p[x]==playerSelection.One)
                     {
-                        if (itemsT[x, 0] != blank&&game.players[x].gold>= inventories[x].weapons[0].cost)
+                        if (itemsT[x, 0] != blank && game.players[x].gold >= inventories[x].weapons[0].cost)
                         {
                             if (inventories[x].weapons[0].kind == Weapon.Kind.melee)
                             {
@@ -120,9 +129,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
+
+                            itemsT[x, 0] = blank;
+                            itemsC[x, 0] = Color.Brown;
                         }
-                        itemsT[x, 0] = blank;
-                        itemsC[x, 0] = Color.Brown;
                     }
                     if (p[x] == playerSelection.Two)
                     {
@@ -139,9 +149,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
+
+                            itemsT[x, 1] = blank;
+                            itemsC[x, 1] = Color.Brown;
                         }
-                        itemsT[x, 1] = blank;
-                        itemsC[x, 1] = Color.Brown;
                     }
                     if (p[x] == playerSelection.Three)
                     {
@@ -158,9 +169,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
+
+                            itemsT[x, 2] = blank;
+                            itemsC[x, 2] = Color.Brown;
                         }
-                        itemsT[x, 2] = blank;
-                        itemsC[x, 2] = Color.Brown;
                     }
                 }
             }
@@ -242,8 +254,14 @@ namespace KingOfTheCastle
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
+            for(int x = 0; x<p.Length; x++)
+            {
 
-            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
+            }
+            //game.spriteBatch.Draw(game.test, new Rectangle(270, 10, 400, 180), Color.Black);
+            //game.spriteBatch.DrawString(game.smallFont, stats[0, 0], new Vector2(280, 20), Color.AntiqueWhite);
+            drawStats(stats[0, 0], new Vector2(270, 10));
+
 
 
             //80        20,185,360
@@ -264,6 +282,12 @@ namespace KingOfTheCastle
                 final = value*(Globals.screenW / 1920);
             }
             return final;
+        }
+
+        public void drawStats(string stats, Vector2 destination)
+        {
+            game.spriteBatch.Draw(game.test, new Rectangle(screenAdjust((int)destination.X,"W"), screenAdjust((int)destination.Y,"H"), screenAdjust(400,"W"), screenAdjust(180,"H")), Color.Black);
+            game.spriteBatch.DrawString(game.smallFont, stats, new Vector2(screenAdjust((int)destination.X+10, "W"), screenAdjust((int)destination.Y+10, "H")), Color.AntiqueWhite);
         }
     }
 }
