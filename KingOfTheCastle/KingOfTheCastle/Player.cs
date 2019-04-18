@@ -23,8 +23,8 @@ namespace KingOfTheCastle
         public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing;
-        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce,
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest;
+        public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills,jumps;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
