@@ -24,7 +24,7 @@ namespace KingOfTheCastle
         public PlayerIndex playerIndex;
         bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking;
         public int playerNumber, maxXVelocity, jumpForce, gold=0, maxHealth, health, rAttackTimer,
-            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough;
+            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -47,6 +47,7 @@ namespace KingOfTheCastle
             fallingThroughPlatform = false;
             isAlive = true;
             mAttackSpeed = .5;
+            kills = 0;
             facing = Direction.Right;
 
             this.playerColor = rangedColor = meleeColor = color;
@@ -297,9 +298,11 @@ namespace KingOfTheCastle
             health = 0;
         }
 
-        public void damage(int damageAmount)
+        public void damage(int damageAmount,Player attacker)
         {
             health -= damageAmount;
+            if(health<=0)
+                
         }
 
         public void revive()
