@@ -26,6 +26,7 @@ namespace KingOfTheCastle
         public Texture2D shopHighlight;
         public Texture2D swordTexture;
         public int round = 1;
+        public SpriteFont smallFont;
         public Player[] players;
         public Texture2D bowTexture;
 
@@ -103,6 +104,7 @@ namespace KingOfTheCastle
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
+            smallFont = Content.Load<SpriteFont>("sFont");
             foreach (Player p in players)
             {
                 if(p != null)
