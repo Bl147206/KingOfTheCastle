@@ -80,7 +80,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="KingOfTheCastle.cs" />
-    <Compile Include="Quest.cs" />
+    <Compile Include="Quests\JumpQuest.cs" />
+    <Compile Include="Quests\Quest.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\Stage.cs" />
     <Compile Include="Screens\TitleScreen.cs" />

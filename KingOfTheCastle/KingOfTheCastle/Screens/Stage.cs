@@ -20,6 +20,7 @@ namespace KingOfTheCastle
         int frames;
         int seconds;
         String timeleft;
+        Quest quest;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -39,6 +40,8 @@ namespace KingOfTheCastle
             
             seconds = 99;
             timeleft = ""+seconds;
+
+            quest = new JumpQuest(this.game);
 
             foreach (Player p in game.players)
             {
@@ -105,6 +108,7 @@ namespace KingOfTheCastle
             }
             
             projectiles.Update();
+            quest.check();
         }
 
         public override void Draw(GameTime gameTime)
@@ -124,6 +128,7 @@ namespace KingOfTheCastle
                     p.draw();
                 }
             }
+            quest.Draw();
             game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
             projectiles.draw();
         }

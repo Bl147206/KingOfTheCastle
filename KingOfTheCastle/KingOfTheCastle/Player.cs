@@ -23,9 +23,9 @@ namespace KingOfTheCastle
         GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed;
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, completedMainQuest;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce,
-            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills;
+            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills,jumps;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -50,7 +50,9 @@ namespace KingOfTheCastle
             isAlive = true;
             mAttackSpeed = .5;
             kills = 0;
+            jumps = 0;
             facing = Direction.Right;
+            completedMainQuest = false;
 
             this.playerColor = rangedColor = meleeColor = color;
 
@@ -352,6 +354,8 @@ namespace KingOfTheCastle
             xVelocity = 0;
             y = location.Y;
             x = location.X;
+            completedMainQuest = false;
+            kills = 0;
         }
 
         public void meleeAttack(Rectangle weaponHitbox, int weaponDamage)
