@@ -32,7 +32,7 @@ namespace KingOfTheCastle
         String timeleft;
         Texture2D blank;
         Inventory[] inventories = new Inventory[4];
-        int[] costs = new int[4];
+        int[] costs = new int[1];
         public Shop(KingOfTheCastle game)
         {
             background = game.shopText;
@@ -72,10 +72,6 @@ namespace KingOfTheCastle
             seconds = 20;
             timeleft = "" + seconds;
             game.round++;
-            for (int x = 0; x < costs.Length; x++)
-            {
-                costs[x] = inventories[0].weapons[x].cost;
-            }
         }
         public override void Update(GameTime gameTime) {
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
@@ -111,7 +107,7 @@ namespace KingOfTheCastle
                 {
                     if(p[x]==playerSelection.One)
                     {
-                        if (itemsT[x, 0] != blank&&game.players[x].gold>= inventories[x].weapons[0].cost)
+                        if (itemsT[x, 0] != blank && game.players[x].gold >= inventories[x].weapons[0].cost)
                         {
                             if (inventories[x].weapons[0].kind == Weapon.Kind.melee)
                             {
@@ -124,9 +120,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
+
+                            itemsT[x, 0] = blank;
+                            itemsC[x, 0] = Color.Brown;
                         }
-                        itemsT[x, 0] = blank;
-                        itemsC[x, 0] = Color.Brown;
                     }
                     if (p[x] == playerSelection.Two)
                     {
@@ -143,9 +140,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
+
+                            itemsT[x, 1] = blank;
+                            itemsC[x, 1] = Color.Brown;
                         }
-                        itemsT[x, 1] = blank;
-                        itemsC[x, 1] = Color.Brown;
                     }
                     if (p[x] == playerSelection.Three)
                     {
@@ -162,9 +160,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
+
+                            itemsT[x, 2] = blank;
+                            itemsC[x, 2] = Color.Brown;
                         }
-                        itemsT[x, 2] = blank;
-                        itemsC[x, 2] = Color.Brown;
                     }
                 }
             }
@@ -246,12 +245,6 @@ namespace KingOfTheCastle
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
-            foreach (int cost in costs)
-            {
-                game.spriteBatch.DrawString(game.font, cost + "", new Vector2(300, 500), Color.Black);
-            }
-
-            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
 
 
             //80        20,185,360
