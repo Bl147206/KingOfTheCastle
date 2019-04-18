@@ -82,7 +82,7 @@ namespace KingOfTheCastle
                 {
                     if(p != null && p.IsAlive() && p.location.Intersects(hitBox) && p.playerNumber != playerWhoFired && !playersHits.Contains(p.playerNumber))
                     {
-                        p.damage(damageValue);
+                        p.damage(damageValue, playerWhoFired);
                         playersHits.Add(p.playerNumber);
                         dispose = true;
                     }
