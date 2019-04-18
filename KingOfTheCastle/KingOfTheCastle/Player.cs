@@ -23,7 +23,7 @@ namespace KingOfTheCastle
         public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, completedMainQuest;
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills,jumps;
         public Color playerColor, rangedColor, meleeColor;
@@ -39,9 +39,10 @@ namespace KingOfTheCastle
             yVelocity = 0;
             xAccel = 3;
             gravity = 1;
+            dashSpeed = 30;
             gold = 0;
             groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
-            jumpForce = 25; //intial force of a jump
+            jumpForce = 23; //intial force of a jump
             shortJumpForce = 15;
             maxXVelocity = 15;
             terminalVelocity = 20;
@@ -209,6 +210,13 @@ namespace KingOfTheCastle
 
         public void horizontalMovement(GamePadState gamePad)
         {
+            //if((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && !isDashing)
+            //{//Dashing
+            //    double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
+            //    xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * dashSpeed;
+            //    yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * dashSpeed;
+            //    isDashing = true;
+            //}
             if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0) //When holding down a stick x change
             {
                 if(Math.Sign(xVelocity) != Math.Sign(gamePad.ThumbSticks.Left.X))
@@ -305,8 +313,8 @@ namespace KingOfTheCastle
         public void draw()
         {
             game.spriteBatch.Draw(texture, location, playerColor);
-            game.spriteBatch.DrawString(game.font, health.ToString(), 
-                new Vector2(playerNumber * 50, Globals.screenH - game.font.LineSpacing * 1), playerColor);
+            game.spriteBatch.DrawString(game.font, health.ToString() + " " + kills, 
+                new Vector2(playerNumber * 100, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
             {// temp stuff for weapon testing
                 game.spriteBatch.Draw(game.test, attackRec, meleeColor);
@@ -324,13 +332,13 @@ namespace KingOfTheCastle
             health = 0;
         }
 
-        public void damage(int damageAmount, int playerIndex)
+        public void damage(int damageAmount, int attacker)
         {
             health -= damageAmount;
             if(health <= 0)
             {
                 kill();
-                
+                game.players[attacker-1].kills += 1;
             }
         }
 
