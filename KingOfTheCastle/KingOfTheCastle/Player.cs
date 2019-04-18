@@ -25,7 +25,7 @@ namespace KingOfTheCastle
         public PlayerIndex playerIndex;
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
-            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills,jumps;
+            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -41,10 +41,12 @@ namespace KingOfTheCastle
             gravity = 1;
             dashSpeed = 30;
             gold = 20;
+            dashDelay = 60; //in frames
             groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
             jumpForce = 23; //intial force of a jump
             shortJumpForce = 15;
             maxXVelocity = 15;
+            maxYVelocity = -30;
             terminalVelocity = 20;
             heightUpToNotFallThrough = 180; //distance from the bottom of the screen you stop being able to fall through platforms at
             fallingThroughPlatform = false;
@@ -106,6 +108,8 @@ namespace KingOfTheCastle
                 kill();
             }
 
+            dashLogic(gamePad);
+
             horizontalMovement(gamePad);
 
             jumpLogic(gamePad);
@@ -123,6 +127,22 @@ namespace KingOfTheCastle
             UpdatePosition(x, y);
 
             oldGamePad = gamePad;
+        }
+
+        public void dashLogic(GamePadState gamePad)
+        {
+            if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0)
+            {//Dashing
+                double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
+                xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * (double) dashSpeed;
+                yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * (double) dashSpeed;
+                dashTimer = dashDelay;
+                isDashing = true; 
+            }
+            else if(dashTimer > 0)
+            {
+                dashTimer--;
+            }
         }
 
         public void rangedLogic(GamePadState gamePad)
@@ -210,14 +230,7 @@ namespace KingOfTheCastle
 
         public void horizontalMovement(GamePadState gamePad)
         {
-            //if((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && !isDashing)
-            //{//Dashing
-            //    double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
-            //    xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * dashSpeed;
-            //    yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * dashSpeed;
-            //    isDashing = true;
-            //}
-            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0) //When holding down a stick x change
+            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing) //When holding down a stick x change
             {
                 if(Math.Sign(xVelocity) != Math.Sign(gamePad.ThumbSticks.Left.X))
                 {
@@ -245,9 +258,17 @@ namespace KingOfTheCastle
                     xVelocity -= Math.Sign(xVelocity) * groundFrictionForce;
                 }
             }
+
             if (Math.Abs(xVelocity) > maxXVelocity)
             {
-                xVelocity = Math.Sign(xVelocity) * maxXVelocity;
+                if (!isDashing)
+                {
+                    xVelocity = Math.Sign(xVelocity) * maxXVelocity;
+                }
+            }
+            else if (isDashing)
+            {
+                isDashing = false;
             }
         }
 
@@ -293,6 +314,10 @@ namespace KingOfTheCastle
                 if (yVelocity > terminalVelocity)
                 {
                     yVelocity = terminalVelocity;
+                }
+                if(yVelocity < maxYVelocity)
+                {
+                    yVelocity = maxYVelocity;
                 }
             }
         }
