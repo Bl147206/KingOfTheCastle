@@ -254,13 +254,24 @@ namespace KingOfTheCastle
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
-            for(int x = 0; x<p.Length; x++)
+            for (int x = 0; x < p.Length; x++)
             {
-
+                switch (p[x])
+                {
+                    case (playerSelection.One):
+                        drawStats(stats[x, 0], new Vector2(items[x, 0].X + 190, items[x, 0].Y + 10));
+                        break;
+                    case (playerSelection.Two):
+                        drawStats(stats[x, 1], new Vector2(items[x, 1].X + 190, items[x, 1].Y + 10));
+                        break;
+                    case (playerSelection.Three):
+                        drawStats(stats[x, 2], new Vector2(items[x, 2].X + 190, items[x, 2].Y + 10));
+                        break;
+                }
             }
-            //game.spriteBatch.Draw(game.test, new Rectangle(270, 10, 400, 180), Color.Black);
-            //game.spriteBatch.DrawString(game.smallFont, stats[0, 0], new Vector2(280, 20), Color.AntiqueWhite);
-            drawStats(stats[0, 0], new Vector2(270, 10));
+                //game.spriteBatch.Draw(game.test, new Rectangle(270, 10, 400, 180), Color.Black);
+                //game.spriteBatch.DrawString(game.smallFont, stats[0, 0], new Vector2(280, 20), Color.AntiqueWhite);
+                //drawStats(stats[0, 0], new Vector2(270, 10));
 
 
 

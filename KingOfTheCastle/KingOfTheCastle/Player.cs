@@ -39,7 +39,7 @@ namespace KingOfTheCastle
             yVelocity = 0;
             xAccel = 3;
             gravity = 1;
-            gold = 0;
+            gold = 20;
             groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
             jumpForce = 25; //intial force of a jump
             shortJumpForce = 15;
