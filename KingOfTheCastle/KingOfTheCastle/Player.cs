@@ -322,10 +322,13 @@ namespace KingOfTheCastle
             health = 0;
         }
 
-        public void damage(int damageAmount,Player attacker)
+        public void damage(int damageAmount, int playerIndex)
         {
             health -= damageAmount;
-            if(health<=0)
+            if (health <= 0)
+            {
+
+            }
                 
         }
 
@@ -370,6 +373,7 @@ namespace KingOfTheCastle
                 {
                     if (weaponHitbox.Intersects(p.location))
                     {
+                        
                         p.damage(weaponDamage);
                     }
                 }
