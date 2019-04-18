@@ -28,6 +28,7 @@ namespace KingOfTheCastle
         public int round = 1;
         public Player[] players;
         public Texture2D bowTexture;
+        public GamePadState[] oldGamePadStates;
 
         public KingOfTheCastle()
         {
@@ -60,6 +61,8 @@ namespace KingOfTheCastle
                 Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * (i+1)), 60, 60);
                 players[i] = new Player(this, tempRec, test, /*index*/ i + 1, new Color(Globals.rng.Next() % 255, Globals.rng.Next() % 255, Globals.rng.Next() % 255));
             }
+
+            oldGamePadStates = new GamePadState[4];
 
             base.Initialize();
         }
@@ -140,7 +143,16 @@ namespace KingOfTheCastle
             kb = Keyboard.GetState();
 
             // TODO: Add your update logic here
+
             currentScreen.Update(gameTime);
+
+            for (int i = 0; i < 4; i++) {
+                if (oldGamePadStates == null)
+                    break;
+
+                oldGamePadStates[i] = GamePad.GetState((PlayerIndex) i);
+            }
+
             base.Update(gameTime);
         }
 

@@ -20,7 +20,7 @@ namespace KingOfTheCastle
         Rectangle window;
         Rectangle attackRec; //temp for testing
         Direction facing;
-        GamePadState oldGamePad;
+        public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed;
