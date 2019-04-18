@@ -32,12 +32,13 @@ namespace KingOfTheCastle
         String timeleft;
         Texture2D blank;
         Inventory[] inventories = new Inventory[4];
+        int[] costs = new int[4];
         public Shop(KingOfTheCastle game)
         {
             background = game.shopText;
             this.game = game;
             blank = game.test;
-            for(int x = 0; x<pSelect.Length; x++)
+            for (int x = 0; x < pSelect.Length; x++)
             {
                 p[x] = playerSelection.One;
             }
@@ -45,10 +46,10 @@ namespace KingOfTheCastle
             pSelect[1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,15,140,135
             pSelect[2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//80,610,140,135
             pSelect[3] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,600,140,135
-            for (int x = 0; x<inventories.Length; x++)
+            for (int x = 0; x < inventories.Length; x++)
             {
                 inventories[x] = new Inventory(game.round, game);
-                for(int y = 0; y<itemsT.GetLength(1);y++)
+                for (int y = 0; y < itemsT.GetLength(1); y++)
                 {
                     itemsT[x, y] = inventories[x].weapons[y].texture;
                     itemsC[x, y] = inventories[x].weapons[y].color;
@@ -67,11 +68,14 @@ namespace KingOfTheCastle
             items[3, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//770
             items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
 
-            this.game = game;
             frames = 0;
             seconds = 20;
             timeleft = "" + seconds;
             game.round++;
+            for (int x = 0; x < costs.Length; x++)
+            {
+                costs[x] = inventories[0].weapons[x].cost;
+            }
         }
         public override void Update(GameTime gameTime) {
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
@@ -241,6 +245,10 @@ namespace KingOfTheCastle
             foreach (Rectangle x in pSelect)
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
+            }
+            foreach (int cost in costs)
+            {
+                game.spriteBatch.DrawString(game.font, cost + "", new Vector2(300, 500), Color.Black);
             }
 
             game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
