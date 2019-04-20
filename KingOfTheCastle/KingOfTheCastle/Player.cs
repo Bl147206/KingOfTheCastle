@@ -97,7 +97,7 @@ namespace KingOfTheCastle
         public void Update(Platform[] platforms)
         {
             GamePadState gamePad = GamePad.GetState(playerIndex);
-            //temp life testing stuff
+            // temp life testing stuff
             if(gamePad.DPad.Up == ButtonState.Pressed)
             {
                 kill();
@@ -132,7 +132,7 @@ namespace KingOfTheCastle
         public void dashLogic(GamePadState gamePad)
         {
             if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0)
-            {//Dashing
+            {// Dashing
                 double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
                 xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * (double) dashSpeed;
                 yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * (double) dashSpeed;
@@ -202,9 +202,20 @@ namespace KingOfTheCastle
                     {
                         if (yVelocity >= 0)
                         {
+                            // this helps to make sure the player dosen't partials fall through a platform before being pulled to the top
                             location.Y += (int)yVelocity;
+
+                            // this is some super jank code that makes it check if the bottom part of a player intersects
+                            location.Height /= 2;
+                            location.Y += location.Height;
+
                             if (location.Intersects(p.destination))
                             {// if a player is falling and they're in a platform snap them to the top
+
+                                // undoing the jank stuff from earlier
+                                location.Y -= location.Height;
+                                location.Height *= 2;
+
                                 onGround = true;
                                 y = p.destination.Y - location.Height+1;
                                 yVelocity = 0;
@@ -214,6 +225,10 @@ namespace KingOfTheCastle
                             else
                             {
                                 location.Y -= (int)yVelocity;
+
+                                // Undoing the jank stuff from earlier
+                                location.Y -= location.Height;
+                                location.Height *= 2;
                             }
                         }
                     }
