@@ -259,13 +259,13 @@ namespace KingOfTheCastle
                 switch (p[x])
                 {
                     case (playerSelection.One):
-                        drawStats(stats[x, 0], new Vector2(items[x, 0].X + 190, items[x, 0].Y + 10));
+                        drawStats(stats[x, 0], new Vector2(items[x, 0].X + screenAdjust(190,"W"), items[x, 0].Y + 10));
                         break;
                     case (playerSelection.Two):
-                        drawStats(stats[x, 1], new Vector2(items[x, 1].X + 190, items[x, 1].Y + 10));
+                        drawStats(stats[x, 1], new Vector2(items[x, 1].X + screenAdjust(190, "W"), items[x, 1].Y + 10));
                         break;
                     case (playerSelection.Three):
-                        drawStats(stats[x, 2], new Vector2(items[x, 2].X + 190, items[x, 2].Y + 10));
+                        drawStats(stats[x, 2], new Vector2(items[x, 2].X + screenAdjust(190, "W"), items[x, 2].Y + 10));
                         break;
                 }
             }
@@ -297,8 +297,8 @@ namespace KingOfTheCastle
 
         public void drawStats(string stats, Vector2 destination)
         {
-            game.spriteBatch.Draw(game.test, new Rectangle(screenAdjust((int)destination.X,"W"), screenAdjust((int)destination.Y,"H"), screenAdjust(400,"W"), screenAdjust(180,"H")), Color.Black);
-            game.spriteBatch.DrawString(game.smallFont, stats, new Vector2(screenAdjust((int)destination.X+10, "W"), screenAdjust((int)destination.Y+10, "H")), Color.AntiqueWhite);
+            game.spriteBatch.Draw(game.test, new Rectangle((int)destination.X, (int)destination.Y, screenAdjust(400,"W"), screenAdjust(180,"H")), Color.Black);
+            game.spriteBatch.DrawString(game.smallFont, stats, new Vector2((int)destination.X+10, (int)destination.Y+10), Color.AntiqueWhite);
         }
     }
 }
