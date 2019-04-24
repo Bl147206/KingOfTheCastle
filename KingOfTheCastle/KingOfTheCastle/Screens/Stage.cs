@@ -69,12 +69,12 @@ namespace KingOfTheCastle
                     if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused) {
                         isPaused = true;
                         idxPause = p.playerNumber;
-                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused) {
+                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused && p.playerNumber == idxPause) {
                         isPaused = false;
                     }
 
                     if (isPaused)
-                        return;
+                        continue;
 
                     if (p.IsAlive())
                     {
