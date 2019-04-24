@@ -275,15 +275,15 @@ namespace KingOfTheCastle
                 {
                     case (playerSelection.One):
                         if (itemsT[x, 0] != blank)
-                            drawStats(stats[x, 0], new Vector2(items[x, 0].X + screenAdjust(190, "W"), items[x, 0].Y + 10));
+                            drawStats(stats[x, 0], new Vector2(items[x, 0].X + screenAdjust(190, "W"), items[x, 0].Y - 10));
                         break;
                     case (playerSelection.Two):
                         if (itemsT[x, 1] != blank)
-                            drawStats(stats[x, 1], new Vector2(items[x, 1].X + screenAdjust(190, "W"), items[x, 1].Y + 10));
+                            drawStats(stats[x, 1], new Vector2(items[x, 1].X + screenAdjust(190, "W"), items[x, 1].Y - 10));
                         break;
                     case (playerSelection.Three):
                         if (itemsT[x, 2] != blank)
-                            drawStats(stats[x, 2], new Vector2(items[x, 2].X + screenAdjust(190, "W"), items[x, 2].Y + 10));
+                            drawStats(stats[x, 2], new Vector2(items[x, 2].X + screenAdjust(190, "W"), items[x, 2].Y - 10));
                         break;
                 }
             }
