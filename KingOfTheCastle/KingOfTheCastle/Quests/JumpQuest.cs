@@ -15,7 +15,15 @@ namespace KingOfTheCastle
             requiredJumpAmt = game.round * Globals.rng.Next(5,10);
             title = "JUMP " + requiredJumpAmt + " TIMES";
             display = new Rectangle(Globals.screenW / 2 - 150, 0, 300, 200);
-            titleLoc = new Vector2(Globals.screenW / 2 - 50, 0);
+            titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
+            for(int i=0;i<playerCompletionLocs.Length;i++)
+            {
+                playerCompletionLocs[i] = new Vector2(Globals.screenW / 2 +(50*(i-2)), 50);
+            }
+            for(int i=0;i<playerCompletionProgress.Length;i++)
+            {
+                playerCompletionProgress[i] = "0/"+requiredJumpAmt;
+            }
             
         }
         public override void check()
@@ -35,6 +43,10 @@ namespace KingOfTheCastle
         {
             game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
             game.spriteBatch.DrawString(game.font, title, titleLoc, Color.White);
+            for(int i=0;i<playerCompletionLocs.Length;i++)
+            {
+                game.spriteBatch.DrawString(game.smallFont, playerCompletionProgress[i], playerCompletionLocs[i], Color.White);
+            }
         }
     }
 }
