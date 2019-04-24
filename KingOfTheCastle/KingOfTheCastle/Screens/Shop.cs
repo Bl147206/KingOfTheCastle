@@ -84,7 +84,13 @@ namespace KingOfTheCastle
             timeleft = "" + seconds;
             game.round++;
             goldTotals = new int[game.getControllerCount()];
-            
+            foreach(Player p in game.players)
+            {
+                if(p != null)
+                {
+                    playerPad0[p.playerNumber - 1] = p.oldGamePad;
+                }
+            }
         }
         public override void Update(GameTime gameTime) {
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
