@@ -58,7 +58,7 @@ namespace KingOfTheCastle
                     string type = "";
                     string speed = inventories[x].weapons[y].attackSpeed+"";
                     speed = speed.Substring(0, 5);
-                    if (inventories[x].weapons[y].kind == Weapon.Kind.melee)
+                    if (inventories[x].weapons[y].texture == game.swordTexture)
                         type = "Melee";
                     else
                         type = "Ranged";
@@ -126,15 +126,15 @@ namespace KingOfTheCastle
                     {
                         if (itemsT[x, 0] != blank && game.players[x].gold >= inventories[x].weapons[0].cost)
                         {
-                            if (inventories[x].weapons[0].kind == Weapon.Kind.melee)
+                            if (inventories[x].weapons[0].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[0].attack;
-                                game.players[x].mAttackSpeed = inventories[x].weapons[0].attackSpeed;
+                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
                             }
-                            if (inventories[x].weapons[0].kind == Weapon.Kind.ranged)
+                            if (inventories[x].weapons[0].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[0].attack;
-                                game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
+                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
 
@@ -146,15 +146,15 @@ namespace KingOfTheCastle
                     {
                         if (itemsT[x, 1] != blank && game.players[x].gold >= inventories[x].weapons[1].cost)
                         {
-                            if (inventories[x].weapons[1].kind == Weapon.Kind.melee)
+                            if (inventories[x].weapons[1].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[1].attack;
-                                game.players[x].mAttackSpeed = inventories[x].weapons[1].attackSpeed;
+                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
                             }
-                            if (inventories[x].weapons[1].kind == Weapon.Kind.ranged)
+                            if (inventories[x].weapons[1].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[1].attack;
-                                game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
+                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
 
@@ -166,15 +166,15 @@ namespace KingOfTheCastle
                     {
                         if (itemsT[x, 2] != blank && game.players[x].gold >= inventories[x].weapons[2].cost)
                         {
-                            if (inventories[x].weapons[2].kind == Weapon.Kind.melee)
+                            if (inventories[x].weapons[2].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[2].attack;
-                                game.players[x].mAttackSpeed = inventories[x].weapons[2].attackSpeed;
+                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
                             }
-                            if (inventories[x].weapons[2].kind == Weapon.Kind.ranged)
+                            if (inventories[x].weapons[2].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[2].attack;
-                                game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
+                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
 
