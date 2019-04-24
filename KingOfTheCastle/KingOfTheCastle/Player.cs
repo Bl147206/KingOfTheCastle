@@ -308,7 +308,7 @@ namespace KingOfTheCastle
                     location.Y -= 1;
                     onGround = false;
                     airJumpUsed = false;
-                    jumps++;
+                    
                 }
             }
             else if (!airJumpUsed)
