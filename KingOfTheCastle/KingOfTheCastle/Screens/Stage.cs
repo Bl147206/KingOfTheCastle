@@ -68,6 +68,7 @@ namespace KingOfTheCastle
 
                     if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused) {
                         isPaused = true;
+                        idxPause = p.playerNumber;
                     } else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused) {
                         isPaused = false;
                     }
@@ -138,6 +139,13 @@ namespace KingOfTheCastle
             quest.Draw();
             game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
             projectiles.draw();
+
+            if (isPaused) {
+                game.spriteBatch.Draw(game.test, new Rectangle(0, 0, 10000, 10000), Color.Black * .5f);
+                game.spriteBatch.Draw(game.test, new Rectangle(Globals.screenW / 2 - 300, Globals.screenH / 2 - 150, 600, 300), Color.Black);
+                game.spriteBatch.DrawString(game.font, "Player " + idxPause, new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
+                game.spriteBatch.DrawString(game.font, "Press start to unpause", new Vector2(Globals.screenW / 2 - 260, Globals.screenH / 2 + 50), Color.White);
+            }
         }
 
         public int screenAdjust(int value, string WorH)

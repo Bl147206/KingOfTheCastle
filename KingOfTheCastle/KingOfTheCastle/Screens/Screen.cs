@@ -9,6 +9,7 @@ namespace KingOfTheCastle {
   public abstract class Screen {
     public KingOfTheCastle game;
     public bool isPaused;
+    public int idxPause;
     
     public abstract void Update(GameTime gameTime);
     public abstract void Draw(GameTime gameTime);
