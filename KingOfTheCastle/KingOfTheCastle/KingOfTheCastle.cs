@@ -69,7 +69,7 @@ namespace KingOfTheCastle
             base.Initialize();
         }
 
-        private int getControllerCount() {
+        public int getControllerCount() {
             int result = 0;
 
             for (int i = 0; i < 4; i += 1) {

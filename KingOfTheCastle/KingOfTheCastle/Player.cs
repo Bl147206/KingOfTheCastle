@@ -91,7 +91,6 @@ namespace KingOfTheCastle
             window = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             x = location.X;
             y = location.Y;
-            gold = 0;
         }
 
         public void Update(Platform[] platforms)
