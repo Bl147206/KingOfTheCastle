@@ -26,6 +26,7 @@ namespace KingOfTheCastle
         Rectangle[,] items = new Rectangle[4,3];
         Texture2D[,] itemsT = new Texture2D[4, 3];
         Color[,] itemsC = new Color[4, 3];
+        int[] goldTotals;
         Texture2D background;
         int frames;
         int seconds;
@@ -35,6 +36,7 @@ namespace KingOfTheCastle
         string[,] stats = new string[4, 3];
         public Shop(KingOfTheCastle game)
         {
+            
             background = game.shopText;
             this.game = game;
             blank = game.test;
@@ -81,12 +83,18 @@ namespace KingOfTheCastle
             seconds = 20;
             timeleft = "" + seconds;
             game.round++;
+            goldTotals = new int[game.getControllerCount()];
+            
         }
         public override void Update(GameTime gameTime) {
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
             playerPad[1] = GamePad.GetState(PlayerIndex.Two);
             playerPad[2] = GamePad.GetState(PlayerIndex.Three);
             playerPad[3] = GamePad.GetState(PlayerIndex.Four);
+            for (int x = 0; x < goldTotals.Length; x++)
+            {
+                goldTotals[x] = game.players[x].gold;
+            }
             for (int x = 0; x < playerPad.Length; x++)
             {
                 if (playerPad[x].DPad.Down == ButtonState.Pressed && playerPad0[x].DPad.Down != ButtonState.Pressed)
@@ -243,42 +251,60 @@ namespace KingOfTheCastle
         {
             game.GraphicsDevice.Clear(new Color(180,140,100));
             game.spriteBatch.Draw(background, new Rectangle(0, 0, Globals.screenW, Globals.screenH), Color.White);
-            for (int y = 0; y < inventories.Length; y++)
+            for (int y = 0; y < inventories.Length; y++)//Weapons
             {
                 for (int z = 0; z < inventories[y].weapons.Length; z++)
                 {
                         game.spriteBatch.Draw(itemsT[y, z], items[y, z], itemsC[y,z]);
                 }
             }
-            foreach (Rectangle x in pSelect)
+            foreach (Rectangle x in pSelect)//Highlight
             {
                 game.spriteBatch.Draw(game.shopHighlight, x, Color.White);
             }
-            for (int x = 0; x < p.Length; x++)
+
+            for (int x = 0; x < p.Length; x++)//Stat blocks
             {
                 switch (p[x])
                 {
                     case (playerSelection.One):
-                        drawStats(stats[x, 0], new Vector2(items[x, 0].X + screenAdjust(190,"W"), items[x, 0].Y + 10));
+                        if (itemsT[x, 0] != blank)
+                            drawStats(stats[x, 0], new Vector2(items[x, 0].X + screenAdjust(190, "W"), items[x, 0].Y + 10));
                         break;
                     case (playerSelection.Two):
-                        drawStats(stats[x, 1], new Vector2(items[x, 1].X + screenAdjust(190, "W"), items[x, 1].Y + 10));
+                        if (itemsT[x, 1] != blank)
+                            drawStats(stats[x, 1], new Vector2(items[x, 1].X + screenAdjust(190, "W"), items[x, 1].Y + 10));
                         break;
                     case (playerSelection.Three):
-                        drawStats(stats[x, 2], new Vector2(items[x, 2].X + screenAdjust(190, "W"), items[x, 2].Y + 10));
+                        if (itemsT[x, 2] != blank)
+                            drawStats(stats[x, 2], new Vector2(items[x, 2].X + screenAdjust(190, "W"), items[x, 2].Y + 10));
                         break;
                 }
             }
-                //game.spriteBatch.Draw(game.test, new Rectangle(270, 10, 400, 180), Color.Black);
-                //game.spriteBatch.DrawString(game.smallFont, stats[0, 0], new Vector2(280, 20), Color.AntiqueWhite);
-                //drawStats(stats[0, 0], new Vector2(270, 10));
+                switch(goldTotals.Length-1)
+                {
+                    case (0):
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
+                        break;
+                    case (1):
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2(1850, 400), Color.Gold);
+                    break;
+                    case (2):
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2(1850, 400), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2(800, 1000), Color.Gold);
+                    break;
+                    case (3):
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2(1850, 400), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2(800, 1000), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[3], new Vector2(1850, 1000), Color.Gold);
+                    break;
+                }
 
-
-
-            //80        20,185,360
-            //1095      15,175,300
-            //80        610,770,945
-            //1095      600,770,945
+            
+            //Gold placement: P1: 800,400   P2: 1850,400    P3: 800,1000    P4: 1850,1000
 
         }
         public int screenAdjust(int value, string WorH)

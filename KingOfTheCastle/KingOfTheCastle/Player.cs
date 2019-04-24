@@ -91,7 +91,6 @@ namespace KingOfTheCastle
             window = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             x = location.X;
             y = location.Y;
-            gold = 0;
         }
 
         public void Update(Platform[] platforms)
@@ -135,7 +134,11 @@ namespace KingOfTheCastle
             {// Dashing
                 double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
                 xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * (double) dashSpeed;
-                yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * (double) dashSpeed;
+                if(gamePad.ThumbSticks.Right.Y < 0)
+                {// can only dash down
+                    yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * (double)dashSpeed;
+
+                }
                 dashTimer = dashDelay;
                 isDashing = true; 
             }
@@ -312,12 +315,12 @@ namespace KingOfTheCastle
             {
                 if (gamePad.IsButtonDown(Buttons.A) && !oldGamePad.IsButtonDown(Buttons.A)) 
                 {
-                    yVelocity -= jumpForce;
+                    yVelocity = -jumpForce;
                     airJumpUsed = true;
                 }
                 else if (gamePad.IsButtonDown(Buttons.B) && !oldGamePad.IsButtonDown(Buttons.B)) 
                 {
-                    yVelocity -= jumpForce;
+                    yVelocity = -jumpForce;
                     airJumpUsed = true;
                 }
             }
