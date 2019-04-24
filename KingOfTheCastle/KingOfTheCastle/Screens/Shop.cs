@@ -29,6 +29,7 @@ namespace KingOfTheCastle
         Texture2D background;
         int frames;
         int seconds;
+        int killLevel;
         String timeleft;
         Texture2D blank;
         Inventory[] inventories = new Inventory[4];
