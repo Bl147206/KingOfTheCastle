@@ -19,6 +19,7 @@ namespace KingOfTheCastle
         KeyboardState kb;
         int frames;
         int seconds;
+        int killLevel;
         String timeleft;
         Quest quest;
 
@@ -49,6 +50,8 @@ namespace KingOfTheCastle
                     if (!p.IsAlive())
                         p.spawn();
             }
+
+            killLevel = (int) (Globals.screenH * 1.4);
         }
         public override void Update(GameTime gameTime)
         {
@@ -76,6 +79,10 @@ namespace KingOfTheCastle
                     {
                         alive++;
                         p.Update(platforms);
+                        if (p.location.Y > killLevel)
+                        {
+                            p.kill();
+                        }
                     }
                     else
                     {
