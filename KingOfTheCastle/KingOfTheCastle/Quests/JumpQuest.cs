@@ -18,7 +18,7 @@ namespace KingOfTheCastle
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
             for(int i=0;i<playerCompletionLocs.Length;i++)
             {
-                playerCompletionLocs[i] = new Vector2(Globals.screenW / 2 +(50*(i-2)), 50);
+                playerCompletionLocs[i] = new Vector2(Globals.screenW / 2 +(75*(i-2))+20, 150);
             }
             for(int i=0;i<playerCompletionProgress.Length;i++)
             {
@@ -30,12 +30,17 @@ namespace KingOfTheCastle
         {
             foreach(Player p in game.players)
             {
-                if(p!=null)
+                if (p != null)
+                {
+                    if (!p.completedMainQuest)
+                        playerCompletionProgress[Array.IndexOf(game.players, p)] = p.jumps + "/" + requiredJumpAmt;
+
                     if (p.jumps >= requiredJumpAmt && !p.completedMainQuest)
                     {
-                      p.completedMainQuest = true;
-                      p.gold += 10 + (5 * (game.round - 1));
+                        p.completedMainQuest = true;
+                        p.gold += 10 + (5 * (game.round - 1));
                     }
+                }
             }
         }
 
@@ -45,7 +50,8 @@ namespace KingOfTheCastle
             game.spriteBatch.DrawString(game.font, title, titleLoc, Color.White);
             for(int i=0;i<playerCompletionLocs.Length;i++)
             {
-                game.spriteBatch.DrawString(game.smallFont, playerCompletionProgress[i], playerCompletionLocs[i], Color.White);
+                if(game.players[i]!=null)
+                    game.spriteBatch.DrawString(game.smallFont, playerCompletionProgress[i], playerCompletionLocs[i], game.players[i].playerColor);
             }
         }
     }
