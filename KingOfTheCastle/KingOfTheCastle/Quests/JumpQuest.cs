@@ -18,7 +18,7 @@ namespace KingOfTheCastle
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
             for(int i=0;i<playerCompletionLocs.Length;i++)
             {
-                playerCompletionLocs[i] = new Vector2(Globals.screenW / 2 +(75*(i-2))+20, 150);
+                playerCompletionLocs[i] = new Vector2(Globals.screenW / 2 +(75*(i-2))+20, 100+((i%2)*50));
             }
             for(int i=0;i<playerCompletionProgress.Length;i++)
             {
