@@ -297,6 +297,7 @@ namespace KingOfTheCastle
                     location.Y -= 1;
                     onGround = false;
                     airJumpUsed = false;
+                    jumps++;
                 }
                 else if (gamePad.IsButtonDown(Buttons.B)) //short jumping
                 {
@@ -304,6 +305,7 @@ namespace KingOfTheCastle
                     location.Y -= 1;
                     onGround = false;
                     airJumpUsed = false;
+                    jumps++;
                 }
             }
             else if (!airJumpUsed)

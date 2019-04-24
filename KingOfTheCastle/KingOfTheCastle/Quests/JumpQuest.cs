@@ -9,14 +9,14 @@ namespace KingOfTheCastle
     public class JumpQuest:Quest
     {
         int requiredJumpAmt;
-        string title;
-        Rectangle display;
         public JumpQuest(KingOfTheCastle game)
         {
             this.game = game;
-            requiredJumpAmt = game.round * Globals.rng.Next(3,10);
+            requiredJumpAmt = game.round * Globals.rng.Next(5,10);
             title = "JUMP " + requiredJumpAmt + " TIMES";
             display = new Rectangle(Globals.screenW / 2 - 150, 0, 300, 200);
+            titleLoc = new Vector2(Globals.screenW / 2 - 50, 0);
+            
         }
         public override void check()
         {
@@ -34,6 +34,7 @@ namespace KingOfTheCastle
         public override void Draw()
         {
             game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
+            game.spriteBatch.DrawString(game.font, title, titleLoc, Color.White);
         }
     }
 }
