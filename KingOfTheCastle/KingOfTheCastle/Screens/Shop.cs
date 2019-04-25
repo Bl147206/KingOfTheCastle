@@ -290,22 +290,22 @@ namespace KingOfTheCastle
                 switch(goldTotals.Length-1)
                 {
                     case (0):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800,"W"), (float)screenAdjust(400,"H")), Color.Gold);
                         break;
                     case (1):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2(1850, 400), Color.Gold);
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
                     break;
                     case (2):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2(1850, 400), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2(800, 1000), Color.Gold);
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000,"H")), Color.Gold);
                     break;
                     case (3):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2(800, 400), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2(1850, 400), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2(800, 1000), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[3], new Vector2(1850, 1000), Color.Gold);
+                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "" + goldTotals[3], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
                     break;
                 }
 
