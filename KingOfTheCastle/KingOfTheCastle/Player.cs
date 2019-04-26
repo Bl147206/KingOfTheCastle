@@ -23,9 +23,10 @@ namespace KingOfTheCastle
         public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest;
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
-            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity;
+            mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
+            maxShieldHP, shieldHP, shieldRechargeRate;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -35,6 +36,9 @@ namespace KingOfTheCastle
             //stuff that gets shared by all players at the start
             health = 20;
             maxHealth = 20;
+            maxShieldHP = 10;
+            shieldHP = maxShieldHP;
+            shieldRechargeRate = 20; //Recharges 1 point every x game ticks
             xVelocity = 0;
             yVelocity = 0;
             xAccel = 3;
@@ -126,6 +130,14 @@ namespace KingOfTheCastle
             UpdatePosition(x, y);
 
             oldGamePad = gamePad;
+        }
+
+        public void shieldLogic(GamePadState gamePad)
+        {
+            if(gamePad.IsButtonDown(Buttons.RightShoulder) )
+            {
+
+            }
         }
 
         public void dashLogic(GamePadState gamePad)
