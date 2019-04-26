@@ -117,7 +117,6 @@ namespace KingOfTheCastle
                     game.currentScreen = new Shop(this.game);
                 }
             }
-            
             projectiles.Update();
             quest.check();
         }

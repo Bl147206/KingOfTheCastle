@@ -26,7 +26,7 @@ namespace KingOfTheCastle
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -111,6 +111,8 @@ namespace KingOfTheCastle
                 kill();
             }
 
+            //shieldLogic(gamePad);
+
             dashLogic(gamePad);
 
             horizontalMovement(gamePad);
@@ -136,6 +138,20 @@ namespace KingOfTheCastle
         {
             if(gamePad.IsButtonDown(Buttons.RightShoulder) )
             {
+                shielding = true;
+            }
+            else
+            {
+                shieldTimer++;
+                if(shieldTimer == shieldRechargeRate)
+                {
+                    shieldHP++;
+                    if(shieldHP > maxShieldHP)
+                    {
+                        shieldHP = maxShieldHP;
+                    }
+                    shieldTimer = 0;
+                }
 
             }
         }
@@ -391,6 +407,15 @@ namespace KingOfTheCastle
 
         public void damage(int damageAmount, int attacker)
         {
+            if (shielding)
+            {
+                shieldHP -= damageAmount;
+                if(shieldHP < 0)
+                {
+                    damageAmount = shieldHP * -1;
+                    shieldHP = 0;
+                }
+            }
             health -= damageAmount;
             if(health <= 0)
             {
