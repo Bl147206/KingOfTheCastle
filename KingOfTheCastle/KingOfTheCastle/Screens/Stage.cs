@@ -40,7 +40,7 @@ namespace KingOfTheCastle
 
             projectiles = new ProjectileHandler(game);
             
-            seconds = 5;
+            seconds = 100;
             timeleft = ""+seconds;
 
             quest = new JumpQuest(this.game);
