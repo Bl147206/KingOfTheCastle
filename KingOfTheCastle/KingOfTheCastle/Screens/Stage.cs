@@ -158,7 +158,7 @@ namespace KingOfTheCastle
                 }
             }
             quest.Draw();
-            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
+            game.spriteBatch.Draw(game.test, new Rectangle(20, 20, 3 * int.Parse(timeleft), 50), Color.Gray);
             projectiles.draw();
 
             if (isPaused) {
