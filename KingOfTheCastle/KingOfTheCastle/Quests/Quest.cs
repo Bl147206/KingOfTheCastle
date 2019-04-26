@@ -18,7 +18,12 @@ namespace KingOfTheCastle
         public string title;
         public Vector2 titleLoc;
         public Rectangle display;
+        public bool isCompleted=false;
+        public int timer=0;
+        public double yVel=.1;
+        public double yLoc;
         public Vector2[] playerCompletionLocs=new Vector2[4];
+        public double[] yLocPlayers = new double[4];
         public string[] playerCompletionProgress=new string[4];
         public abstract void check();
         public abstract void Draw();
