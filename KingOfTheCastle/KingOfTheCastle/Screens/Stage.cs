@@ -22,6 +22,7 @@ namespace KingOfTheCastle
         int killLevel;
         String timeleft;
         Quest quest;
+        bool roundOver;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -106,7 +107,7 @@ namespace KingOfTheCastle
 
             frames++;
             timeleft = "" + ((60 * seconds - frames)/60+1);
-            if (  frames >= 60 * seconds || dead >= 3)
+            if (frames >= 60 * seconds || dead >= 3)
             {
                 
                 foreach (Player p in game.players)
