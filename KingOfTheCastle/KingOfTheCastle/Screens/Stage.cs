@@ -23,6 +23,7 @@ namespace KingOfTheCastle
         String timeleft;
         Quest quest;
         bool roundOver;
+        int overTimer;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -103,17 +104,18 @@ namespace KingOfTheCastle
                 }
             }
 
-
-
             frames++;
-            timeleft = "" + ((60 * seconds - frames)/60+1);
-            if (frames >= 60 * seconds || dead >= 3)
-            {
-                
-                foreach (Player p in game.players)
-                    if (p != null)
-                        p.kill();
-                game.currentScreen = new Shop(this.game);
+            if (!roundOver)
+            {             
+                timeleft = "" + ((60 * seconds - frames) / 60 + 1);
+                if (frames >= 60 * seconds || dead >= 3)
+                {
+
+                    foreach (Player p in game.players)
+                        if (p != null)
+                            p.kill();
+                    game.currentScreen = new Shop(this.game);
+                }
             }
             
             projectiles.Update();
