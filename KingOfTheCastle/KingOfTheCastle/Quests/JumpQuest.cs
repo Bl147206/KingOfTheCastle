@@ -16,9 +16,15 @@ namespace KingOfTheCastle
             title = "JUMP " + requiredJumpAmt + " TIMES";
             display = new Rectangle(Globals.screenW / 2 - 150, 0, 300, 200);
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
+            yLoc = display.Y;
+            
             for(int i=0;i<playerCompletionLocs.Length;i++)
             {
                 playerCompletionLocs[i] = new Vector2(Globals.screenW / 2 +(50*(i-2)), 100+((i%2)*50));
+            }
+            for(int i=0;i<yLocPlayers.Length;i++)
+            {
+                yLocPlayers[i] = playerCompletionLocs[i].Y;
             }
             for(int i=0;i<playerCompletionProgress.Length;i++)
             {
@@ -28,20 +34,39 @@ namespace KingOfTheCastle
         }
         public override void check()
         {
-            foreach(Player p in game.players)
-            {
-                if (p != null)
+            if(!isCompleted)
+                foreach(Player p in game.players)
                 {
-                    if (!p.completedMainQuest)
-                        playerCompletionProgress[Array.IndexOf(game.players, p)] = p.jumps + "/" + requiredJumpAmt;
-
-                    if (p.jumps >= requiredJumpAmt && !p.completedMainQuest)
+                    if (p != null)
                     {
-                        p.completedMainQuest = true;
-                        p.gold += 10 + (5 * (game.round - 1));
+                        if (!p.completedMainQuest)
+                            playerCompletionProgress[Array.IndexOf(game.players, p)] = p.jumps + "/" + requiredJumpAmt;
+
+                        if (p.jumps >= requiredJumpAmt && !p.completedMainQuest)
+                        {
+                            p.completedMainQuest = true;
+                            isCompleted = true;
+                            p.gold += 10 + (5 * (game.round - 1));
+                        }
                     }
                 }
+
+            if (isCompleted)
+            {
+                yLoc -= yVel;
+                for (int x = 0; x < yLocPlayers.Length; x++)
+                {
+                    yLocPlayers[x] -= yVel;
+                    playerCompletionLocs[x].Y = (int)yLocPlayers[x];
+                }
+                if(timer>30&&timer<60)
+                    yVel += .1;
+                display.Y = (int)yLoc;
+                timer++;
             }
+            
+            
+                
         }
 
         public override void Draw()
@@ -55,6 +80,7 @@ namespace KingOfTheCastle
                 else
                     game.spriteBatch.DrawString(game.smallFont, playerCompletionProgress[i], playerCompletionLocs[i], Color.White);
             }
+            
         }
     }
 }

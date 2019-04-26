@@ -63,11 +63,11 @@ namespace KingOfTheCastle
 
             this.playerColor = rangedColor = meleeColor = color;
 
-            mAttack = 5;
-            mAttackSpeed = 0.65;
+            mAttack = 2;
+            mAttackSpeed = 0.50;
 
-            rAttack = 5;
-            rAttackSpeed = 0.75;
+            rAttack = 2;
+            rAttackSpeed = 0.65;
 
             this.game = game;
             location = spawnLocation;

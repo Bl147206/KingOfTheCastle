@@ -22,6 +22,8 @@ namespace KingOfTheCastle
         int killLevel;
         String timeleft;
         Quest quest;
+        bool roundOver;
+        int overTimer;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -39,7 +41,7 @@ namespace KingOfTheCastle
 
             projectiles = new ProjectileHandler(game);
             
-            seconds = 99;
+            seconds = 100;
             timeleft = ""+seconds;
 
             quest = new JumpQuest(this.game);
@@ -102,17 +104,18 @@ namespace KingOfTheCastle
                 }
             }
 
-
-
             frames++;
-            timeleft = "" + ((60 * seconds - frames)/60+1);
-            if (  frames >= 60 * seconds || (dead == game.getControllerCount() -1 && game.getControllerCount() != 1) )
-            {
-                
-                foreach (Player p in game.players)
-                    if (p != null)
-                        p.kill();
-                game.currentScreen = new Shop(this.game);
+            if (!roundOver)
+            {             
+                timeleft = "" + ((60 * seconds - frames) / 60 + 1);
+                if (frames >= 60 * seconds || (dead == game.getControllerCount() - 1 && game.getControllerCount() != 1))
+                {
+
+                    foreach (Player p in game.players)
+                        if (p != null)
+                            p.kill();
+                    game.currentScreen = new Shop(this.game);
+                }
             }
             
             projectiles.Update();
