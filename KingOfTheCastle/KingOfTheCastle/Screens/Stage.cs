@@ -68,10 +68,13 @@ namespace KingOfTheCastle
 
                     GamePadState gamePad = GamePad.GetState(p.playerIndex);
 
-                    if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused) {
+                    if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused)
+                    {
                         isPaused = true;
                         idxPause = p.playerNumber;
-                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused && p.playerNumber == idxPause) {
+                    }
+                    else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused && p.playerNumber == idxPause)
+                    {
                         isPaused = false;
                     }
 
@@ -95,7 +98,7 @@ namespace KingOfTheCastle
                             p.revive();
                             dead--;
                         }
-                        if (gamePad.DPad.Left==ButtonState.Pressed)
+                        if (gamePad.DPad.Left == ButtonState.Pressed)
                         {
                             p.spawn();
                             dead--;
@@ -106,20 +109,25 @@ namespace KingOfTheCastle
 
             frames++;
             if (!roundOver)
-            {             
+            {
                 timeleft = "" + ((60 * seconds - frames) / 60 + 1);
                 if (frames >= 60 * seconds || dead >= 3)
                 {
-
-                    foreach (Player p in game.players)
-                        if (p != null)
-                            p.kill();
-                    game.currentScreen = new Shop(this.game);
+                    roundOver = true;
+                    frames = 0;
                 }
             }
-            
-            projectiles.Update();
-            quest.check();
+            if (roundOver)
+            {
+                if (frames >= 180)
+                    game.currentScreen = new Shop(this.game);
+            }
+
+            if (!roundOver)
+            {
+                projectiles.Update();
+                quest.check();
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -148,6 +156,11 @@ namespace KingOfTheCastle
                 game.spriteBatch.Draw(game.test, new Rectangle(Globals.screenW / 2 - 300, Globals.screenH / 2 - 150, 600, 300), Color.Black);
                 game.spriteBatch.DrawString(game.font, "Player " + idxPause, new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
                 game.spriteBatch.DrawString(game.font, "Press start to unpause", new Vector2(Globals.screenW / 2 - 260, Globals.screenH / 2 + 50), Color.White);
+            }
+            if(roundOver)
+            {
+                game.spriteBatch.Draw(game.test, new Rectangle(0, 0, 10000, 10000), Color.Black * .5f);
+                game.spriteBatch.DrawString(game.font, "GAME", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
             }
         }
 
