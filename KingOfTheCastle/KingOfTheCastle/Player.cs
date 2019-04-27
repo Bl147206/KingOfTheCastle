@@ -26,7 +26,7 @@ namespace KingOfTheCastle
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer;
         public Color playerColor, rangedColor, meleeColor;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
@@ -111,6 +111,8 @@ namespace KingOfTheCastle
                 kill();
             }
 
+            shieldLogic(gamePad);
+
             dashLogic(gamePad);
 
             horizontalMovement(gamePad);
@@ -134,15 +136,30 @@ namespace KingOfTheCastle
 
         public void shieldLogic(GamePadState gamePad)
         {
-            if(gamePad.IsButtonDown(Buttons.RightShoulder) )
+            shielding = false;
+            if(gamePad.IsButtonDown(Buttons.RightShoulder) && shieldHP > 0)
             {
-
+                shieldTimer = 0;
+                shielding = true;
+            }
+            else
+            {
+                shieldTimer++;
+                if(shieldTimer == shieldRechargeRate)
+                {
+                    shieldHP++;
+                    shieldTimer = 0;
+                    if(shieldHP > maxShieldHP)
+                    {
+                        shieldHP = maxShieldHP;
+                    }
+                }
             }
         }
 
         public void dashLogic(GamePadState gamePad)
         {
-            if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0)
+            if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0 && !shielding)
             {// Dashing
                 double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
                 xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * (double) dashSpeed;
@@ -163,7 +180,7 @@ namespace KingOfTheCastle
         public void rangedLogic(GamePadState gamePad)
         {
             isRAttacking = false;
-            if(rAttackTimer == 0)
+            if(rAttackTimer == 0 && !shielding)
             {
                 if (gamePad.Triggers.Left > 0)
                 {
@@ -172,7 +189,7 @@ namespace KingOfTheCastle
                     rAttackTimer = (int)(60 * rAttackSpeed);
                 }
             }
-            else
+            else if (rAttackTimer > 0)
             {
                 rAttackTimer--;
             }
@@ -181,7 +198,7 @@ namespace KingOfTheCastle
         public void meleeLogic(GamePadState gamePad)
         {
             isMAttacking = false;
-            if(mAttackTimer == 0)
+            if(mAttackTimer == 0 && !shielding)
             {
                 if (gamePad.Triggers.Right > 0)
                 {
@@ -190,7 +207,7 @@ namespace KingOfTheCastle
                     mAttackTimer = (int) (60 * mAttackSpeed);
                 }
             }
-            else
+            else if (mAttackTimer > 0)
             {
                 mAttackTimer--;
             }
@@ -198,7 +215,7 @@ namespace KingOfTheCastle
 
         public void platformLogic(GamePadState gamePad, Platform[] platforms)
         {
-            if (gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - heightUpToNotFallThrough)
+            if (gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - heightUpToNotFallThrough && !shielding)
             {// let the player fall through platforms when they're holding down
                 fallingThroughPlatform = true;
             }
@@ -260,7 +277,7 @@ namespace KingOfTheCastle
 
         public void horizontalMovement(GamePadState gamePad)
         {
-            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing) //When holding down a stick x change
+            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing && !shielding) //When holding down a stick x change
             {
                 if(Math.Sign(xVelocity) != Math.Sign(gamePad.ThumbSticks.Left.X))
                 {
@@ -304,7 +321,7 @@ namespace KingOfTheCastle
 
         public void jumpLogic(GamePadState gamePad)
         {
-            if (onGround)
+            if (onGround && !shielding)
             {
                 if (gamePad.IsButtonDown(Buttons.A)) //jumping
                 {
@@ -323,7 +340,7 @@ namespace KingOfTheCastle
                     
                 }
             }
-            else if (!airJumpUsed)
+            else if (!airJumpUsed && !shielding)
             {
                 if (gamePad.IsButtonDown(Buttons.A) && !oldGamePad.IsButtonDown(Buttons.A)) 
                 {
@@ -369,7 +386,14 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-            game.spriteBatch.Draw(texture, location, playerColor);
+            if(shielding)
+            { //Shielding textures
+                game.spriteBatch.Draw(texture, location, Color.Black);
+            }
+            else
+            { //Normal textures
+                game.spriteBatch.Draw(texture, location, playerColor);
+            }
             game.spriteBatch.DrawString(game.font, health.ToString() + " " + kills, 
                 new Vector2(playerNumber * 100, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
@@ -391,6 +415,18 @@ namespace KingOfTheCastle
 
         public void damage(int damageAmount, int attacker)
         {
+            if (shielding)
+            { //Shield blocks
+                shieldHP -= damageAmount;
+                if(shieldHP < 0)
+                { //if the attack did more damage than the shield can block
+                    damageAmount = shieldHP * -1;
+                }
+                else
+                { //if the shield blocks all the damage just return
+                    return;
+                }
+            }
             health -= damageAmount;
             if(health <= 0)
             {
