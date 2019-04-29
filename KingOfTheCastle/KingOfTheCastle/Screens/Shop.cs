@@ -126,7 +126,7 @@ namespace KingOfTheCastle
                         p[x] = playerSelection.Three;
                     }
                 }
-                if(playerPad[x].Buttons.A == ButtonState.Pressed && playerPad0[x].Buttons.A != ButtonState.Pressed)
+                if(playerPad[x].Buttons.A == ButtonState.Pressed && playerPad0[x].Buttons.A != ButtonState.Pressed)//Item Bought
                 {
                     if(p[x]==playerSelection.One)
                     {
@@ -136,11 +136,13 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].mAttack = inventories[x].weapons[0].attack;
                                 game.players[x].mAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].meleeColor = inventories[x].weapons[0].color;
                             }
                             if (inventories[x].weapons[0].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[0].attack;
                                 game.players[x].rAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].rangedColor = inventories[x].weapons[0].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
 
@@ -156,11 +158,13 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].mAttack = inventories[x].weapons[1].attack;
                                 game.players[x].mAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].meleeColor = inventories[x].weapons[1].color;
                             }
                             if (inventories[x].weapons[1].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[1].attack;
                                 game.players[x].rAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].rangedColor = inventories[x].weapons[1].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
 
@@ -176,11 +180,13 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].mAttack = inventories[x].weapons[2].attack;
                                 game.players[x].mAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].meleeColor = inventories[x].weapons[2].color;
                             }
                             if (inventories[x].weapons[2].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[2].attack;
                                 game.players[x].rAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].rangedColor = inventories[x].weapons[2].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
 
@@ -290,22 +296,36 @@ namespace KingOfTheCastle
                 switch(goldTotals.Length-1)
                 {
                     case (0):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800,"W"), (float)screenAdjust(400,"H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800,"W"), (float)screenAdjust(400,"H")), Color.Gold);
+                    
                         break;
                     case (1):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                   
                     break;
                     case (2):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000,"H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(992, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000,"H")), Color.Gold);
+                    
                     break;
                     case (3):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[3], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(992, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(992, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[3], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    
                     break;
                 }
 

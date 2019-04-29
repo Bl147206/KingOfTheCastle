@@ -32,6 +32,7 @@ namespace KingOfTheCastle
         public GamePadState[] oldGamePadStates;
         public Texture2D questBackdrop;
         public Texture2D character;
+        public Texture2D Coin;
 
         public KingOfTheCastle()
         {
@@ -62,7 +63,14 @@ namespace KingOfTheCastle
 
             for (int i = 0; i < getControllerCount(); i += 1) {
                 Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * (i+1)), 60, 60);
-                players[i] = new Player(this, tempRec, test, /*index*/ i + 1, new Color(Globals.rng.Next() % 255, Globals.rng.Next() % 255, Globals.rng.Next() % 255));
+                if(i==0)
+                players[i] = new Player(this, tempRec, test, /*index*/ i + 1,Color.IndianRed);
+                if (i == 1)
+                    players[i] = new Player(this, tempRec, test, /*index*/ i + 1, Color.LightBlue);
+                if (i == 2)
+                    players[i] = new Player(this, tempRec, test, /*index*/ i + 1, Color.LightGreen);
+                if (i == 3)
+                    players[i] = new Player(this, tempRec, test, /*index*/ i + 1, Color.Goldenrod);
             }
 
             oldGamePadStates = new GamePadState[4];
@@ -111,6 +119,7 @@ namespace KingOfTheCastle
             test = Content.Load<Texture2D>("blank");
             smallFont = Content.Load<SpriteFont>("sFont");
             character = Content.Load<Texture2D>("Character");
+            Coin = Content.Load<Texture2D>("Coin");
             foreach (Player p in players)
             {
                 if(p != null)

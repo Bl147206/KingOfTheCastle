@@ -65,7 +65,7 @@ namespace KingOfTheCastle
             completedMainQuest = false;
             sourceRectangle = new Rectangle(0, 0, 64, 64);
             this.playerColor = rangedColor = meleeColor = color;
-            animationTimer = 0;
+            animationTimer = 0;//Used for walking animation so the character does not bounce too quickly
             mAttack = 2;
             mAttackSpeed = 0.50;
 
