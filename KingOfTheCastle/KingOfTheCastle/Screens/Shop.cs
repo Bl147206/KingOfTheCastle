@@ -34,12 +34,17 @@ namespace KingOfTheCastle
         Texture2D blank;
         Inventory[] inventories = new Inventory[4];
         string[,] stats = new string[4, 3];
+        SoundEffect buyItem;
+        SoundEffect click;
+        int soundTime = 0;
+
         public Shop(KingOfTheCastle game)
         {
             
             background = game.shopText;
-            this.game = game;
             blank = game.test;
+            buyItem = game.Content.Load<SoundEffect>("purchase");
+            click = game.Content.Load<SoundEffect>("timeClick");
             for (int x = 0; x < pSelect.Length; x++)
             {
                 p[x] = playerSelection.One;
@@ -91,8 +96,11 @@ namespace KingOfTheCastle
                     playerPad0[p.playerNumber - 1] = p.oldGamePad;
                 }
             }
+            this.game = game;
         }
         public override void Update(GameTime gameTime) {
+            if (frames % 60 == 0&&frames!=0)
+                click.Play();
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
             playerPad[1] = GamePad.GetState(PlayerIndex.Two);
             playerPad[2] = GamePad.GetState(PlayerIndex.Three);
@@ -103,7 +111,7 @@ namespace KingOfTheCastle
             }
             for (int x = 0; x < playerPad.Length; x++)
             {
-                if (playerPad[x].DPad.Down == ButtonState.Pressed && playerPad0[x].DPad.Down != ButtonState.Pressed)
+                if (playerPad[x].ThumbSticks.Left.Y == -1 && playerPad0[x].ThumbSticks.Left.Y != -1)
                 {
                     if (p[x] != playerSelection.Three)
                     {
@@ -115,7 +123,7 @@ namespace KingOfTheCastle
                     }
                 }
 
-                if (playerPad[x].DPad.Up == ButtonState.Pressed && playerPad0[x].DPad.Up != ButtonState.Pressed)
+                if (playerPad[x].ThumbSticks.Left.Y == 1 && playerPad0[x].ThumbSticks.Left.Y != 1)
                 {
                     if (p[x] != playerSelection.One)
                     {
@@ -148,6 +156,7 @@ namespace KingOfTheCastle
 
                             itemsT[x, 0] = blank;
                             itemsC[x, 0] = Color.Brown;
+                            buyItem.Play();
                         }
                     }
                     if (p[x] == playerSelection.Two)
@@ -170,6 +179,7 @@ namespace KingOfTheCastle
 
                             itemsT[x, 1] = blank;
                             itemsC[x, 1] = Color.Brown;
+                            buyItem.Play();
                         }
                     }
                     if (p[x] == playerSelection.Three)
@@ -192,6 +202,7 @@ namespace KingOfTheCastle
 
                             itemsT[x, 2] = blank;
                             itemsC[x, 2] = Color.Brown;
+                            buyItem.Play();
                         }
                     }
                 }
@@ -255,8 +266,10 @@ namespace KingOfTheCastle
             playerPad0[3] = playerPad[3];
             frames++;
             timeleft = "" + ((60 * seconds - frames) / 60 + 1);
-            if (frames >= 60 * (20))
+            if (frames >= 60 * (10))
+            {
                 game.currentScreen = new Stage(game.round, this.game);
+            }
         }
 
         public override void Draw(GameTime gameTime)

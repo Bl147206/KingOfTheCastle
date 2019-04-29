@@ -525,7 +525,7 @@ namespace KingOfTheCastle
             { //Normal textures
                 game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
             }
-            game.spriteBatch.DrawString(game.font, "P1| HP: "+health.ToString() + " Kills:" + kills+" |", 
+            game.spriteBatch.DrawString(game.font, "P1| HP: "+health.ToString() + " Kills: " + kills+" |", 
                 new Vector2(playerNumber * 150, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
             {// temp stuff for weapon testing

@@ -123,6 +123,7 @@ namespace KingOfTheCastle
             character = Content.Load<Texture2D>("Character");
             Coin = Content.Load<Texture2D>("Coin");
             swordAttackT = Content.Load<Texture2D>("swordSwipe");
+
             for(int x = 0; x<backgrounds.Length;x++)
             {
                 backgrounds[x] = Content.Load<Texture2D>("backdrop" + x);
