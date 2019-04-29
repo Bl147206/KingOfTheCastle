@@ -29,6 +29,8 @@ namespace KingOfTheCastle
             maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
+        Direction previousFacing;
+        int animationTimer;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
@@ -63,7 +65,7 @@ namespace KingOfTheCastle
             completedMainQuest = false;
             sourceRectangle = new Rectangle(0, 0, 64, 64);
             this.playerColor = rangedColor = meleeColor = color;
-
+            animationTimer = 0;
             mAttack = 2;
             mAttackSpeed = 0.50;
 
@@ -128,9 +130,13 @@ namespace KingOfTheCastle
 
             platformLogic(gamePad, platforms);
 
+            animationLogic();
+
             x += xVelocity;
             y += yVelocity;
             UpdatePosition(x, y);
+            previousFacing = facing;
+
 
             oldGamePad = gamePad;
         }
@@ -153,6 +159,130 @@ namespace KingOfTheCastle
                     if(shieldHP > maxShieldHP)
                     {
                         shieldHP = maxShieldHP;
+                    }
+                }
+            }
+        }
+
+        public void animationLogic()
+        {
+            animationTimer++;
+            if (yVelocity == 0)//No jumping
+            {
+                if (facing == Direction.Left && xVelocity == 0)//No movement, facing left
+                {
+                    sourceRectangle.X = 0;
+                    sourceRectangle.Y = 0;
+                    animationTimer = 0;
+                }
+                if (facing == Direction.Right && xVelocity == 0)//No movement, facing right.
+                {
+                    sourceRectangle.X = 0;
+                    sourceRectangle.Y = 64;
+                    animationTimer = 0;
+                }
+                if (facing == Direction.Left && xVelocity != 0)//No jump, moving left
+                {
+                    
+                    sourceRectangle.Y = 0;
+
+                    if (previousFacing == Direction.Right)
+                    {
+                        sourceRectangle.X = 0;
+                        animationTimer = 0;
+                    }
+                    else
+                    {
+                        if (animationTimer == 4)
+                        {
+                            animationTimer = 0;
+                            if (sourceRectangle.X != 320)
+                                sourceRectangle.X += 64;
+                            else
+                                sourceRectangle.X = 0;
+                        }
+                    }
+                }
+                if (facing == Direction.Right && xVelocity != 0)//No jump, moving left
+                {
+
+                    sourceRectangle.Y = 64;
+
+                    if (previousFacing == Direction.Left)
+                    {
+                        sourceRectangle.X = 0;
+                        animationTimer = 0;
+                    }
+                    else
+                    {
+                        if (animationTimer == 4)
+                        {
+                            animationTimer = 0;
+                            if (sourceRectangle.X != 320)
+                                sourceRectangle.X += 64;
+                            else
+                                sourceRectangle.X = 0;
+                        }
+                    }
+                }
+            }
+            if(yVelocity!=0)//In the air
+            {
+                animationTimer = 0;
+                if(facing ==Direction.Right)
+                {
+                    if (Math.Abs(yVelocity) >= 23)//Max Y
+                    {
+                        sourceRectangle.X = 4 * 64;
+                        sourceRectangle.Y = 2 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
+                    {
+                        sourceRectangle.X = 5* 64;
+                        sourceRectangle.Y = 2 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                    {
+                        sourceRectangle.X = 0;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                    {
+                        sourceRectangle.X = 1 * 64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 2 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
+                    {
+                        sourceRectangle.X = 2 * 64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                }
+                if (facing == Direction.Left)
+                {
+                    if(Math.Abs(yVelocity)>=23)//Max Y
+                    {
+                        sourceRectangle.X = 2 * 64;
+                        sourceRectangle.Y = 4 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 23&& Math.Abs(yVelocity)>=19)
+                    {
+                        sourceRectangle.X = 0;
+                        sourceRectangle.Y = 4 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                    {
+                        sourceRectangle.X = 5*64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                    {
+                        sourceRectangle.X = 4 * 64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 7 && Math.Abs(yVelocity) >0)//Almost 0 Velocity
+                    {
+                        sourceRectangle.X = 3 * 64;
+                        sourceRectangle.Y = 3 * 64;
                     }
                 }
             }
