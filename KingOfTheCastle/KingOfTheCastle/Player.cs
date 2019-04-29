@@ -28,6 +28,7 @@ namespace KingOfTheCastle
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
             maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer;
         public Color playerColor, rangedColor, meleeColor;
+        public Rectangle sourceRectangle;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
@@ -60,7 +61,7 @@ namespace KingOfTheCastle
             jumps = 0;
             facing = Direction.Right;
             completedMainQuest = false;
-
+            sourceRectangle = new Rectangle(0, 0, 64, 64);
             this.playerColor = rangedColor = meleeColor = color;
 
             mAttack = 2;
@@ -388,11 +389,11 @@ namespace KingOfTheCastle
         {
             if(shielding)
             { //Shielding textures
-                game.spriteBatch.Draw(texture, location, Color.Black);
+                game.spriteBatch.Draw(texture,  location, sourceRectangle, Color.Black);
             }
             else
             { //Normal textures
-                game.spriteBatch.Draw(texture, location, playerColor);
+                game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
             }
             game.spriteBatch.DrawString(game.font, health.ToString() + " " + kills, 
                 new Vector2(playerNumber * 100, Globals.screenH - game.font.LineSpacing * 1), playerColor);

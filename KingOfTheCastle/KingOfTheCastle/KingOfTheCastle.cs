@@ -31,6 +31,7 @@ namespace KingOfTheCastle
         public Texture2D bowTexture;
         public GamePadState[] oldGamePadStates;
         public Texture2D questBackdrop;
+        public Texture2D character;
 
         public KingOfTheCastle()
         {
@@ -109,11 +110,12 @@ namespace KingOfTheCastle
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
             smallFont = Content.Load<SpriteFont>("sFont");
+            character = Content.Load<Texture2D>("Character");
             foreach (Player p in players)
             {
                 if(p != null)
                 {
-                    p.texture = test;
+                    p.texture = character;
                 }
             }
             shopText = Content.Load<Texture2D>("Shop");
