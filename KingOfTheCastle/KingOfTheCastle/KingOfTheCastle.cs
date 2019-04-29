@@ -33,6 +33,8 @@ namespace KingOfTheCastle
         public Texture2D questBackdrop;
         public Texture2D character;
         public Texture2D Coin;
+        public Texture2D[] backgrounds;
+        public Texture2D swordAttackT;
 
         public KingOfTheCastle()
         {
@@ -58,7 +60,7 @@ namespace KingOfTheCastle
             currentScreen = new TitleScreen(this);
             //currentScreen = new Stage(0);
             currentScreen.game = this;
-
+            backgrounds = new Texture2D[7];
             players = new Player[4];
 
             for (int i = 0; i < getControllerCount(); i += 1) {
@@ -120,6 +122,11 @@ namespace KingOfTheCastle
             smallFont = Content.Load<SpriteFont>("sFont");
             character = Content.Load<Texture2D>("Character");
             Coin = Content.Load<Texture2D>("Coin");
+            swordAttackT = Content.Load<Texture2D>("swordSwipe");
+            for(int x = 0; x<backgrounds.Length;x++)
+            {
+                backgrounds[x] = Content.Load<Texture2D>("backdrop" + x);
+            }
             foreach (Player p in players)
             {
                 if(p != null)

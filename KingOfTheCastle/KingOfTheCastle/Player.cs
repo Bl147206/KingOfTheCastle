@@ -525,11 +525,14 @@ namespace KingOfTheCastle
             { //Normal textures
                 game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
             }
-            game.spriteBatch.DrawString(game.font, health.ToString() + " " + kills, 
-                new Vector2(playerNumber * 100, Globals.screenH - game.font.LineSpacing * 1), playerColor);
+            game.spriteBatch.DrawString(game.font, "P1| HP: "+health.ToString() + " Kills:" + kills+" |", 
+                new Vector2(playerNumber * 150, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
             {// temp stuff for weapon testing
-                game.spriteBatch.Draw(game.test, attackRec, meleeColor);
+                if(facing==Direction.Left)
+                    game.spriteBatch.Draw(game.swordAttackT, attackRec,new Rectangle(0,0,64,64), meleeColor, 0,new Vector2(0,0),SpriteEffects.FlipHorizontally,0);
+                else
+                    game.spriteBatch.Draw(game.swordAttackT, attackRec, meleeColor);
             }
         }
 

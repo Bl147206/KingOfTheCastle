@@ -25,12 +25,14 @@ namespace KingOfTheCastle
         bool roundOver;
         int overTimer;
         Player winner;
+        int background;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
         public Stage(int round, KingOfTheCastle game)
         {
             platforms = new Platform[Globals.rng.Next(round+1)+2];
+            background =Globals.rng.Next(0,game.backgrounds.Length);
             platforms[0] = new Platform(new Vector2(Globals.screenW/2, Globals.screenH - 100), Globals.screenW - 200, 5);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
@@ -42,7 +44,7 @@ namespace KingOfTheCastle
 
             projectiles = new ProjectileHandler(game);
             
-            seconds = 10;
+            seconds = 100;
             timeleft = ""+seconds;
 
            
@@ -143,11 +145,13 @@ namespace KingOfTheCastle
         public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.Navy);
+            game.spriteBatch.Draw(game.backgrounds[background], new Rectangle(0, 0, Globals.screenW, Globals.screenH),Color.White);
+            game.spriteBatch.Draw(game.test, new Rectangle(0, Globals.screenH - screenAdjust(40, "H"), Globals.screenW, screenAdjust(40, "H")),Color.Black);
             for (int x = 0; x < platforms.Length; x++)
             {
                 if(platforms[x] != null)
                 {
-                    game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
+                    game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Brown);
                 }
             }
             foreach (Player p in game.players)

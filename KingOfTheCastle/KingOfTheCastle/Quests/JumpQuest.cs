@@ -9,6 +9,7 @@ namespace KingOfTheCastle
     public class JumpQuest:Quest
     {
         int requiredJumpAmt;
+        Color titleColor;
         public JumpQuest(KingOfTheCastle game)
         {
             this.game = game;
@@ -30,6 +31,7 @@ namespace KingOfTheCastle
             {
                 playerCompletionProgress[i] = "0/"+requiredJumpAmt;
             }
+            titleColor = Color.White;
             
         }
         public override void check()
@@ -54,6 +56,7 @@ namespace KingOfTheCastle
             if (isCompleted)
             {
                 yLoc -= yVel;
+                titleLoc.Y -= (float)yVel;
                 for (int x = 0; x < yLocPlayers.Length; x++)
                 {
                     yLocPlayers[x] -= yVel;
@@ -63,6 +66,7 @@ namespace KingOfTheCastle
                     yVel += .1;
                 display.Y = (int)yLoc;
                 timer++;
+                titleColor = Color.Yellow;
             }
             
             
@@ -72,7 +76,7 @@ namespace KingOfTheCastle
         public override void Draw()
         {
             game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
-            game.spriteBatch.DrawString(game.font, title, titleLoc, Color.White);
+            game.spriteBatch.DrawString(game.font, title, titleLoc, titleColor);
             for(int i=0;i<playerCompletionLocs.Length;i++)
             {
                 if(game.players[i]!=null)
