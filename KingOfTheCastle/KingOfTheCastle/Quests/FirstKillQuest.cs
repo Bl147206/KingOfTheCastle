@@ -11,5 +11,13 @@ namespace KingOfTheCastle.Quests
         {
 
         }
+
+        public override void check() {
+            throw new NotImplementedException();
+        }
+
+        public override void Draw() {
+            throw new NotImplementedException();
+        }
     }
 }
