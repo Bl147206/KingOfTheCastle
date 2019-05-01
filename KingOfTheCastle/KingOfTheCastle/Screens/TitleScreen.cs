@@ -40,7 +40,7 @@ namespace KingOfTheCastle
             logo = game.Content.Load<Texture2D>("logo");
             music = game.Content.Load<SoundEffect>("Forward-Assault");
             logoPos = new Rectangle(Globals.screenW/2-400, Globals.screenH/2-350, 800, 700);
-            textpos = new Vector2(Globals.screenW/2-300, (float)(Globals.screenH-Globals.screenH/9));
+            textpos = new Vector2(Globals.screenW/2-300, (float)(Globals.screenH-Globals.screenH/7));
             musicControl= music.CreateInstance();
             bg = new Color(255,0,0);
             time = 0;
@@ -55,7 +55,7 @@ namespace KingOfTheCastle
             logo = game.Content.Load<Texture2D>("logo");
             music = game.Content.Load<SoundEffect>("Forward-Assault");
             logoPos = new Rectangle(Globals.screenW / 2 - 400, Globals.screenH / 2 - 350, 800, 700);
-            textpos = new Vector2(Globals.screenW / 2 - 300, (float)(Globals.screenH - Globals.screenH / 9));
+            textpos = new Vector2(Globals.screenW / 2 - 300, (float)(Globals.screenH - Globals.screenH / 7));
             musicControl = music.CreateInstance();
             bg = new Color(255, 0, 0);
             time = 0;

@@ -59,8 +59,7 @@ namespace KingOfTheCastle
             foreach (Player p in game.players)
             {
                 if(p!=null)
-                    if (!p.IsAlive())
-                        p.spawn();
+                    p.spawn();
             }
             quest = new JumpQuest(this.game);
 

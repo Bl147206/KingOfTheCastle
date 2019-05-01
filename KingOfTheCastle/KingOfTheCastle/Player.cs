@@ -598,7 +598,6 @@ namespace KingOfTheCastle
             x = location.X;
             completedMainQuest = false;
             jumps = 0;
-            kills = 0;
         }
 
         public void meleeAttack(Rectangle weaponHitbox, int weaponDamage)
