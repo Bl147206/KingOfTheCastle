@@ -445,6 +445,7 @@ namespace KingOfTheCastle
             y = location.Y;
             x = location.X;
             completedMainQuest = false;
+            jumps = 0;
             kills = 0;
         }
 

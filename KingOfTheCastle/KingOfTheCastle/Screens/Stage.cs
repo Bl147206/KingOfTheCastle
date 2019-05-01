@@ -24,6 +24,7 @@ namespace KingOfTheCastle
         Quest quest;
         bool roundOver;
         int overTimer;
+        Player winner;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -44,7 +45,7 @@ namespace KingOfTheCastle
             seconds = 100;
             timeleft = ""+seconds;
 
-            quest = new JumpQuest(this.game);
+           
 
             foreach (Player p in game.players)
             {
@@ -52,6 +53,7 @@ namespace KingOfTheCastle
                     if (!p.IsAlive())
                         p.spawn();
             }
+            quest = new JumpQuest(this.game);
 
             killLevel = (int) (Globals.screenH * 1.4);
         }
@@ -61,64 +63,81 @@ namespace KingOfTheCastle
 
             int dead = 0;
             int alive = 0;
-            foreach (Player p in game.players)
-            {
-                if (p != null)
+            if(!roundOver)
+                foreach (Player p in game.players)
                 {
-
-                    GamePadState gamePad = GamePad.GetState(p.playerIndex);
-
-                    if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused) {
-                        isPaused = true;
-                        idxPause = p.playerNumber;
-                    } else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused && p.playerNumber == idxPause) {
-                        isPaused = false;
-                    }
-
-                    if (isPaused)
-                        continue;
-
-                    if (p.IsAlive())
+                    if (p != null)
                     {
-                        alive++;
-                        p.Update(platforms);
-                        if (p.location.Y > killLevel)
+
+                        GamePadState gamePad = GamePad.GetState(p.playerIndex);
+
+                        if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && !isPaused)
                         {
-                            p.kill();
+                            isPaused = true;
+                            idxPause = p.playerNumber;
                         }
-                    }
-                    else
-                    {
-                        dead++;
-                        if (gamePad.DPad.Down == ButtonState.Pressed)
-                        {// temp stuff to let a person revive themself
-                            p.revive();
-                            dead--;
-                        }
-                        if (gamePad.DPad.Left==ButtonState.Pressed)
+                        else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused && p.playerNumber == idxPause)
                         {
-                            p.spawn();
-                            dead--;
+                            isPaused = false;
+                        }
+
+                        if (isPaused)
+                            continue;
+
+                        if (p.IsAlive())
+                        {
+                            alive++;
+                            p.Update(platforms);
+                            if (p.location.Y > killLevel)
+                            {
+                                p.kill();
+                            }
+                        }
+                        else
+                        {
+                            dead++;
+                            if (gamePad.DPad.Down == ButtonState.Pressed)
+                            {// temp stuff to let a person revive themself
+                                p.revive();
+                                dead--;
+                            }
+                            if (gamePad.DPad.Left == ButtonState.Pressed)
+                            {
+                                p.spawn();
+                                dead--;
+                            }
                         }
                     }
                 }
-            }
 
             frames++;
             if (!roundOver)
-            {             
+            {
                 timeleft = "" + ((60 * seconds - frames) / 60 + 1);
                 if (frames >= 60 * seconds || (dead == game.getControllerCount() - 1 && game.getControllerCount() != 1))
                 {
-
-                    foreach (Player p in game.players)
+                    roundOver = true;
+                    frames = 0;
+                    foreach(Player p in game.players)
+                    {
                         if (p != null)
-                            p.kill();
-                    game.currentScreen = new Shop(this.game);
+                            if (p.IsAlive())
+                                winner = p;
+
+                    }
                 }
             }
-            projectiles.Update();
-            quest.check();
+            if (roundOver)
+            {
+                if (frames >= 180)
+                    game.currentScreen = new Shop(this.game);
+            }
+
+            if (!roundOver)
+            {
+                projectiles.Update();
+                quest.check();
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -139,7 +158,7 @@ namespace KingOfTheCastle
                 }
             }
             quest.Draw();
-            game.spriteBatch.DrawString(game.font, timeleft, new Vector2(0, 0), Color.White);
+            game.spriteBatch.Draw(game.test, new Rectangle(20, 20, 3 * int.Parse(timeleft), 50), Color.Gray);
             projectiles.draw();
 
             if (isPaused) {
@@ -147,6 +166,11 @@ namespace KingOfTheCastle
                 game.spriteBatch.Draw(game.test, new Rectangle(Globals.screenW / 2 - 300, Globals.screenH / 2 - 150, 600, 300), Color.Black);
                 game.spriteBatch.DrawString(game.font, "Player " + idxPause, new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
                 game.spriteBatch.DrawString(game.font, "Press start to unpause", new Vector2(Globals.screenW / 2 - 260, Globals.screenH / 2 + 50), Color.White);
+            }
+            if(roundOver)
+            {
+                game.spriteBatch.Draw(game.test, new Rectangle(0, 0, 10000, 10000), Color.Black * .5f);
+                game.spriteBatch.DrawString(game.font, "GAME", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
             }
         }
 

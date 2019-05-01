@@ -101,8 +101,7 @@ namespace KingOfTheCastle
             game.GraphicsDevice.Clear(bg);
             game.spriteBatch.Draw(logo, logoPos, Color.White);
             game.spriteBatch.DrawString(game.font, "     Press Start or A...\nPress Back or Escape to exit", textpos, Color.Black);
-
-
+            game.spriteBatch.DrawString(game.font, "Players Connected (" + game.getControllerCount() + " / 4)", new Vector2(1300, 20), Color.Black);
         }
     }
 }
