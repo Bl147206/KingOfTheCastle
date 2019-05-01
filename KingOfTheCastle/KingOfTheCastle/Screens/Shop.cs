@@ -62,7 +62,7 @@ namespace KingOfTheCastle
                     itemsT[x, y] = inventories[x].weapons[y].texture;
                     itemsC[x, y] = inventories[x].weapons[y].color;
                     string type = "";
-                    string speed = inventories[x].weapons[y].attackSpeed+"";
+                    string speed = 1/inventories[x].weapons[y].attackSpeed+"";
                     speed = speed.Substring(0, 5);
                     if (inventories[x].weapons[y].texture == game.swordTexture)
                         type = "Melee";
