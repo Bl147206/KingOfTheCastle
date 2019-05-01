@@ -161,7 +161,7 @@ namespace KingOfTheCastle
         {
             game.GraphicsDevice.Clear(Color.Navy);
             game.spriteBatch.Draw(game.backgrounds[background], new Rectangle(0, 0, Globals.screenW, Globals.screenH),Color.White);
-            game.spriteBatch.Draw(game.test, new Rectangle(0, Globals.screenH - screenAdjust(40, "H"), Globals.screenW, screenAdjust(40, "H")),Color.Black);
+            game.spriteBatch.Draw(game.test, new Rectangle(0, Globals.screenH - screenAdjust(60, "H"), Globals.screenW, screenAdjust(60, "H")),Color.Black);
             for (int x = 0; x < platforms.Length; x++)
             {
                 if(platforms[x] != null)

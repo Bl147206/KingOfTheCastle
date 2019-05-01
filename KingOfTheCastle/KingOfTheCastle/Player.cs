@@ -108,11 +108,6 @@ namespace KingOfTheCastle
         public void Update(Platform[] platforms)
         {
             GamePadState gamePad = GamePad.GetState(playerIndex);
-            // temp life testing stuff
-            if(gamePad.DPad.Up == ButtonState.Pressed)
-            {
-                kill();
-            }
 
             if(health <= 0)
             {
@@ -532,8 +527,8 @@ namespace KingOfTheCastle
             { //Normal textures
                 game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
             }
-            game.spriteBatch.DrawString(game.font, "P1| HP: "+health.ToString() + " Kills: " + kills+" |", 
-                new Vector2(playerNumber * 150, Globals.screenH - game.font.LineSpacing * 1), playerColor);
+            game.spriteBatch.DrawString(game.playerFont, "P"+playerNumber+"| HP: "+health.ToString() + " Kills: " + kills+" |", 
+                new Vector2(((playerNumber-1) * 400)+100, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
             {// temp stuff for weapon testing
                 if(facing==Direction.Left)
@@ -615,7 +610,7 @@ namespace KingOfTheCastle
             attackRec = weaponHitbox;
             foreach(Player p in game.players)
             {
-                if(p != null && p != this)
+                if(p != null && p != this && p.IsAlive())
                 {
                     if (weaponHitbox.Intersects(p.location))
                     {

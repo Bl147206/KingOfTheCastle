@@ -35,6 +35,7 @@ namespace KingOfTheCastle
         public Texture2D Coin;
         public Texture2D[] backgrounds;
         public Texture2D swordAttackT;
+        public SpriteFont playerFont;
 
         public KingOfTheCastle()
         {
@@ -118,6 +119,7 @@ namespace KingOfTheCastle
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            playerFont = Content.Load<SpriteFont>("playerFont");
             test = Content.Load<Texture2D>("blank");
             smallFont = Content.Load<SpriteFont>("sFont");
             character = Content.Load<Texture2D>("Character");

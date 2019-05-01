@@ -51,6 +51,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="playerFont.spritefont">
+      <Name>playerFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="quests.txt">
       <Name>quests</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
