@@ -23,11 +23,11 @@ namespace KingOfTheCastle {
 
                 switch (kind) {
                     case Weapon.Kind.melee:
-                        weapons[index]=(new Melee(name, attack, attackSpeed, attack+(int)((attack*2)/4) + (int)(attackSpeed * 20), game.swordTexture));
+                        weapons[index]=(new Melee(name, attack, attackSpeed, attack+(int)((attack*2)/4) + (int)(1/(attackSpeed) * 2), game.swordTexture));
 
                         break;
                     case Weapon.Kind.ranged:
-                        weapons[index]=(new Ranged(name, attack, attackSpeed, attack + (int)((attack * 2) / 4)+(int)(attackSpeed*20), game.bowTexture));
+                        weapons[index]=(new Ranged(name, attack, attackSpeed, attack + (int)((attack * 2) / 4)+(int)((1/attackSpeed)*2), game.bowTexture));
                         break;
 
                 }
