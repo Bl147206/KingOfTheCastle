@@ -18,16 +18,16 @@ namespace KingOfTheCastle {
 
                 var kind = (Weapon.Kind) Globals.rng.Next(2);
 
-                int attack = Globals.rng.Next(currentRound * 2) + currentRound + 2;
-                double attackSpeed = (Globals.rng.NextDouble() + .2) * .4 + currentRound * .2;
+                int attack = Globals.rng.Next(3,20);
+                double attackSpeed = Globals.rng.NextDouble();
 
                 switch (kind) {
                     case Weapon.Kind.melee:
-                        weapons[index]=(new Melee(name, attack, attackSpeed, 10 * currentRound, game.swordTexture));
+                        weapons[index]=(new Melee(name, attack, attackSpeed, attack+(int)((attack*2)/4) + (int)(1/(attackSpeed) * 2), game.swordTexture));
 
                         break;
                     case Weapon.Kind.ranged:
-                        weapons[index]=(new Ranged(name, attack, attackSpeed, 10 * currentRound, game.bowTexture));
+                        weapons[index]=(new Ranged(name, attack, attackSpeed, attack + (int)((attack * 2) / 4)+(int)((1/attackSpeed)*2), game.bowTexture));
                         break;
 
                 }
