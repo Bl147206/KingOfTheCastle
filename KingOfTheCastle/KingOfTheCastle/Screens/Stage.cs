@@ -107,16 +107,6 @@ namespace KingOfTheCastle
                         else
                         {
                             dead++;
-                            if (gamePad.DPad.Down == ButtonState.Pressed)
-                            {// temp stuff to let a person revive themself
-                                p.revive();
-                                dead--;
-                            }
-                            if (gamePad.DPad.Left == ButtonState.Pressed)
-                            {
-                                p.spawn();
-                                dead--;
-                            }
                         }
                     }
                 }
@@ -143,6 +133,10 @@ namespace KingOfTheCastle
             }
             if (roundOver)
             {
+                if (game.round == 9) {
+
+                }
+
                 if (frames >= 180)
                 {
                     game.currentScreen = new Shop(this.game);
@@ -188,8 +182,14 @@ namespace KingOfTheCastle
             }
             if(roundOver)
             {
+                game.spriteBatch.Draw(game.test, new Rectangle(Globals.screenW / 2 - 300, Globals.screenH / 2 - 150, 600, 300), Color.Black);
                 game.spriteBatch.Draw(game.test, new Rectangle(0, 0, 10000, 10000), Color.Black * .5f);
-                game.spriteBatch.DrawString(game.font, "GAME", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
+
+                if (game.round != 9) {
+                    game.spriteBatch.DrawString(game.font, "Round Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
+                } else {
+                    game.spriteBatch.DrawString(game.font, "Game Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
+                }
             }
         }
 
