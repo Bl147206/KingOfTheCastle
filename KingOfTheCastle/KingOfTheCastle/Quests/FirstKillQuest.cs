@@ -17,7 +17,7 @@ namespace KingOfTheCastle.Quests
     {
         public FirstKillQuest(KingOfTheCastle game)
         {
-            C
+            
         }
 
         public override void check() {
