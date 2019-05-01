@@ -108,11 +108,6 @@ namespace KingOfTheCastle
         public void Update(Platform[] platforms)
         {
             GamePadState gamePad = GamePad.GetState(playerIndex);
-            // temp life testing stuff
-            if(gamePad.DPad.Up == ButtonState.Pressed)
-            {
-                kill();
-            }
 
             if(health <= 0)
             {
