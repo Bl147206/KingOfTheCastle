@@ -31,6 +31,8 @@ namespace KingOfTheCastle
         public Rectangle sourceRectangle;
         Direction previousFacing;
         int animationTimer;
+        SoundEffect meleeSound;
+        SoundEffect rangedSound;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
@@ -98,6 +100,8 @@ namespace KingOfTheCastle
             window = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             x = location.X;
             y = location.Y;
+            meleeSound = game.Content.Load<SoundEffect>("swordSoundO");
+            rangedSound = game.Content.Load<SoundEffect>("bowSoundO");
         }
 
         public void Update(Platform[] platforms)
@@ -318,6 +322,7 @@ namespace KingOfTheCastle
                     isRAttacking = true;
                     rangedAttack();
                     rAttackTimer = (int)(60 * rAttackSpeed);
+                    rangedSound.Play();
                 }
             }
             else if (rAttackTimer > 0)
@@ -336,6 +341,7 @@ namespace KingOfTheCastle
                     isMAttacking = true;
                     meleeAttack(new Rectangle(location.X, location.Y, 200, 200), mAttack);
                     mAttackTimer = (int) (60 * mAttackSpeed);
+                    meleeSound.Play();
                 }
             }
             else if (mAttackTimer > 0)
