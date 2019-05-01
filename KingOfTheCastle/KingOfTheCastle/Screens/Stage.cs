@@ -25,12 +25,20 @@ namespace KingOfTheCastle
         bool roundOver;
         int overTimer;
         Player winner;
+        int background;
+        SoundEffect winSound;
+        SoundEffect music;
+        SoundEffectInstance musicControl;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
         public Stage(int round, KingOfTheCastle game)
         {
             platforms = new Platform[Globals.rng.Next(round+1)+2];
+            music = game.Content.Load<SoundEffect>("Heroic Intrusion");
+            winSound = game.Content.Load<SoundEffect>("Applause");
+            musicControl = music.CreateInstance();
+            background =Globals.rng.Next(0,game.backgrounds.Length);
             platforms[0] = new Platform(new Vector2(Globals.screenW/2, Globals.screenH - 100), Globals.screenW - 200, 5);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
@@ -38,6 +46,7 @@ namespace KingOfTheCastle
                 platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"H") - screenAdjust(120,"H"))), Globals.rng.Next(100, 750), 5);
             }
             frames = 0;
+            musicControl.Volume = .3f;
             this.game = game;
 
             projectiles = new ProjectileHandler(game);
@@ -56,6 +65,7 @@ namespace KingOfTheCastle
             quest = new JumpQuest(this.game);
 
             killLevel = (int) (Globals.screenH * 1.4);
+            musicControl.Play();
         }
         public override void Update(GameTime gameTime)
         {
@@ -75,10 +85,12 @@ namespace KingOfTheCastle
                         {
                             isPaused = true;
                             idxPause = p.playerNumber;
+                            musicControl.Pause();
                         }
                         else if (gamePad.Buttons.Start == ButtonState.Pressed && game.oldGamePadStates[p.playerNumber - 1].Buttons.Start != ButtonState.Pressed && isPaused && p.playerNumber == idxPause)
                         {
                             isPaused = false;
+                            musicControl.Play();
                         }
 
                         if (isPaused)
@@ -117,6 +129,9 @@ namespace KingOfTheCastle
                 if (frames >= 60 * seconds || (dead == game.getControllerCount() - 1 && game.getControllerCount() != 1))
                 {
                     roundOver = true;
+                    musicControl.Stop();
+                    musicControl = winSound.CreateInstance();
+                    musicControl.Play();
                     frames = 0;
                     foreach(Player p in game.players)
                     {
@@ -130,7 +145,10 @@ namespace KingOfTheCastle
             if (roundOver)
             {
                 if (frames >= 180)
+                {
                     game.currentScreen = new Shop(this.game);
+                    musicControl.Stop();
+                }
             }
 
             if (!roundOver)
@@ -143,11 +161,13 @@ namespace KingOfTheCastle
         public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.Navy);
+            game.spriteBatch.Draw(game.backgrounds[background], new Rectangle(0, 0, Globals.screenW, Globals.screenH),Color.White);
+            game.spriteBatch.Draw(game.test, new Rectangle(0, Globals.screenH - screenAdjust(40, "H"), Globals.screenW, screenAdjust(40, "H")),Color.Black);
             for (int x = 0; x < platforms.Length; x++)
             {
                 if(platforms[x] != null)
                 {
-                    game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Red);
+                    game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Brown);
                 }
             }
             foreach (Player p in game.players)

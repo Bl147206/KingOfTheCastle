@@ -34,12 +34,17 @@ namespace KingOfTheCastle
         Texture2D blank;
         Inventory[] inventories = new Inventory[4];
         string[,] stats = new string[4, 3];
+        SoundEffect buyItem;
+        SoundEffect click;
+        SpriteFont timerFont;
+
         public Shop(KingOfTheCastle game)
         {
             
             background = game.shopText;
-            this.game = game;
             blank = game.test;
+            buyItem = game.Content.Load<SoundEffect>("purchase");
+            click = game.Content.Load<SoundEffect>("timeClick");
             for (int x = 0; x < pSelect.Length; x++)
             {
                 p[x] = playerSelection.One;
@@ -91,8 +96,12 @@ namespace KingOfTheCastle
                     playerPad0[p.playerNumber - 1] = p.oldGamePad;
                 }
             }
+            timerFont = game.Content.Load<SpriteFont>("storetimeFont");
+            this.game = game;
         }
         public override void Update(GameTime gameTime) {
+            if (frames % 60 == 0&&frames!=0)
+                click.Play();
             playerPad[0] = GamePad.GetState(PlayerIndex.One);
             playerPad[1] = GamePad.GetState(PlayerIndex.Two);
             playerPad[2] = GamePad.GetState(PlayerIndex.Three);
@@ -103,7 +112,7 @@ namespace KingOfTheCastle
             }
             for (int x = 0; x < playerPad.Length; x++)
             {
-                if (playerPad[x].DPad.Down == ButtonState.Pressed && playerPad0[x].DPad.Down != ButtonState.Pressed)
+                if (playerPad[x].ThumbSticks.Left.Y == -1 && playerPad0[x].ThumbSticks.Left.Y != -1)
                 {
                     if (p[x] != playerSelection.Three)
                     {
@@ -115,7 +124,7 @@ namespace KingOfTheCastle
                     }
                 }
 
-                if (playerPad[x].DPad.Up == ButtonState.Pressed && playerPad0[x].DPad.Up != ButtonState.Pressed)
+                if (playerPad[x].ThumbSticks.Left.Y == 1 && playerPad0[x].ThumbSticks.Left.Y != 1)
                 {
                     if (p[x] != playerSelection.One)
                     {
@@ -126,7 +135,7 @@ namespace KingOfTheCastle
                         p[x] = playerSelection.Three;
                     }
                 }
-                if(playerPad[x].Buttons.A == ButtonState.Pressed && playerPad0[x].Buttons.A != ButtonState.Pressed)
+                if(playerPad[x].Buttons.A == ButtonState.Pressed && playerPad0[x].Buttons.A != ButtonState.Pressed)//Item Bought
                 {
                     if(p[x]==playerSelection.One)
                     {
@@ -136,16 +145,19 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].mAttack = inventories[x].weapons[0].attack;
                                 game.players[x].mAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].meleeColor = inventories[x].weapons[0].color;
                             }
                             if (inventories[x].weapons[0].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[0].attack;
                                 game.players[x].rAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].rangedColor = inventories[x].weapons[0].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
 
                             itemsT[x, 0] = blank;
                             itemsC[x, 0] = Color.Brown;
+                            buyItem.Play();
                         }
                     }
                     if (p[x] == playerSelection.Two)
@@ -156,16 +168,19 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].mAttack = inventories[x].weapons[1].attack;
                                 game.players[x].mAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].meleeColor = inventories[x].weapons[1].color;
                             }
                             if (inventories[x].weapons[1].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[1].attack;
                                 game.players[x].rAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].rangedColor = inventories[x].weapons[1].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
 
                             itemsT[x, 1] = blank;
                             itemsC[x, 1] = Color.Brown;
+                            buyItem.Play();
                         }
                     }
                     if (p[x] == playerSelection.Three)
@@ -176,16 +191,19 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].mAttack = inventories[x].weapons[2].attack;
                                 game.players[x].mAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].meleeColor = inventories[x].weapons[2].color;
                             }
                             if (inventories[x].weapons[2].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[2].attack;
                                 game.players[x].rAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].rangedColor = inventories[x].weapons[2].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
 
                             itemsT[x, 2] = blank;
                             itemsC[x, 2] = Color.Brown;
+                            buyItem.Play();
                         }
                     }
                 }
@@ -249,8 +267,10 @@ namespace KingOfTheCastle
             playerPad0[3] = playerPad[3];
             frames++;
             timeleft = "" + ((60 * seconds - frames) / 60 + 1);
-            if (frames >= 60 * (20))
+            if (frames >= 60 * (10))
+            {
                 game.currentScreen = new Stage(game.round, this.game);
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -290,26 +310,43 @@ namespace KingOfTheCastle
                 switch(goldTotals.Length-1)
                 {
                     case (0):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800,"W"), (float)screenAdjust(400,"H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800,"W"), (float)screenAdjust(400,"H")), Color.Gold);
+                    
                         break;
                     case (1):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                   
                     break;
                     case (2):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000,"H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(992, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000,"H")), Color.Gold);
+                    
                     break;
                     case (3):
-                        game.spriteBatch.DrawString(game.font, "" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "" + goldTotals[3], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(992, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(992, "H"), screenAdjust(40, "W"), screenAdjust(40, "H")), Color.White);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[3], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    
                     break;
                 }
+            if(10 - (frames / 60)>=10)
+            game.spriteBatch.DrawString(timerFont, "Time Left\n        "+(10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
+            else
+                game.spriteBatch.DrawString(timerFont, "Time Left\n         " + (10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
 
-            
             //Gold placement: P1: 800,400   P2: 1850,400    P3: 800,1000    P4: 1850,1000
 
         }

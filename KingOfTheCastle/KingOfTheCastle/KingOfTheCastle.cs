@@ -31,6 +31,10 @@ namespace KingOfTheCastle
         public Texture2D bowTexture;
         public GamePadState[] oldGamePadStates;
         public Texture2D questBackdrop;
+        public Texture2D character;
+        public Texture2D Coin;
+        public Texture2D[] backgrounds;
+        public Texture2D swordAttackT;
 
         public KingOfTheCastle()
         {
@@ -38,7 +42,7 @@ namespace KingOfTheCastle
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             graphics.ApplyChanges();
         }
 
@@ -56,12 +60,19 @@ namespace KingOfTheCastle
             currentScreen = new TitleScreen(this);
             //currentScreen = new Stage(0);
             currentScreen.game = this;
-
+            backgrounds = new Texture2D[7];
             players = new Player[4];
 
             for (int i = 0; i < getControllerCount(); i += 1) {
                 Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i+1)), Globals.screenH - (250 * (i+1)), 60, 60);
-                players[i] = new Player(this, tempRec, test, /*index*/ i + 1, new Color(Globals.rng.Next() % 255, Globals.rng.Next() % 255, Globals.rng.Next() % 255));
+                if(i==0)
+                players[i] = new Player(this, tempRec, test, /*index*/ i + 1,Color.IndianRed);
+                if (i == 1)
+                    players[i] = new Player(this, tempRec, test, /*index*/ i + 1, Color.LightBlue);
+                if (i == 2)
+                    players[i] = new Player(this, tempRec, test, /*index*/ i + 1, Color.LightGreen);
+                if (i == 3)
+                    players[i] = new Player(this, tempRec, test, /*index*/ i + 1, Color.Goldenrod);
             }
 
             oldGamePadStates = new GamePadState[4];
@@ -109,11 +120,19 @@ namespace KingOfTheCastle
             spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("blank");
             smallFont = Content.Load<SpriteFont>("sFont");
+            character = Content.Load<Texture2D>("Character");
+            Coin = Content.Load<Texture2D>("Coin");
+            swordAttackT = Content.Load<Texture2D>("swordSwipe");
+
+            for(int x = 0; x<backgrounds.Length;x++)
+            {
+                backgrounds[x] = Content.Load<Texture2D>("backdrop" + x);
+            }
             foreach (Player p in players)
             {
                 if(p != null)
                 {
-                    p.texture = test;
+                    p.texture = character;
                 }
             }
             shopText = Content.Load<Texture2D>("Shop");

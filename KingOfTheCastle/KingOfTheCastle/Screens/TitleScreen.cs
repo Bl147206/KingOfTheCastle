@@ -27,33 +27,60 @@ namespace KingOfTheCastle
         Texture2D logo;
         Rectangle logoPos;
         Vector2 textpos;
+        SoundEffect music;
+        SoundEffectInstance musicControl;
+        int time;
+        double seconds;
         Color bg;
         incColor currentColor;
         KeyboardState kb;
+        GamePadState previous;
+        public TitleScreen(KingOfTheCastle game, GamePadState previous)
+        {
+            logo = game.Content.Load<Texture2D>("logo");
+            music = game.Content.Load<SoundEffect>("Forward-Assault");
+            logoPos = new Rectangle(Globals.screenW/2-400, Globals.screenH/2-350, 800, 700);
+            textpos = new Vector2(Globals.screenW/2-300, (float)(Globals.screenH-Globals.screenH/9));
+            musicControl= music.CreateInstance();
+            bg = new Color(255,0,0);
+            time = 0;
+            seconds = 0;
+            musicControl.Volume = .3f;
+            musicControl.Play();
+            this.previous = previous;
+            currentColor = incColor.green;
+        }
         public TitleScreen(KingOfTheCastle game)
         {
             logo = game.Content.Load<Texture2D>("logo");
-            logoPos = new Rectangle(Globals.screenW/2-400, Globals.screenH/2-350, 800, 700);
-            textpos = new Vector2(Globals.screenW/2-300, (float)(Globals.screenH-Globals.screenH/9));
-            bg = new Color(255,0,0);
-          
+            music = game.Content.Load<SoundEffect>("Forward-Assault");
+            logoPos = new Rectangle(Globals.screenW / 2 - 400, Globals.screenH / 2 - 350, 800, 700);
+            textpos = new Vector2(Globals.screenW / 2 - 300, (float)(Globals.screenH - Globals.screenH / 9));
+            musicControl = music.CreateInstance();
+            bg = new Color(255, 0, 0);
+            time = 0;
+            seconds = 0;
+            musicControl.Volume = .3f;
+            musicControl.Play();
+
             currentColor = incColor.green;
         }
-
         public override void Update(GameTime gameTime)
-        {
+        { 
             GamePadState pad1 = GamePad.GetState(0);
             kb = Keyboard.GetState();
-            if (pad1.IsButtonDown(Buttons.Start) || pad1.IsButtonDown(Buttons.A)||kb.IsKeyDown(Keys.Space))//Will added this so he does not have to get a controller to test
+            if (pad1.IsButtonDown(Buttons.A)&&!previous.IsButtonDown(Buttons.A))//Will added this so he does not have to get a controller to test
             {
                 game.currentScreen = new Stage(game.round,this.game);
                 game.currentScreen.game = game;
+                musicControl.Stop();
             }
-            if(pad1.DPad.Up == ButtonState.Pressed)
+            if (pad1.IsButtonDown(Buttons.Y))
             {
-                game.currentScreen = new Shop(this.game);
+                game.currentScreen = new Help(this.game);
+                musicControl.Stop();
             }
-            switch(currentColor)
+            switch (currentColor)
             {
                 case incColor.green:
                     bg.G+=3;
@@ -92,7 +119,14 @@ namespace KingOfTheCastle
                         currentColor = incColor.green;
                     break;
             }
-            
+            if(seconds==80)
+            {
+                time = 0;
+                musicControl.Play();
+            }
+            time++;
+            seconds = time / 60.0;
+            previous = pad1;
 
         }
 
@@ -100,8 +134,22 @@ namespace KingOfTheCastle
         {
             game.GraphicsDevice.Clear(bg);
             game.spriteBatch.Draw(logo, logoPos, Color.White);
-            game.spriteBatch.DrawString(game.font, "     Press Start or A...\nPress Back or Escape to exit", textpos, Color.Black);
-            game.spriteBatch.DrawString(game.font, "Players Connected (" + game.getControllerCount() + " / 4)", new Vector2(1300, 20), Color.Black);
+            game.spriteBatch.DrawString(game.font, "  Press Start or A to Play\n     Press Y for Help\nPress Back or Escape to exit", textpos, Color.Black);
+            game.spriteBatch.DrawString(game.font, "Players Connected (" + game.getControllerCount() + " / 4)", new Vector2(screenAdjust(1300,"W"), screenAdjust(20,"H")), Color.Black);
+        }
+
+        public int screenAdjust(int value, string WorH)
+        {
+            int final = 0;
+            if (WorH == "H")
+            {
+                final = value * (Globals.screenH / 1080);
+            }
+            if (WorH == "W")
+            {
+                final = value * (Globals.screenW / 1920);
+            }
+            return final;
         }
     }
 }

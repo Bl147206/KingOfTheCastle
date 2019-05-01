@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace KingOfTheCastle
 {
     public class JumpQuest:Quest
     {
         int requiredJumpAmt;
+        Color titleColor;
         public JumpQuest(KingOfTheCastle game)
         {
             this.game = game;
@@ -30,6 +37,9 @@ namespace KingOfTheCastle
             {
                 playerCompletionProgress[i] = "0/"+requiredJumpAmt;
             }
+            titleColor = Color.White;
+            questComplete = game.Content.Load<SoundEffect>("questComplete");
+            crown = game.Content.Load<Texture2D>("crown");
             
         }
         public override void check()
@@ -45,8 +55,11 @@ namespace KingOfTheCastle
                         if (p.jumps >= requiredJumpAmt && !p.completedMainQuest)
                         {
                             p.completedMainQuest = true;
+                            winner = p;
                             isCompleted = true;
-                            p.gold += 10 + (5 * (game.round - 1));
+                            questComplete.Play();
+                            oldDisplay = display;
+                            p.gold += 15 + (5 * (game.round - 1));
                         }
                     }
                 }
@@ -54,6 +67,7 @@ namespace KingOfTheCastle
             if (isCompleted)
             {
                 yLoc -= yVel;
+                titleLoc.Y -= (float)yVel;
                 for (int x = 0; x < yLocPlayers.Length; x++)
                 {
                     yLocPlayers[x] -= yVel;
@@ -63,6 +77,8 @@ namespace KingOfTheCastle
                     yVel += .1;
                 display.Y = (int)yLoc;
                 timer++;
+                titleColor = Color.Gold;
+
             }
             
             
@@ -71,8 +87,14 @@ namespace KingOfTheCastle
 
         public override void Draw()
         {
+            if(isCompleted)
+            {
+                game.spriteBatch.Draw(game.test, oldDisplay, Color.Gray);
+                game.spriteBatch.Draw(crown, new Rectangle(oldDisplay.X + oldDisplay.Width / 2 - 50, oldDisplay.Y + 100, 100, 100), winner.playerColor);
+                game.spriteBatch.DrawString(game.smallFont, "      Player " + winner.playerNumber + " \ncompleted the quest!", new Vector2(Globals.screenW / 2 - 120, 10), winner.playerColor);
+            }
             game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
-            game.spriteBatch.DrawString(game.font, title, titleLoc, Color.White);
+            game.spriteBatch.DrawString(game.font, title, titleLoc, titleColor);
             for(int i=0;i<playerCompletionLocs.Length;i++)
             {
                 if(game.players[i]!=null)
@@ -80,6 +102,7 @@ namespace KingOfTheCastle
                 else
                     game.spriteBatch.DrawString(game.smallFont, playerCompletionProgress[i], playerCompletionLocs[i], Color.White);
             }
+            
             
         }
     }

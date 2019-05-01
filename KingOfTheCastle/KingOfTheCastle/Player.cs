@@ -28,6 +28,11 @@ namespace KingOfTheCastle
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
             maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer;
         public Color playerColor, rangedColor, meleeColor;
+        public Rectangle sourceRectangle;
+        Direction previousFacing;
+        int animationTimer;
+        SoundEffect meleeSound;
+        SoundEffect rangedSound;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
@@ -60,9 +65,9 @@ namespace KingOfTheCastle
             jumps = 0;
             facing = Direction.Right;
             completedMainQuest = false;
-
+            sourceRectangle = new Rectangle(0, 0, 64, 64);
             this.playerColor = rangedColor = meleeColor = color;
-
+            animationTimer = 0;//Used for walking animation so the character does not bounce too quickly
             mAttack = 2;
             mAttackSpeed = 0.50;
 
@@ -95,7 +100,10 @@ namespace KingOfTheCastle
             window = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             x = location.X;
             y = location.Y;
+            meleeSound = game.Content.Load<SoundEffect>("swordSoundO");
+            rangedSound = game.Content.Load<SoundEffect>("bowSoundO");
         }
+
 
         public void Update(Platform[] platforms)
         {
@@ -111,7 +119,7 @@ namespace KingOfTheCastle
                 kill();
             }
 
-            //shieldLogic(gamePad);
+            shieldLogic(gamePad);
 
             dashLogic(gamePad);
 
@@ -127,17 +135,23 @@ namespace KingOfTheCastle
 
             platformLogic(gamePad, platforms);
 
+            animationLogic();
+
             x += xVelocity;
             y += yVelocity;
             UpdatePosition(x, y);
+            previousFacing = facing;
+
 
             oldGamePad = gamePad;
         }
 
         public void shieldLogic(GamePadState gamePad)
         {
-            if(gamePad.IsButtonDown(Buttons.RightShoulder) )
+            shielding = false;
+            if(gamePad.IsButtonDown(Buttons.RightShoulder) && shieldHP > 0)
             {
+                shieldTimer = 0;
                 shielding = true;
             }
             else
@@ -146,19 +160,142 @@ namespace KingOfTheCastle
                 if(shieldTimer == shieldRechargeRate)
                 {
                     shieldHP++;
+                    shieldTimer = 0;
                     if(shieldHP > maxShieldHP)
                     {
                         shieldHP = maxShieldHP;
                     }
-                    shieldTimer = 0;
                 }
+            }
+        }
 
+        public void animationLogic()
+        {
+            animationTimer++;
+            if (yVelocity == 0)//No jumping
+            {
+                if (facing == Direction.Left && xVelocity == 0)//No movement, facing left
+                {
+                    sourceRectangle.X = 0;
+                    sourceRectangle.Y = 0;
+                    animationTimer = 0;
+                }
+                if (facing == Direction.Right && xVelocity == 0)//No movement, facing right.
+                {
+                    sourceRectangle.X = 0;
+                    sourceRectangle.Y = 64;
+                    animationTimer = 0;
+                }
+                if (facing == Direction.Left && xVelocity != 0)//No jump, moving left
+                {
+                    
+                    sourceRectangle.Y = 0;
+
+                    if (previousFacing == Direction.Right)
+                    {
+                        sourceRectangle.X = 0;
+                        animationTimer = 0;
+                    }
+                    else
+                    {
+                        if (animationTimer == 4)
+                        {
+                            animationTimer = 0;
+                            if (sourceRectangle.X != 320)
+                                sourceRectangle.X += 64;
+                            else
+                                sourceRectangle.X = 0;
+                        }
+                    }
+                }
+                if (facing == Direction.Right && xVelocity != 0)//No jump, moving left
+                {
+
+                    sourceRectangle.Y = 64;
+
+                    if (previousFacing == Direction.Left)
+                    {
+                        sourceRectangle.X = 0;
+                        animationTimer = 0;
+                    }
+                    else
+                    {
+                        if (animationTimer == 4)
+                        {
+                            animationTimer = 0;
+                            if (sourceRectangle.X != 320)
+                                sourceRectangle.X += 64;
+                            else
+                                sourceRectangle.X = 0;
+                        }
+                    }
+                }
+            }
+            if(yVelocity!=0)//In the air
+            {
+                animationTimer = 0;
+                if(facing ==Direction.Right)
+                {
+                    if (Math.Abs(yVelocity) >= 23)//Max Y
+                    {
+                        sourceRectangle.X = 4 * 64;
+                        sourceRectangle.Y = 2 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
+                    {
+                        sourceRectangle.X = 5* 64;
+                        sourceRectangle.Y = 2 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                    {
+                        sourceRectangle.X = 0;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                    {
+                        sourceRectangle.X = 1 * 64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 2 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
+                    {
+                        sourceRectangle.X = 2 * 64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                }
+                if (facing == Direction.Left)
+                {
+                    if(Math.Abs(yVelocity)>=23)//Max Y
+                    {
+                        sourceRectangle.X = 2 * 64;
+                        sourceRectangle.Y = 4 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 23&& Math.Abs(yVelocity)>=19)
+                    {
+                        sourceRectangle.X = 0;
+                        sourceRectangle.Y = 4 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                    {
+                        sourceRectangle.X = 5*64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                    {
+                        sourceRectangle.X = 4 * 64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                    if (Math.Abs(yVelocity) < 7 && Math.Abs(yVelocity) >0)//Almost 0 Velocity
+                    {
+                        sourceRectangle.X = 3 * 64;
+                        sourceRectangle.Y = 3 * 64;
+                    }
+                }
             }
         }
 
         public void dashLogic(GamePadState gamePad)
         {
-            if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0)
+            if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0 && !shielding)
             {// Dashing
                 double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
                 xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * (double) dashSpeed;
@@ -179,16 +316,17 @@ namespace KingOfTheCastle
         public void rangedLogic(GamePadState gamePad)
         {
             isRAttacking = false;
-            if(rAttackTimer == 0)
+            if(rAttackTimer == 0 && !shielding)
             {
                 if (gamePad.Triggers.Left > 0)
                 {
                     isRAttacking = true;
                     rangedAttack();
                     rAttackTimer = (int)(60 * rAttackSpeed);
+                    rangedSound.Play();
                 }
             }
-            else
+            else if (rAttackTimer > 0)
             {
                 rAttackTimer--;
             }
@@ -197,16 +335,17 @@ namespace KingOfTheCastle
         public void meleeLogic(GamePadState gamePad)
         {
             isMAttacking = false;
-            if(mAttackTimer == 0)
+            if(mAttackTimer == 0 && !shielding)
             {
                 if (gamePad.Triggers.Right > 0)
                 {
                     isMAttacking = true;
                     meleeAttack(new Rectangle(location.X, location.Y, 200, 200), mAttack);
                     mAttackTimer = (int) (60 * mAttackSpeed);
+                    meleeSound.Play();
                 }
             }
-            else
+            else if (mAttackTimer > 0)
             {
                 mAttackTimer--;
             }
@@ -214,7 +353,7 @@ namespace KingOfTheCastle
 
         public void platformLogic(GamePadState gamePad, Platform[] platforms)
         {
-            if (gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - heightUpToNotFallThrough)
+            if (gamePad.ThumbSticks.Left.Y < -.5 && location.Y + location.Height < Globals.screenH - heightUpToNotFallThrough && !shielding)
             {// let the player fall through platforms when they're holding down
                 fallingThroughPlatform = true;
             }
@@ -276,7 +415,7 @@ namespace KingOfTheCastle
 
         public void horizontalMovement(GamePadState gamePad)
         {
-            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing) //When holding down a stick x change
+            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing && !shielding) //When holding down a stick x change
             {
                 if(Math.Sign(xVelocity) != Math.Sign(gamePad.ThumbSticks.Left.X))
                 {
@@ -320,7 +459,7 @@ namespace KingOfTheCastle
 
         public void jumpLogic(GamePadState gamePad)
         {
-            if (onGround)
+            if (onGround && !shielding)
             {
                 if (gamePad.IsButtonDown(Buttons.A)) //jumping
                 {
@@ -339,7 +478,7 @@ namespace KingOfTheCastle
                     
                 }
             }
-            else if (!airJumpUsed)
+            else if (!airJumpUsed && !shielding)
             {
                 if (gamePad.IsButtonDown(Buttons.A) && !oldGamePad.IsButtonDown(Buttons.A)) 
                 {
@@ -385,12 +524,22 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-            game.spriteBatch.Draw(texture, location, playerColor);
-            game.spriteBatch.DrawString(game.font, health.ToString() + " " + kills, 
-                new Vector2(playerNumber * 100, Globals.screenH - game.font.LineSpacing * 1), playerColor);
+            if(shielding)
+            { //Shielding textures
+                game.spriteBatch.Draw(texture,  location, sourceRectangle, Color.Black);
+            }
+            else
+            { //Normal textures
+                game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
+            }
+            game.spriteBatch.DrawString(game.font, "P1| HP: "+health.ToString() + " Kills: " + kills+" |", 
+                new Vector2(playerNumber * 150, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
             {// temp stuff for weapon testing
-                game.spriteBatch.Draw(game.test, attackRec, meleeColor);
+                if(facing==Direction.Left)
+                    game.spriteBatch.Draw(game.swordAttackT, attackRec,new Rectangle(0,0,64,64), meleeColor, 0,new Vector2(0,0),SpriteEffects.FlipHorizontally,0);
+                else
+                    game.spriteBatch.Draw(game.swordAttackT, attackRec, meleeColor);
             }
         }
 
@@ -408,12 +557,15 @@ namespace KingOfTheCastle
         public void damage(int damageAmount, int attacker)
         {
             if (shielding)
-            {
+            { //Shield blocks
                 shieldHP -= damageAmount;
                 if(shieldHP < 0)
-                {
+                { //if the attack did more damage than the shield can block
                     damageAmount = shieldHP * -1;
-                    shieldHP = 0;
+                }
+                else
+                { //if the shield blocks all the damage just return
+                    return;
                 }
             }
             health -= damageAmount;
