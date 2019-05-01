@@ -18,6 +18,8 @@ namespace KingOfTheCastle
         public string title;
         public Vector2 titleLoc;
         public Rectangle display;
+        public Rectangle oldDisplay;
+        public Texture2D crown;
         public bool isCompleted=false;
         public int timer=0;
         public double yVel=.1;
@@ -25,6 +27,8 @@ namespace KingOfTheCastle
         public Vector2[] playerCompletionLocs=new Vector2[4];
         public double[] yLocPlayers = new double[4];
         public string[] playerCompletionProgress=new string[4];
+        public SoundEffect questComplete;
+        public Player winner;
         public abstract void check();
         public abstract void Draw();
     }
