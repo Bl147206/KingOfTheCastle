@@ -82,6 +82,7 @@
     <Compile Include="KingOfTheCastle.cs" />
     <Compile Include="Quests\JumpQuest.cs" />
     <Compile Include="Quests\Quest.cs" />
+    <Compile Include="Screens\Help.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\Stage.cs" />
     <Compile Include="Screens\TitleScreen.cs" />

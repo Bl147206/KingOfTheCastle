@@ -36,7 +36,7 @@ namespace KingOfTheCastle
         string[,] stats = new string[4, 3];
         SoundEffect buyItem;
         SoundEffect click;
-        int soundTime = 0;
+        SpriteFont timerFont;
 
         public Shop(KingOfTheCastle game)
         {
@@ -96,6 +96,7 @@ namespace KingOfTheCastle
                     playerPad0[p.playerNumber - 1] = p.oldGamePad;
                 }
             }
+            timerFont = game.Content.Load<SpriteFont>("storetimeFont");
             this.game = game;
         }
         public override void Update(GameTime gameTime) {
@@ -341,8 +342,11 @@ namespace KingOfTheCastle
                     
                     break;
                 }
+            if(10 - (frames / 60)>=10)
+            game.spriteBatch.DrawString(timerFont, "Time Left\n        "+(10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
+            else
+                game.spriteBatch.DrawString(timerFont, "Time Left\n         " + (10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
 
-            
             //Gold placement: P1: 800,400   P2: 1850,400    P3: 800,1000    P4: 1850,1000
 
         }

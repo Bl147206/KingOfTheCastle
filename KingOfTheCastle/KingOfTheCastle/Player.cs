@@ -104,6 +104,7 @@ namespace KingOfTheCastle
             rangedSound = game.Content.Load<SoundEffect>("bowSoundO");
         }
 
+
         public void Update(Platform[] platforms)
         {
             GamePadState gamePad = GamePad.GetState(playerIndex);
