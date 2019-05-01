@@ -61,7 +61,7 @@ namespace KingOfTheCastle
                 if(p!=null)
                     p.spawn();
             }
-            quest = new JumpQuest(this.game);
+            quest = new FirstKillQuest(this.game);
 
             killLevel = (int) (Globals.screenH * 1.4);
             musicControl.Play();
