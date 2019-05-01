@@ -28,7 +28,7 @@ namespace KingOfTheCastle
         public double[] yLocPlayers = new double[4];
         public string[] playerCompletionProgress=new string[4];
         public SoundEffect questComplete;
-        public Player winner;
+        public Player winner=null;
         public abstract void check();
         public abstract void Draw();
     }
