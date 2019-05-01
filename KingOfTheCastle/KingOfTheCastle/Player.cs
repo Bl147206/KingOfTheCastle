@@ -616,7 +616,7 @@ namespace KingOfTheCastle
             attackRec = weaponHitbox;
             foreach(Player p in game.players)
             {
-                if(p != null && p != this)
+                if(p != null && p != this && p.IsAlive())
                 {
                     if (weaponHitbox.Intersects(p.location))
                     {
