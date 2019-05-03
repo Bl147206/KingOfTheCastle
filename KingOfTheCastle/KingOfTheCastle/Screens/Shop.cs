@@ -37,6 +37,7 @@ namespace KingOfTheCastle
         SoundEffect buyItem;
         SoundEffect click;
         SpriteFont timerFont;
+        int startTime;
 
 
         public Shop(KingOfTheCastle game)
@@ -86,7 +87,8 @@ namespace KingOfTheCastle
             items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
 
             frames = 0;
-            seconds = 20;
+            startTime = 30;
+            seconds = startTime;
             timeleft = "" + seconds;
             game.round++;
             goldTotals = new int[game.getControllerCount()];
@@ -269,7 +271,7 @@ namespace KingOfTheCastle
             playerPad0[3] = playerPad[3];
             frames++;
             timeleft = "" + ((60 * seconds - frames) / 60 + 1);
-            if (frames >= 60 * (10))
+            if (frames >= 60 * (startTime))
             {
                 game.currentScreen = new Stage(game.round, this.game);
             }
@@ -344,10 +346,10 @@ namespace KingOfTheCastle
                     
                     break;
                 }
-            if(10 - (frames / 60)>=10)
-            game.spriteBatch.DrawString(timerFont, "Time Left\n        "+(10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
+            if(startTime - (frames / 60)>=10)
+            game.spriteBatch.DrawString(timerFont, "Time Left\n        "+(startTime - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
             else
-                game.spriteBatch.DrawString(timerFont, "Time Left\n         " + (10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
+                game.spriteBatch.DrawString(timerFont, "Time Left\n         " + (startTime - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
 
             //Gold placement: P1: 800,400   P2: 1850,400    P3: 800,1000    P4: 1850,1000
 
