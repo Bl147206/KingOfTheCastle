@@ -16,7 +16,7 @@ namespace KingOfTheCastle {
                 string part2 = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];
                 string name = part1 + " " + part2;
 
-                var kind = (Weapon.Kind)Globals.rng.Next(2);
+                var kind = (Weapon.Kind)Globals.rng.Next(3);
 
                 int attack = Globals.rng.Next(currentRound * 2) + currentRound + 2;
                 double attackSpeed = (Globals.rng.NextDouble() + .2) * .4 + currentRound * .2;
@@ -29,6 +29,9 @@ namespace KingOfTheCastle {
                         break;
                     case Weapon.Kind.ranged:
                         weapons[index]=(new Ranged(name, attack, attackSpeed, 2*attack+(int)((1/attackSpeed)*2), game.bowTexture));
+                        break;
+                    case Weapon.Kind.armor:
+                        weapons[index] = (new Armor(name, armorBonus, armorBonus, game.questBackdrop));
                         break;
 
                 }

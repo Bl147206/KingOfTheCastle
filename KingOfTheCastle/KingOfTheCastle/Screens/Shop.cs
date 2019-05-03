@@ -67,10 +67,15 @@ namespace KingOfTheCastle
                     speed = speed.Substring(0, 5);
                     if (inventories[x].weapons[y].texture == game.swordTexture)
                         type = "Melee";
-                    else
+                    else if (inventories[x].weapons[y].texture == game.bowTexture)
                         type = "Ranged";
+                    else
+                        type = "Armor";
+                    if(type!="Armor")
                     stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nAttack Speed: " + speed + "\nDamage: " 
                         + inventories[x].weapons[y].attack;
+                    else
+                        stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nArmor: " + inventories[x].weapons[y].armorBonus;
                 }
             }
             items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));

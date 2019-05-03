@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 namespace KingOfTheCastle {
     abstract class Weapon {
         public enum Kind: int {
-            melee, ranged
+            melee, ranged, armor
         }
 
         public int attack;
@@ -54,7 +54,7 @@ namespace KingOfTheCastle {
 
     class Armor : Weapon
     {
-        public new readonly Kind kind = Kind.ranged;
+        public new readonly Kind kind = Kind.armor;
 
         public Armor(string name, int armorBonus, int cost, Texture2D armor)
         {
