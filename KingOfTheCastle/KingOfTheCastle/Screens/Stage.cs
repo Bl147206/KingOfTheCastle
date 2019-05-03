@@ -30,6 +30,7 @@ namespace KingOfTheCastle
         SoundEffect winSound;
         SoundEffect music;
         SoundEffectInstance musicControl;
+        Bar timer;
 
         //Rectangle rect = new Rectangle(0, 0, 20, 20);
 
@@ -65,9 +66,13 @@ namespace KingOfTheCastle
             }
             quest = new FirstKillQuest(this.game);
 
+            timer = new Bar(seconds,seconds, new Rectangle(20, 20, 300, 50), Color.Gray,game);
+
             killLevel = (int) (Globals.screenH * 1.4);
             musicControl.Play();
         }
+
+
         public override void Update(GameTime gameTime)
         {
             kb = Keyboard.GetState();
@@ -135,7 +140,7 @@ namespace KingOfTheCastle
                     }
                 }
             }
-
+            timer.update(int.Parse(timeleft));
             if (roundOver)
             {
                 if (game.round == 9) {
@@ -176,7 +181,8 @@ namespace KingOfTheCastle
                 }
             }
             quest.Draw();
-            game.spriteBatch.Draw(game.test, new Rectangle(20, 20, 3 * int.Parse(timeleft), 50), Color.Gray);
+            timer.draw();
+            //game.spriteBatch.Draw(game.test, new Rectangle(20, 20, 3 * int.Parse(timeleft), 50), Color.Gray); //Timer bar
             projectiles.draw();
 
             if (isPaused) {
