@@ -61,7 +61,6 @@ namespace KingOfTheCastle
             heightUpToNotFallThrough = 180; //distance from the bottom of the screen you stop being able to fall through platforms at
             fallingThroughPlatform = false;
             isAlive = true;
-            mAttackSpeed = .5;
             kills = 0;
             jumps = 0;
             roundKills = 0;
@@ -71,10 +70,10 @@ namespace KingOfTheCastle
             this.playerColor = rangedColor = meleeColor = color;
             animationTimer = 0;//Used for walking animation so the character does not bounce too quickly
             mAttack = 2;
-            mAttackSpeed = 0.50;
+            mAttackSpeed = .5;
 
             rAttack = 2;
-            rAttackSpeed = 0.65;
+            rAttackSpeed = .65;
 
             this.game = game;
             location = spawnLocation;
@@ -322,7 +321,7 @@ namespace KingOfTheCastle
                 {
                     isRAttacking = true;
                     rangedAttack();
-                    rAttackTimer = (int)(60 * rAttackSpeed);
+                    rAttackTimer = (int)(60 * (1/rAttackSpeed));
                     rangedSound.Play();
                 }
             }
@@ -341,7 +340,7 @@ namespace KingOfTheCastle
                 {
                     isMAttacking = true;
                     meleeAttack(new Rectangle(location.X, location.Y, 200, 200), mAttack);
-                    mAttackTimer = (int) (60 * mAttackSpeed);
+                    mAttackTimer = (int) (60 * (1/mAttackSpeed));
                     meleeSound.Play();
                 }
             }
