@@ -5,7 +5,9 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KingOfTheCastle", "KingOfTheCastle\KingOfTheCastle\KingOfTheCastle.csproj", "{8945D603-162F-498D-AF2F-E3301E3D9F46}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "KingOfTheCastleContent", "KingOfTheCastle\KingOfTheCastleContent\KingOfTheCastleContent.contentproj", "{CC6A3DCF-C4A4-4FE7-9663-C1DBAD2400CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KingOfTheCastleContent", "KingOfTheCastle\KingOfTheCastleContent\KingOfTheCastleContent.contentproj", "{CC6A3DCF-C4A4-4FE7-9663-C1DBAD2400CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{246EDE55-993B-41AE-947A-C928934EC258}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

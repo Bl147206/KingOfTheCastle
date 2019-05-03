@@ -24,6 +24,7 @@ namespace KingOfTheCastle
         Quest quest;
         bool roundOver;
         int overTimer;
+        int platformThickness;
         Player winner;
         int background;
         SoundEffect winSound;
@@ -39,11 +40,14 @@ namespace KingOfTheCastle
             winSound = game.Content.Load<SoundEffect>("Applause");
             musicControl = music.CreateInstance();
             background =Globals.rng.Next(0,game.backgrounds.Length);
-            platforms[0] = new Platform(new Vector2(Globals.screenW/2, Globals.screenH - 100), Globals.screenW - 200, 5);
+
+            platformThickness = 15;
+
+            platforms[0] = new Platform(new Vector2(Globals.screenW/2, Globals.screenH - 100), Globals.screenW - 200, platformThickness);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"H") - screenAdjust(120,"H"))), Globals.rng.Next(100, 750), 5);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"H") - screenAdjust(120,"H"))), Globals.rng.Next(100, 750), platformThickness);
             }
             frames = 0;
             musicControl.Volume = .3f;
