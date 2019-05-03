@@ -33,6 +33,7 @@ namespace KingOfTheCastle
         int animationTimer;
         SoundEffect meleeSound;
         SoundEffect rangedSound;
+        Bar shieldBar;
         //more specific x and y coords
         public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
 
@@ -103,6 +104,8 @@ namespace KingOfTheCastle
             y = location.Y;
             meleeSound = game.Content.Load<SoundEffect>("swordSoundO");
             rangedSound = game.Content.Load<SoundEffect>("bowSoundO");
+
+            shieldBar = new Bar(maxShieldHP, shieldHP, new Rectangle(((playerNumber - 1) * 400) + 100,Globals.screenH - 80, 330, 20), color, game);
         }
 
 
@@ -138,6 +141,7 @@ namespace KingOfTheCastle
             UpdatePosition(x, y);
             previousFacing = facing;
 
+            shieldBar.update(shieldHP);
 
             oldGamePad = gamePad;
         }
@@ -537,6 +541,7 @@ namespace KingOfTheCastle
                 else
                     game.spriteBatch.Draw(game.swordAttackT, attackRec, meleeColor);
             }
+            shieldBar.draw();
         }
 
         public bool IsAlive()

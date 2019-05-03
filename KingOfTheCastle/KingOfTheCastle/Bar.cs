@@ -14,7 +14,7 @@ namespace KingOfTheCastle
     class Bar
     {
 
-        int max;
+        public int max;
         public int current;
         Rectangle maxBar, displayRec;
         Color color;
