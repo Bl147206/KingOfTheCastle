@@ -602,6 +602,7 @@ namespace KingOfTheCastle
             completedMainQuest = false;
             jumps = 0;
             roundKills = 0;
+            shieldHP = maxShieldHP;
         }
 
         public void meleeAttack(Rectangle weaponHitbox, int weaponDamage)
