@@ -63,8 +63,7 @@ namespace KingOfTheCastle
                     itemsT[x, y] = inventories[x].weapons[y].texture;
                     itemsC[x, y] = inventories[x].weapons[y].color;
                     string type = "";
-                    string speed = 1/inventories[x].weapons[y].attackSpeed+"";
-                    speed = speed.Substring(0, 5);
+                    string speed = Math.Round(1/inventories[x].weapons[y].attackSpeed,2)+"";
                     if (inventories[x].weapons[y].texture == game.swordTexture)
                         type = "Melee";
                     else if (inventories[x].weapons[y].texture == game.bowTexture)
@@ -78,18 +77,18 @@ namespace KingOfTheCastle
                         stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nArmor: " + inventories[x].weapons[y].armorBonus;
                 }
             }
-            items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
-            items[0, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(185, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//185
-            items[0, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(360, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//360
-            items[1, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
-            items[1, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(175, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//175
-            items[1, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(350, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//350
-            items[2, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
-            items[2, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//770
-            items[2, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
-            items[3, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));
-            items[3, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//770
-            items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
+            items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+            items[0, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(185, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//185
+            items[0, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(360, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//360
+            items[1, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+            items[1, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(175, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//175
+            items[1, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(350, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//350
+            items[2, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+            items[2, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//770
+            items[2, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//945
+            items[3, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+            items[3, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//770
+            items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//945
 
             frames = 0;
             startTime = 10;
@@ -161,6 +160,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[0].color;
                             }
+                            if (inventories[x].weapons[0].texture == game.armorTexture)
+                            {
+                                game.players[x].maxHealth = 20 + inventories[x].weapons[0].armorBonus;
+                            }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
 
                             itemsT[x, 0] = blank;
@@ -184,6 +187,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[1].color;
                             }
+                            if (inventories[x].weapons[1].texture == game.armorTexture)
+                            {
+                                game.players[x].maxHealth = 20 + inventories[x].weapons[0].armorBonus;
+                            }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
 
                             itemsT[x, 1] = blank;
@@ -206,6 +213,10 @@ namespace KingOfTheCastle
                                 game.players[x].rAttack = inventories[x].weapons[2].attack;
                                 game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[2].color;
+                            }
+                            if (inventories[x].weapons[2].texture == game.armorTexture)
+                            {
+                                game.players[x].maxHealth = 20 + inventories[x].weapons[2].armorBonus;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
 

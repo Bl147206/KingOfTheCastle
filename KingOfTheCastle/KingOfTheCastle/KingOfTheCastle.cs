@@ -38,6 +38,7 @@ namespace KingOfTheCastle
         public SpriteFont playerFont;
         public Texture2D arrow;
         public Texture2D arrowF;
+        public Texture2D armorTexture;
 
         public KingOfTheCastle()
         {
@@ -127,6 +128,7 @@ namespace KingOfTheCastle
             swordAttackT = Content.Load<Texture2D>("swordSwipe");
             arrow = Content.Load<Texture2D>("arrow");
             arrowF = Content.Load<Texture2D>("arrowF");
+            armorTexture = Content.Load<Texture2D>("Armor");
 
             for(int x = 0; x<backgrounds.Length;x++)
             {

@@ -229,13 +229,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="help1.PNG">
-      <Name>help1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="help2.PNG">
       <Name>help2</Name>
       <Importer>TextureImporter</Importer>
@@ -266,6 +259,20 @@
   <ItemGroup>
     <Compile Include="arrowF.png">
       <Name>arrowF</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Armor.png">
+      <Name>Armor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="help1.PNG">
+      <Name>help1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

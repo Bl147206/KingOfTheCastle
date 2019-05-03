@@ -31,7 +31,7 @@ namespace KingOfTheCastle {
                         weapons[index]=(new Ranged(name, attack, attackSpeed, 2*attack+(int)((1/attackSpeed)*2), game.bowTexture));
                         break;
                     case Weapon.Kind.armor:
-                        weapons[index] = (new Armor(name, armorBonus, armorBonus, game.questBackdrop));
+                        weapons[index] = (new Armor(name, armorBonus, armorBonus+(armorBonus/3), game.armorTexture));
                         break;
 
                 }
