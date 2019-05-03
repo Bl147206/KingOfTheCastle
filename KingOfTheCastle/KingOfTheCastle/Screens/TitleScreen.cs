@@ -35,23 +35,8 @@ namespace KingOfTheCastle
         incColor currentColor;
         KeyboardState kb;
         GamePadState previous;
-        public TitleScreen(KingOfTheCastle game, GamePadState previous)
-        {
-            logo = game.Content.Load<Texture2D>("logo");
-            music = game.Content.Load<SoundEffect>("Forward-Assault");
-            logoPos = new Rectangle(Globals.screenW/2-400, Globals.screenH/2-350, 800, 700);
-            textpos = new Vector2(Globals.screenW/2-300, (float)(Globals.screenH-Globals.screenH/7));
-            musicControl= music.CreateInstance();
-            bg = new Color(255,0,0);
-            time = 0;
-            seconds = 0;
-            musicControl.Volume = .3f;
-            musicControl.Play();
-            this.previous = previous;
-            currentColor = incColor.green;
-        }
-        public TitleScreen(KingOfTheCastle game)
-        {
+
+        public TitleScreen(KingOfTheCastle game) {
             logo = game.Content.Load<Texture2D>("logo");
             music = game.Content.Load<SoundEffect>("Forward-Assault");
             logoPos = new Rectangle(Globals.screenW / 2 - 400, Globals.screenH / 2 - 350, 800, 700);
@@ -64,7 +49,14 @@ namespace KingOfTheCastle
             musicControl.Play();
 
             currentColor = incColor.green;
+            this.game = game;
         }
+
+        public TitleScreen(KingOfTheCastle game, GamePadState previous) : this(game)
+        {
+            this.previous = previous;
+        }
+        
         public override void Update(GameTime gameTime)
         { 
             GamePadState pad1 = GamePad.GetState(0);

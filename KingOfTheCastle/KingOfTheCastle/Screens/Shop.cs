@@ -37,6 +37,7 @@ namespace KingOfTheCastle
         SoundEffect buyItem;
         SoundEffect click;
         SpriteFont timerFont;
+        int startTime;
 
 
         public Shop(KingOfTheCastle game)
@@ -86,9 +87,9 @@ namespace KingOfTheCastle
             items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
 
             frames = 0;
-            seconds = 20;
+            startTime = 10;
+            seconds = startTime;
             timeleft = "" + seconds;
-            game.round++;
             goldTotals = new int[game.getControllerCount()];
             foreach(Player p in game.players)
             {
@@ -146,13 +147,13 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[0].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[0].attack;
-                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[0].attackSpeed;
                                 game.players[x].meleeColor = inventories[x].weapons[0].color;
                             }
                             if (inventories[x].weapons[0].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[0].attack;
-                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[0].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
@@ -169,13 +170,13 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[1].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[1].attack;
-                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[1].attackSpeed;
                                 game.players[x].meleeColor = inventories[x].weapons[1].color;
                             }
                             if (inventories[x].weapons[1].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[1].attack;
-                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[1].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
@@ -192,13 +193,13 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[2].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[2].attack;
-                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[2].attackSpeed;
                                 game.players[x].meleeColor = inventories[x].weapons[2].color;
                             }
                             if (inventories[x].weapons[2].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[2].attack;
-                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[2].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
@@ -269,8 +270,9 @@ namespace KingOfTheCastle
             playerPad0[3] = playerPad[3];
             frames++;
             timeleft = "" + ((60 * seconds - frames) / 60 + 1);
-            if (frames >= 60 * (10))
+            if (frames >= 60 * (startTime))
             {
+                game.round++;
                 game.currentScreen = new Stage(game.round, this.game);
             }
         }
@@ -344,10 +346,10 @@ namespace KingOfTheCastle
                     
                     break;
                 }
-            if(10 - (frames / 60)>=10)
-            game.spriteBatch.DrawString(timerFont, "Time Left\n        "+(10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
+            if(startTime - (frames / 60)>=10)
+            game.spriteBatch.DrawString(timerFont, "Time Left\n        "+(startTime - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
             else
-                game.spriteBatch.DrawString(timerFont, "Time Left\n         " + (10 - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
+                game.spriteBatch.DrawString(timerFont, "Time Left\n         " + (startTime - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
 
             //Gold placement: P1: 800,400   P2: 1850,400    P3: 800,1000    P4: 1850,1000
 
