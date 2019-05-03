@@ -567,7 +567,8 @@ namespace KingOfTheCastle
             if(health <= 0)
             {
                 kill();
-                game.players[attacker-1].kills += 1;
+                game.players[attacker - 1].kills += 1;
+                game.players[attacker - 1].gold += 10;
             }
         }
 

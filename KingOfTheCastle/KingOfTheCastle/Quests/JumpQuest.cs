@@ -20,8 +20,7 @@ namespace KingOfTheCastle
         {
             this.game = game;
             requiredJumpAmt = (int)Math.Round((double)(game.round)/3 * Globals.rng.Next(5,10));
-            title = "JUMP " + requiredJumpAmt + " TIMES";
-            display = new Rectangle(Globals.screenW / 2 - 150, 0, 300, 200);
+            title = "JUMP " + requiredJumpAmt + " TIMES";            
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
             yLoc = display.Y;
             
@@ -73,11 +72,21 @@ namespace KingOfTheCastle
                     yLocPlayers[x] -= yVel;
                     playerCompletionLocs[x].Y = (int)yLocPlayers[x];
                 }
-                if(timer>30&&timer<60)
+                if(timer>30&&timer<60||timer>630&&timer<660)
                     yVel += .1;
                 display.Y = (int)yLoc;
                 timer++;
                 titleColor = Color.Gold;
+                if (timer == 600)
+                {
+                    yVel = .1;
+                    yLoc = oldDisplay.Y;
+                }
+                if (timer >= 600)
+                {
+                    winnerText.Y -= (float)yVel;
+                    oldDisplay.Y = (int)yLoc;
+                }
 
             }
             
@@ -91,9 +100,10 @@ namespace KingOfTheCastle
             {
                 game.spriteBatch.Draw(game.test, oldDisplay, Color.Gray);
                 game.spriteBatch.Draw(crown, new Rectangle(oldDisplay.X + oldDisplay.Width / 2 - 50, oldDisplay.Y + 100, 100, 100), winner.playerColor);
-                game.spriteBatch.DrawString(game.smallFont, "      Player " + winner.playerNumber + " \ncompleted the quest!", new Vector2(Globals.screenW / 2 - 120, 10), winner.playerColor);
+                game.spriteBatch.DrawString(game.smallFont, "      Player " + winner.playerNumber + " \ncompleted the quest!", winnerText, winner.playerColor);
             }
-            game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
+            if(timer<599)
+                game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
             game.spriteBatch.DrawString(game.font, title, titleLoc, titleColor);
             for(int i=0;i<playerCompletionLocs.Length;i++)
             {
