@@ -59,8 +59,6 @@ namespace KingOfTheCastle
             
             
             currentScreen = new TitleScreen(this);
-            //currentScreen = new Stage(0);
-            currentScreen.game = this;
             backgrounds = new Texture2D[7];
             players = new Player[4];
 
