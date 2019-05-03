@@ -54,8 +54,6 @@ namespace KingOfTheCastle
             seconds = 100;
             timeleft = ""+seconds;
 
-           
-
             foreach (Player p in game.players)
             {
                 if(p!=null)
@@ -124,17 +122,20 @@ namespace KingOfTheCastle
                     frames = 0;
                     foreach(Player p in game.players)
                     {
-                        if (p != null)
-                            if (p.IsAlive())
+                        if (p != null) {
+                            if (p.IsAlive()) {
                                 winner = p;
-
+                                p.numRoundsWon += 1;
+                            }
+                        }
                     }
                 }
             }
+
             if (roundOver)
             {
                 if (game.round == 9) {
-
+                    
                 }
 
                 if (frames >= 180)
