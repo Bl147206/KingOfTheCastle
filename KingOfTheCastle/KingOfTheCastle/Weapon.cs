@@ -50,4 +50,19 @@ namespace KingOfTheCastle {
             color = new Color(Globals.rng.Next(50,200), Globals.rng.Next(50,200), Globals.rng.Next(50,200));
         }
     }
+
+    class Armor : Weapon
+    {
+        public new readonly Kind kind = Kind.ranged;
+
+        public Armor(string name, int attack, double attackSpeed, int cost, Texture2D bow)
+        {
+            this.name = name;
+            this.attack = attack;
+            this.attackSpeed = attackSpeed;
+            this.cost = cost;
+            texture = bow;
+            color = new Color(Globals.rng.Next(50, 200), Globals.rng.Next(50, 200), Globals.rng.Next(50, 200));
+        }
+    }
 }
