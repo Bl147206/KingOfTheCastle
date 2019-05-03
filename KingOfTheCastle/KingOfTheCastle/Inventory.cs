@@ -7,9 +7,6 @@ namespace KingOfTheCastle {
     class Inventory {
         public Weapon[] weapons;
         int index = 0;
-        int attack;
-        double attackSpeed;
-        int armorBonus;
         public Inventory(int currentRound,KingOfTheCastle game) {
             this.weapons = new Weapon[3];
 
@@ -21,9 +18,9 @@ namespace KingOfTheCastle {
 
                 var kind = (Weapon.Kind)Globals.rng.Next(2);
 
-                    attack = Globals.rng.Next(currentRound * 3, currentRound*5);
-                    attackSpeed = (Globals.rng.NextDouble() + .2) * (1/currentRound);
-                    armorBonus = Globals.rng.Next(currentRound * 2, currentRound * 10);
+                int attack = Globals.rng.Next(currentRound * 2) + currentRound + 2;
+                double attackSpeed = (Globals.rng.NextDouble() + .2) * .4 + currentRound * .2;
+                int armorBonus = Globals.rng.Next(currentRound * 2, currentRound * 10);
 
                 switch (kind) {
                     case Weapon.Kind.melee:
