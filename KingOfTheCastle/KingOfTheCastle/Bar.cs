@@ -18,13 +18,15 @@ namespace KingOfTheCastle
         public int current;
         Rectangle maxBar, displayRec;
         Color color;
+        KingOfTheCastle game;
 
-        public Bar(int max, int current, Rectangle maxBar, Color color)
+        public Bar(int max, int current, Rectangle maxBar, Color color, KingOfTheCastle game)
         {
             this.max = max;
             this.current = current;
             this.maxBar = maxBar;
             this.color = color;
+            this.game = game;
 
             displayRec = maxBar;
         }
@@ -34,9 +36,15 @@ namespace KingOfTheCastle
             displayRec.Width = (int) (maxBar.Width * (double)current / max);
         }
 
-        public void draw(SpriteBatch spriteBatch)
+        public void update(int current)
         {
-            
+            this.current = current;
+            displayRec.Width = (int)(maxBar.Width * (double)current / max);
+        }
+
+        public void draw()
+        {
+            game.spriteBatch.Draw(game.test, displayRec, color);
         }
 
     }
