@@ -21,7 +21,7 @@ namespace KingOfTheCastle {
                 var kind = (Weapon.Kind)Globals.rng.Next(2);
 
                     attack = Globals.rng.Next(currentRound * 3, currentRound*5);
-                    attackSpeed = (Globals.rng.NextDouble() + .2) * .4 + currentRound * .2;
+                    attackSpeed = (Globals.rng.NextDouble() + .2) * .2 + currentRound * 1.2;
 
                 switch (kind) {
                     case Weapon.Kind.melee:
