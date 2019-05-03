@@ -36,7 +36,7 @@ namespace KingOfTheCastle
                 {
                     if(p!=null)
                     {
-                        if(p.kills>=1&&!p.completedMainQuest)
+                        if(p.roundKills>=1&&!p.completedMainQuest)
                         {
                             p.completedMainQuest = true;
                             isCompleted = true;

@@ -26,7 +26,7 @@ namespace KingOfTheCastle
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, numRoundsWon;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
         Direction previousFacing;
@@ -63,6 +63,7 @@ namespace KingOfTheCastle
             mAttackSpeed = .5;
             kills = 0;
             jumps = 0;
+            roundKills = 0;
             facing = Direction.Right;
             completedMainQuest = false;
             sourceRectangle = new Rectangle(0, 0, 64, 64);
@@ -568,6 +569,7 @@ namespace KingOfTheCastle
             {
                 kill();
                 game.players[attacker - 1].kills += 1;
+                game.players[attacker - 1].roundKills++;
                 game.players[attacker - 1].gold += 10;
             }
         }
@@ -594,6 +596,7 @@ namespace KingOfTheCastle
             x = location.X;
             completedMainQuest = false;
             jumps = 0;
+            roundKills = 0;
         }
 
         public void meleeAttack(Rectangle weaponHitbox, int weaponDamage)
@@ -624,22 +627,25 @@ namespace KingOfTheCastle
         public void rangedAttack()
         {
             Stage stage = (Stage) game.currentScreen;
+            Texture2D tex=null;
             int pXVel = 20;
-            Rectangle pHitBox = new Rectangle(0,0,40,10);
+            Rectangle pHitBox = new Rectangle(0,0,60,15);
             switch (facing)
             {
                 case Direction.Left:
                     pXVel *= -1;
                     pHitBox.X = location.X - pHitBox.Width;
+                    tex = game.arrow;
                     break;
                 case Direction.Right:
                     pXVel *= 1;
                     pHitBox.X = location.X + location.Width;
+                    tex = game.arrowF;
                     break;
             }
             pHitBox.Y = (int)((double)location.Y + ((double)location.Height / 2) - ((double)pHitBox.Height / 2));
             ProjectileHandler.Projectile projectile;
-            projectile = new ProjectileHandler.Projectile(game.test, pHitBox, playerNumber, pXVel, rAttack, rangedColor);
+            projectile = new ProjectileHandler.Projectile(tex, pHitBox, playerNumber, pXVel, rAttack, rangedColor);
             stage.projectiles.add(projectile);
         }
     }
