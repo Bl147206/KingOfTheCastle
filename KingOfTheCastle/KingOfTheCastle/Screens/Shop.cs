@@ -87,10 +87,9 @@ namespace KingOfTheCastle
             items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//945
 
             frames = 0;
-            startTime = 30;
+            startTime = 10;
             seconds = startTime;
             timeleft = "" + seconds;
-            game.round++;
             goldTotals = new int[game.getControllerCount()];
             foreach(Player p in game.players)
             {
@@ -148,13 +147,13 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[0].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[0].attack;
-                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[0].attackSpeed;
                                 game.players[x].meleeColor = inventories[x].weapons[0].color;
                             }
                             if (inventories[x].weapons[0].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[0].attack;
-                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[0].attackSpeed;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[0].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[0].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
@@ -171,13 +170,13 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[1].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[1].attack;
-                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[1].attackSpeed;
                                 game.players[x].meleeColor = inventories[x].weapons[1].color;
                             }
                             if (inventories[x].weapons[1].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[1].attack;
-                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[1].attackSpeed;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[1].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[1].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
@@ -194,13 +193,13 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[2].texture == game.swordTexture)
                             {
                                 game.players[x].mAttack = inventories[x].weapons[2].attack;
-                                game.players[x].mAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].mAttackSpeed = inventories[x].weapons[2].attackSpeed;
                                 game.players[x].meleeColor = inventories[x].weapons[2].color;
                             }
                             if (inventories[x].weapons[2].texture == game.bowTexture)
                             {
                                 game.players[x].rAttack = inventories[x].weapons[2].attack;
-                                game.players[x].rAttackSpeed = 1/inventories[x].weapons[2].attackSpeed;
+                                game.players[x].rAttackSpeed = inventories[x].weapons[2].attackSpeed;
                                 game.players[x].rangedColor = inventories[x].weapons[2].color;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
@@ -273,6 +272,7 @@ namespace KingOfTheCastle
             timeleft = "" + ((60 * seconds - frames) / 60 + 1);
             if (frames >= 60 * (startTime))
             {
+                game.round++;
                 game.currentScreen = new Stage(game.round, this.game);
             }
         }
