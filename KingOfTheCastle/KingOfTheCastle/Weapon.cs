@@ -55,7 +55,7 @@ namespace KingOfTheCastle {
     {
         public new readonly Kind kind = Kind.ranged;
 
-        public Ranged(string name, int attack, double attackSpeed, int cost, Texture2D bow)
+        public Armor(string name, int attack, double attackSpeed, int cost, Texture2D bow)
         {
             this.name = name;
             this.attack = attack;
