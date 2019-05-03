@@ -55,7 +55,7 @@ namespace KingOfTheCastle
 
             projectiles = new ProjectileHandler(game);
             
-            seconds = 3;
+            seconds = 100;
             timeleft = ""+seconds;
 
            
