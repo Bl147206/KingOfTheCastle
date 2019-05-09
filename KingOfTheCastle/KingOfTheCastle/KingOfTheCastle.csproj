@@ -90,6 +90,7 @@
     <Compile Include="Screens\Stage.cs" />
     <Compile Include="Screens\TitleScreen.cs" />
     <Compile Include="Screens\Shop.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
