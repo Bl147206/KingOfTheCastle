@@ -544,14 +544,13 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-            if(shielding)
-            { //Shielding textures
-                game.spriteBatch.Draw(texture,  location, sourceRectangle, Color.Black);
+           
+            game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
+            if (shielding)
+            {
+                game.spriteBatch.Draw(game.shieldTex, location, Color.White);
             }
-            else
-            { //Normal textures
-                game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
-            }
+            
             game.spriteBatch.DrawString(game.playerFont, "P"+playerNumber+"| HP: "+health.ToString() + " Kills: " + kills+" |", 
                 new Vector2(((playerNumber-1) * 400)+100, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)

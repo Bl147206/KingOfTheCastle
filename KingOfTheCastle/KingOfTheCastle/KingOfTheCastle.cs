@@ -33,6 +33,7 @@ namespace KingOfTheCastle
         public Texture2D questBackdrop;
         public Texture2D character;
         public Texture2D Coin;
+        public Texture2D shieldTex;
         public Texture2D[] backgrounds;
         public Texture2D swordAttackT;
         public SpriteFont playerFont;
@@ -129,6 +130,7 @@ namespace KingOfTheCastle
             arrow = Content.Load<Texture2D>("arrow");
             arrowF = Content.Load<Texture2D>("arrowF");
             armorTexture = Content.Load<Texture2D>("Armor");
+            shieldTex = Content.Load<Texture2D>("shield");
 
             for(int x = 0; x<backgrounds.Length;x++)
             {

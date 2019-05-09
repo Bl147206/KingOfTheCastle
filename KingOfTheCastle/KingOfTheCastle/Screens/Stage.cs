@@ -129,12 +129,36 @@ namespace KingOfTheCastle
                     musicControl = winSound.CreateInstance();
                     musicControl.Play();
                     frames = 0;
+                    int aliveAmount = 0;
+                    Player win = null;
                     foreach(Player p in game.players)
                     {
                         if (p != null) {
                             if (p.IsAlive()) {
-                                winner = p;
-                                p.numRoundsWon += 1;
+                                aliveAmount++;
+                                win = p;
+                            }
+                        }
+                    }
+                    if (aliveAmount == 1)
+                        winner = win;
+
+                    else if(aliveAmount>1)
+                    {
+                        int highHealth = 0;
+                        Player healthy = null;
+                        foreach(Player p in game.players)
+                        {
+                            if(p!=null)
+                            {
+                                if(p.IsAlive())
+                                {
+                                    if (p.health > highHealth)
+                                    {
+                                        highHealth = p.health;
+                                        healthy = p;
+                                    }
+                                }
                             }
                         }
                     }
