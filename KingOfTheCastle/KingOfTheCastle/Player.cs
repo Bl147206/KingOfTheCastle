@@ -23,7 +23,7 @@ namespace KingOfTheCastle
         public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash;
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash, isKnocked;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
             maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon;
@@ -439,7 +439,7 @@ namespace KingOfTheCastle
 
         public void horizontalMovement(GamePadState gamePad)
         {
-            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing && !shielding) //When holding down a stick x change
+            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing && !shielding/*&&!isKnocked*/) //When holding down a stick x change
             {
                 if(Math.Sign(xVelocity) != Math.Sign(gamePad.ThumbSticks.Left.X))
                 {
@@ -456,7 +456,7 @@ namespace KingOfTheCastle
                         break;
                 }
             }
-            else if (Math.Abs(xVelocity) > 0) //Slowing down when not holding a direction
+            else if (Math.Abs(xVelocity) > 0/*&&(!isKnocked&&onGround)*/) //Slowing down when not holding a direction
             {
                 if (Math.Abs(xVelocity) < groundFrictionForce && xVelocity != 0) //Making sure the player actaully stops
                 {
@@ -584,7 +584,7 @@ namespace KingOfTheCastle
             health = 0;
         }
 
-        public void damage(int damageAmount, int attacker)
+        public void damage(int damageAmount, int attacker, bool isSword)
         {
             if (shielding)
             { //Shield blocks
@@ -606,6 +606,8 @@ namespace KingOfTheCastle
                 game.players[attacker - 1].roundKills++;
                 game.players[attacker - 1].gold += 10;
             }
+            //if (isSword)
+            //    knockback();
         }
 
         public void revive()
@@ -617,6 +619,13 @@ namespace KingOfTheCastle
             xVelocity = 0;
             y = location.Y;
             x = location.X;
+        }
+
+        public void knockback()
+        {
+            isKnocked = true;
+            yVelocity -= 20;
+            xVelocity -= 30;
         }
 
         public void spawn()
@@ -653,7 +662,7 @@ namespace KingOfTheCastle
                 {
                     if (weaponHitbox.Intersects(p.location))
                     {
-                        p.damage(weaponDamage, playerNumber);
+                        p.damage(weaponDamage, playerNumber,true);
                     }
                 }
             }
