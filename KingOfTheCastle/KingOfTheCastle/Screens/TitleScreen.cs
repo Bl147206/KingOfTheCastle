@@ -35,6 +35,7 @@ namespace KingOfTheCastle
         incColor currentColor;
         KeyboardState kb;
         GamePadState previous;
+        bool serverStarted = false;
 
         public TitleScreen(KingOfTheCastle game) {
             logo = game.Content.Load<Texture2D>("logo");
@@ -72,6 +73,13 @@ namespace KingOfTheCastle
                 game.currentScreen = new Help(this.game);
                 musicControl.Stop();
             }
+
+            // Start server
+            if (pad1.IsButtonDown(Buttons.X) && !serverStarted) {
+                game.startServer();
+                serverStarted = true;
+            }
+
             switch (currentColor)
             {
                 case incColor.green:

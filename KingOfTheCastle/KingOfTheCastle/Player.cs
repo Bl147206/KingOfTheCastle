@@ -23,7 +23,7 @@ namespace KingOfTheCastle
         public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding;
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
             maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon;
@@ -64,6 +64,7 @@ namespace KingOfTheCastle
             kills = 0;
             jumps = 0;
             roundKills = 0;
+            flash = false;
             facing = Direction.Right;
             completedMainQuest = false;
             sourceRectangle = new Rectangle(0, 0, 64, 64);
@@ -170,124 +171,141 @@ namespace KingOfTheCastle
 
         public void animationLogic()
         {
-            animationTimer++;
-            if (yVelocity == 0)//No jumping
+            if (!isDashing)
             {
-                if (facing == Direction.Left && xVelocity == 0)//No movement, facing left
+                animationTimer++;
+                if (yVelocity == 0)//No jumping
                 {
-                    sourceRectangle.X = 0;
-                    sourceRectangle.Y = 0;
-                    animationTimer = 0;
-                }
-                if (facing == Direction.Right && xVelocity == 0)//No movement, facing right.
-                {
-                    sourceRectangle.X = 0;
-                    sourceRectangle.Y = 64;
-                    animationTimer = 0;
-                }
-                if (facing == Direction.Left && xVelocity != 0)//No jump, moving left
-                {
-                    
-                    sourceRectangle.Y = 0;
-
-                    if (previousFacing == Direction.Right)
+                    if (facing == Direction.Left && xVelocity == 0)//No movement, facing left
                     {
                         sourceRectangle.X = 0;
+                        sourceRectangle.Y = 0;
                         animationTimer = 0;
                     }
-                    else
+                    if (facing == Direction.Right && xVelocity == 0)//No movement, facing right.
                     {
-                        if (animationTimer == 4)
+                        sourceRectangle.X = 0;
+                        sourceRectangle.Y = 64;
+                        animationTimer = 0;
+                    }
+                    if (facing == Direction.Left && xVelocity != 0)//No jump, moving left
+                    {
+
+                        sourceRectangle.Y = 0;
+
+                        if (previousFacing == Direction.Right)
                         {
+                            sourceRectangle.X = 0;
                             animationTimer = 0;
-                            if (sourceRectangle.X != 320)
-                                sourceRectangle.X += 64;
-                            else
-                                sourceRectangle.X = 0;
+                        }
+                        else
+                        {
+                            if (animationTimer == 4)
+                            {
+                                animationTimer = 0;
+                                if (sourceRectangle.X != 320)
+                                    sourceRectangle.X += 64;
+                                else
+                                    sourceRectangle.X = 0;
+                            }
+                        }
+                    }
+                    if (facing == Direction.Right && xVelocity != 0)//No jump, moving left
+                    {
+
+                        sourceRectangle.Y = 64;
+
+                        if (previousFacing == Direction.Left)
+                        {
+                            sourceRectangle.X = 0;
+                            animationTimer = 0;
+                        }
+                        else
+                        {
+                            if (animationTimer == 4)
+                            {
+                                animationTimer = 0;
+                                if (sourceRectangle.X != 320)
+                                    sourceRectangle.X += 64;
+                                else
+                                    sourceRectangle.X = 0;
+                            }
                         }
                     }
                 }
-                if (facing == Direction.Right && xVelocity != 0)//No jump, moving left
+                if (yVelocity != 0)//In the air
                 {
-
-                    sourceRectangle.Y = 64;
-
-                    if (previousFacing == Direction.Left)
+                    animationTimer = 0;
+                    if (facing == Direction.Right)
                     {
-                        sourceRectangle.X = 0;
-                        animationTimer = 0;
-                    }
-                    else
-                    {
-                        if (animationTimer == 4)
+                        if (Math.Abs(yVelocity) >= 23)//Max Y
                         {
-                            animationTimer = 0;
-                            if (sourceRectangle.X != 320)
-                                sourceRectangle.X += 64;
-                            else
-                                sourceRectangle.X = 0;
+                            sourceRectangle.X = 4 * 64;
+                            sourceRectangle.Y = 2 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
+                        {
+                            sourceRectangle.X = 5 * 64;
+                            sourceRectangle.Y = 2 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                        {
+                            sourceRectangle.X = 0;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                        {
+                            sourceRectangle.X = 1 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 2 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
+                        {
+                            sourceRectangle.X = 2 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                    }
+                    if (facing == Direction.Left)
+                    {
+                        if (Math.Abs(yVelocity) >= 23)//Max Y
+                        {
+                            sourceRectangle.X = 2 * 64;
+                            sourceRectangle.Y = 4 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
+                        {
+                            sourceRectangle.X = 0;
+                            sourceRectangle.Y = 4 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                        {
+                            sourceRectangle.X = 5 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                        {
+                            sourceRectangle.X = 4 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 7 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
+                        {
+                            sourceRectangle.X = 3 * 64;
+                            sourceRectangle.Y = 3 * 64;
                         }
                     }
                 }
             }
-            if(yVelocity!=0)//In the air
+            else
             {
-                animationTimer = 0;
-                if(facing ==Direction.Right)
+                switch(facing)
                 {
-                    if (Math.Abs(yVelocity) >= 23)//Max Y
-                    {
-                        sourceRectangle.X = 4 * 64;
-                        sourceRectangle.Y = 2 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
-                    {
-                        sourceRectangle.X = 5* 64;
-                        sourceRectangle.Y = 2 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
-                    {
-                        sourceRectangle.X = 0;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
-                    {
-                        sourceRectangle.X = 1 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 2 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
-                    {
+                    case Direction.Left:
                         sourceRectangle.X = 2 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                }
-                if (facing == Direction.Left)
-                {
-                    if(Math.Abs(yVelocity)>=23)//Max Y
-                    {
-                        sourceRectangle.X = 2 * 64;
-                        sourceRectangle.Y = 4 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 23&& Math.Abs(yVelocity)>=19)
-                    {
-                        sourceRectangle.X = 0;
-                        sourceRectangle.Y = 4 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
-                    {
-                        sourceRectangle.X = 5*64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
-                    {
-                        sourceRectangle.X = 4 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 7 && Math.Abs(yVelocity) >0)//Almost 0 Velocity
-                    {
+                        sourceRectangle.Y = 5 * 64;
+                        break;
+                    case Direction.Right:
                         sourceRectangle.X = 3 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
+                        sourceRectangle.Y = 5 * 64;
+                        break;
                 }
             }
         }
@@ -303,13 +321,20 @@ namespace KingOfTheCastle
                     yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * (double)dashSpeed;
 
                 }
+                else
+                {
+                    yVelocity = 0;
+                }
                 dashTimer = dashDelay;
                 isDashing = true; 
             }
             else if(dashTimer > 0)
             {
                 dashTimer--;
+                
             }
+            if (dashTimer < 5&&dashTimer>0)
+                flash = true;
         }
 
         public void rangedLogic(GamePadState gamePad)
@@ -494,7 +519,7 @@ namespace KingOfTheCastle
 
         public void gravityLogic()
         {
-            if (!onGround)
+            if (!onGround&&!isDashing)
             {
                 yVelocity += gravity; //gravity decreasing y movement
                 if (yVelocity > terminalVelocity)
@@ -523,14 +548,18 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-            if(shielding)
-            { //Shielding textures
-                game.spriteBatch.Draw(texture,  location, sourceRectangle, Color.Black);
+            if (flash)
+            {
+                game.spriteBatch.Draw(texture, location, sourceRectangle, Color.White);
+                flash = false;
             }
             else
-            { //Normal textures
                 game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
+            if (shielding)
+            {
+                game.spriteBatch.Draw(game.shieldTex, location, Color.White);
             }
+            
             game.spriteBatch.DrawString(game.playerFont, "P"+playerNumber+"| HP: "+health.ToString() + " Kills: " + kills+" |", 
                 new Vector2(((playerNumber-1) * 400)+100, Globals.screenH - game.font.LineSpacing * 1), playerColor);
             if (isMAttacking)
@@ -541,6 +570,7 @@ namespace KingOfTheCastle
                     game.spriteBatch.Draw(game.swordAttackT, attackRec, meleeColor);
             }
             shieldBar.draw();
+
         }
 
         public bool IsAlive()
@@ -556,8 +586,13 @@ namespace KingOfTheCastle
 
         public void damage(int damageAmount, int attacker)
         {
+            Stage stage = (Stage)game.currentScreen;
+            int healthDamage = 0, shieldDamage = 0;
+            bool killed = false;
+
             if (shielding)
             { //Shield blocks
+                shieldDamage = shieldHP;
                 shieldHP -= damageAmount;
                 if(shieldHP < 0)
                 { //if the attack did more damage than the shield can block
@@ -565,17 +600,22 @@ namespace KingOfTheCastle
                 }
                 else
                 { //if the shield blocks all the damage just return
+                    shieldDamage = damageAmount;
+                    stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
                     return;
                 }
             }
+            healthDamage = damageAmount;
             health -= damageAmount;
             if(health <= 0)
             {
+                killed = true;
                 kill();
                 game.players[attacker - 1].kills += 1;
                 game.players[attacker - 1].roundKills++;
                 game.players[attacker - 1].gold += 10;
             }
+            stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
         }
 
         public void revive()
