@@ -36,35 +36,45 @@ namespace KingOfTheCastle
 
         public Stage(int round, KingOfTheCastle game)
         {
-            platforms = new Platform[Globals.rng.Next(round+1)+2];
+            platforms = new Platform[Globals.rng.Next(round + 1) + 2];
             music = game.Content.Load<SoundEffect>("Heroic Intrusion");
             winSound = game.Content.Load<SoundEffect>("Applause");
             musicControl = music.CreateInstance();
-            background =Globals.rng.Next(0,game.backgrounds.Length);
+            background = Globals.rng.Next(0, game.backgrounds.Length);
 
             platformThickness = 15;
 
-            platforms[0] = new Platform(new Vector2(Globals.screenW/2, Globals.screenH - 100), Globals.screenW - 200, platformThickness);
+            platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 200, platformThickness);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW,"W")), (float)(platforms[0].destination.Y - z * screenAdjust(120,"H") - screenAdjust(120,"H"))), Globals.rng.Next(100, 750), platformThickness);
+                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW, "W")), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness);
             }
             frames = 0;
             musicControl.Volume = .3f;
             this.game = game;
 
             projectiles = new ProjectileHandler(game);
-            
+
             seconds = 100;
-            timeleft = ""+seconds;
+            timeleft = "" + seconds;
 
             foreach (Player p in game.players)
             {
-                if(p!=null)
+                if (p != null)
                     p.spawn();
             }
-            quest = new FirstKillQuest(this.game);
+            switch (Globals.rng.Next(1, 3))
+            {
+                case 1:
+                    quest = new FirstKillQuest(this.game);
+                    break;
+                case 2:
+                    quest = new JumpQuest(this.game);
+                    break;
+            }
+                
+        
 
             timer = new Bar(seconds,seconds, new Rectangle(20, 20, 300, 50), Color.Gray,game);
 

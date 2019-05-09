@@ -16,6 +16,7 @@ namespace KingOfTheCastle
     {
         public KingOfTheCastle game;
         public string title;
+        public string desc;
         public Vector2 titleLoc;
         public Rectangle display = new Rectangle(Globals.screenW / 2 - 150, 0, 300, 200);
         public Rectangle oldDisplay;
