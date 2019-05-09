@@ -178,12 +178,94 @@ namespace KingOfTheCastle
             if (roundOver)
             {
                 if (game.round == 9) {
+                    // calculate actual winner
+                    List<Player> mostWon = new List<Player>();
+                    int won = 0;
+                    foreach (Player p in game.players) {
+                        if (p == null)
+                            continue;
+
+                        if (mostWon.Count == 0) {
+                            mostWon.Add(p);
+                            won = p.numRoundsWon;
+                            continue;
+                        }
+
+                        if (p.numRoundsWon > won) {
+                            mostWon.Clear();
+                            mostWon.Add(p);
+                            continue;
+                        }
+
+                        if (p.numRoundsWon == won) {
+                            mostWon.Add(p);
+                        }
+                    }
                     
+                    // If we have one person here they win
+                    if (mostWon.Count == 1) {
+                        winner = mostWon[0];
+                    }
+
+                    List<Player> mostKills = new List<Player>();
+                    int kills = 0;
+                    foreach (Player p in mostWon) {
+                        if (mostKills.Count == 0) {
+                            mostKills.Add(p);
+                            kills = p.kills;
+                            continue;
+                        }
+
+                        if (p.kills > kills) {
+                            mostKills.Clear();
+                            mostKills.Add(p);
+                            continue;
+                        }
+
+                        if (p.kills == kills) {
+                            mostKills.Add(p);
+                        }
+                    }
+
+                    if (mostKills.Count == 1) {
+                        winner = mostKills[0];
+                    }
+
+                    List<Player> mostGold = new List<Player>();
+                    int gold = 0;
+                    foreach (Player p in mostKills) {
+                        if (mostGold.Count == 0) {
+                            mostGold.Add(p);
+                            gold = p.gold;
+                            continue;
+                        }
+
+                        if (p.gold > gold) {
+                            mostGold.Clear();
+                            mostGold.Add(p);
+                            continue;
+                        }
+
+                        if (p.gold == gold) {
+                            mostGold.Add(p);
+                        }
+                    }
+
+                    if (mostGold.Count == 1) {
+                        winner = mostGold[0];
+                    } else {
+                        winner = null;
+                    }
+
+                    if (frames >= 200) {
+                        game.currentScreen = new TitleScreen(game);
+                        musicControl.Stop();
+                    }
                 }
 
-                if (frames >= 180)
+                if (frames >= 180 && game.round != 9)
                 {
-                    game.currentScreen = new Shop(this.game);
+                    game.currentScreen = new Shop(game);
                     musicControl.Stop();
                 }
             }
@@ -233,7 +315,13 @@ namespace KingOfTheCastle
                 if (game.round != 9) {
                     game.spriteBatch.DrawString(game.font, "Round Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
                 } else {
-                    game.spriteBatch.DrawString(game.font, "Game Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
+                    if (winner == null) {
+                        game.spriteBatch.DrawString(game.font, "Game Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
+                        game.spriteBatch.DrawString(game.font, "Nobody Wins!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 50), Color.White);
+                    } else {
+                        game.spriteBatch.DrawString(game.font, "Game Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
+                        game.spriteBatch.DrawString(game.font, "Player " + winner.playerNumber + " Wins!", new Vector2(Globals.screenW / 2 - 150, Globals.screenH / 2 + 25), winner.playerColor);
+                    }
                 }
             }
         }
