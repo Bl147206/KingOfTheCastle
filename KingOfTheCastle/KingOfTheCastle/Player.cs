@@ -23,7 +23,7 @@ namespace KingOfTheCastle
         public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding;
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
             maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon;
@@ -64,6 +64,7 @@ namespace KingOfTheCastle
             kills = 0;
             jumps = 0;
             roundKills = 0;
+            flash = false;
             facing = Direction.Right;
             completedMainQuest = false;
             sourceRectangle = new Rectangle(0, 0, 64, 64);
@@ -330,7 +331,10 @@ namespace KingOfTheCastle
             else if(dashTimer > 0)
             {
                 dashTimer--;
+                
             }
+            if (dashTimer < 5&&dashTimer>0)
+                flash = true;
         }
 
         public void rangedLogic(GamePadState gamePad)
@@ -544,8 +548,13 @@ namespace KingOfTheCastle
 
         public void draw()
         {
-           
-            game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
+            if (flash)
+            {
+                game.spriteBatch.Draw(texture, location, sourceRectangle, Color.White);
+                flash = false;
+            }
+            else
+                game.spriteBatch.Draw(texture, location, sourceRectangle, playerColor);
             if (shielding)
             {
                 game.spriteBatch.Draw(game.shieldTex, location, Color.White);
@@ -561,6 +570,7 @@ namespace KingOfTheCastle
                     game.spriteBatch.Draw(game.swordAttackT, attackRec, meleeColor);
             }
             shieldBar.draw();
+
         }
 
         public bool IsAlive()

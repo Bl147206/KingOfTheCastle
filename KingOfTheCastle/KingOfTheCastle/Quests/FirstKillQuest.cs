@@ -20,6 +20,7 @@ namespace KingOfTheCastle
         {
             this.game = game;
             title = "FIRST BLOOD";
+            desc = "\n\n\n\n\nGet the first\nkill of the match\nto win the quest!";
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
             yLoc = display.Y;
 
@@ -88,6 +89,7 @@ namespace KingOfTheCastle
             if (timer < 599)
                 game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
             game.spriteBatch.DrawString(game.font, title, titleLoc, titleColor);
+            game.spriteBatch.DrawString(game.smallerFont, desc, titleLoc, Color.White);
         }
     }
 }
