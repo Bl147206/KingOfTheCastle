@@ -577,8 +577,13 @@ namespace KingOfTheCastle
 
         public void damage(int damageAmount, int attacker)
         {
+            Stage stage = (Stage)game.currentScreen;
+            int healthDamage = 0, shieldDamage = 0;
+            bool killed = false;
+
             if (shielding)
             { //Shield blocks
+                shieldDamage = shieldHP;
                 shieldHP -= damageAmount;
                 if(shieldHP < 0)
                 { //if the attack did more damage than the shield can block
@@ -586,17 +591,22 @@ namespace KingOfTheCastle
                 }
                 else
                 { //if the shield blocks all the damage just return
+                    shieldDamage = damageAmount;
+                    stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
                     return;
                 }
             }
+            healthDamage = damageAmount;
             health -= damageAmount;
             if(health <= 0)
             {
+                killed = true;
                 kill();
                 game.players[attacker - 1].kills += 1;
                 game.players[attacker - 1].roundKills++;
                 game.players[attacker - 1].gold += 10;
             }
+            stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
         }
 
         public void revive()
