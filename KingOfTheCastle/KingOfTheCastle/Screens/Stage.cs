@@ -23,7 +23,6 @@ namespace KingOfTheCastle
         String timeleft;
         Quest quest;
         bool roundOver;
-        int overTimer;
         int platformThickness;
         Player winner;
         int background;
@@ -56,7 +55,7 @@ namespace KingOfTheCastle
 
             projectiles = new ProjectileHandler(game);
             
-            seconds = 100;
+            seconds = 3;
             timeleft = ""+seconds;
 
             foreach (Player p in game.players)

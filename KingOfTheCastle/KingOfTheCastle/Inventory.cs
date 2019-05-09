@@ -7,19 +7,26 @@ namespace KingOfTheCastle {
     class Inventory {
         public Weapon[] weapons;
         int index = 0;
+        List<int> possibleWeapons = new List<int>();
+        int typeDecider;
         public Inventory(int currentRound,KingOfTheCastle game) {
             this.weapons = new Weapon[3];
-
+            for (int x = 0; x < 3; x++) //Limit on for loop = number of KINDS of weapons
+            {
+                possibleWeapons.Add(x);
+            }
             // generate 3 weapons
             while (index < 3) {
                 string part1 = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];
                 string part2 = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];
                 string name = part1 + " " + part2;
+                typeDecider = possibleWeapons.ElementAt(Globals.rng.Next(0,possibleWeapons.Count-1));
+                var kind = (Weapon.Kind)(typeDecider);
+                possibleWeapons.Remove(typeDecider);
 
-                var kind = (Weapon.Kind)Globals.rng.Next(3);
 
                 int attack = Globals.rng.Next(currentRound * 2) + currentRound + 2;
-                double attackSpeed = (Globals.rng.NextDouble() + .2) * .4 + currentRound * .2;
+                double attackSpeed = (Globals.rng.NextDouble() + .2) * .4 + currentRound * .5;
                 int armorBonus = Globals.rng.Next(currentRound * 2, currentRound * 10);
 
                 switch (kind) {
