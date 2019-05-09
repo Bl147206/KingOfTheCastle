@@ -100,13 +100,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Character.png">
-      <Name>Character</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Coin.png">
       <Name>Coin</Name>
       <Importer>TextureImporter</Importer>
@@ -273,6 +266,13 @@
   <ItemGroup>
     <Compile Include="help1.PNG">
       <Name>help1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Character.png">
+      <Name>Character</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

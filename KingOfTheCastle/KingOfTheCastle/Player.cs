@@ -170,124 +170,141 @@ namespace KingOfTheCastle
 
         public void animationLogic()
         {
-            animationTimer++;
-            if (yVelocity == 0)//No jumping
+            if (!isDashing)
             {
-                if (facing == Direction.Left && xVelocity == 0)//No movement, facing left
+                animationTimer++;
+                if (yVelocity == 0)//No jumping
                 {
-                    sourceRectangle.X = 0;
-                    sourceRectangle.Y = 0;
-                    animationTimer = 0;
-                }
-                if (facing == Direction.Right && xVelocity == 0)//No movement, facing right.
-                {
-                    sourceRectangle.X = 0;
-                    sourceRectangle.Y = 64;
-                    animationTimer = 0;
-                }
-                if (facing == Direction.Left && xVelocity != 0)//No jump, moving left
-                {
-                    
-                    sourceRectangle.Y = 0;
-
-                    if (previousFacing == Direction.Right)
+                    if (facing == Direction.Left && xVelocity == 0)//No movement, facing left
                     {
                         sourceRectangle.X = 0;
+                        sourceRectangle.Y = 0;
                         animationTimer = 0;
                     }
-                    else
+                    if (facing == Direction.Right && xVelocity == 0)//No movement, facing right.
                     {
-                        if (animationTimer == 4)
+                        sourceRectangle.X = 0;
+                        sourceRectangle.Y = 64;
+                        animationTimer = 0;
+                    }
+                    if (facing == Direction.Left && xVelocity != 0)//No jump, moving left
+                    {
+
+                        sourceRectangle.Y = 0;
+
+                        if (previousFacing == Direction.Right)
                         {
+                            sourceRectangle.X = 0;
                             animationTimer = 0;
-                            if (sourceRectangle.X != 320)
-                                sourceRectangle.X += 64;
-                            else
-                                sourceRectangle.X = 0;
+                        }
+                        else
+                        {
+                            if (animationTimer == 4)
+                            {
+                                animationTimer = 0;
+                                if (sourceRectangle.X != 320)
+                                    sourceRectangle.X += 64;
+                                else
+                                    sourceRectangle.X = 0;
+                            }
+                        }
+                    }
+                    if (facing == Direction.Right && xVelocity != 0)//No jump, moving left
+                    {
+
+                        sourceRectangle.Y = 64;
+
+                        if (previousFacing == Direction.Left)
+                        {
+                            sourceRectangle.X = 0;
+                            animationTimer = 0;
+                        }
+                        else
+                        {
+                            if (animationTimer == 4)
+                            {
+                                animationTimer = 0;
+                                if (sourceRectangle.X != 320)
+                                    sourceRectangle.X += 64;
+                                else
+                                    sourceRectangle.X = 0;
+                            }
                         }
                     }
                 }
-                if (facing == Direction.Right && xVelocity != 0)//No jump, moving left
+                if (yVelocity != 0)//In the air
                 {
-
-                    sourceRectangle.Y = 64;
-
-                    if (previousFacing == Direction.Left)
+                    animationTimer = 0;
+                    if (facing == Direction.Right)
                     {
-                        sourceRectangle.X = 0;
-                        animationTimer = 0;
-                    }
-                    else
-                    {
-                        if (animationTimer == 4)
+                        if (Math.Abs(yVelocity) >= 23)//Max Y
                         {
-                            animationTimer = 0;
-                            if (sourceRectangle.X != 320)
-                                sourceRectangle.X += 64;
-                            else
-                                sourceRectangle.X = 0;
+                            sourceRectangle.X = 4 * 64;
+                            sourceRectangle.Y = 2 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
+                        {
+                            sourceRectangle.X = 5 * 64;
+                            sourceRectangle.Y = 2 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                        {
+                            sourceRectangle.X = 0;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                        {
+                            sourceRectangle.X = 1 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 2 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
+                        {
+                            sourceRectangle.X = 2 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                    }
+                    if (facing == Direction.Left)
+                    {
+                        if (Math.Abs(yVelocity) >= 23)//Max Y
+                        {
+                            sourceRectangle.X = 2 * 64;
+                            sourceRectangle.Y = 4 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
+                        {
+                            sourceRectangle.X = 0;
+                            sourceRectangle.Y = 4 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
+                        {
+                            sourceRectangle.X = 5 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
+                        {
+                            sourceRectangle.X = 4 * 64;
+                            sourceRectangle.Y = 3 * 64;
+                        }
+                        if (Math.Abs(yVelocity) < 7 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
+                        {
+                            sourceRectangle.X = 3 * 64;
+                            sourceRectangle.Y = 3 * 64;
                         }
                     }
                 }
             }
-            if(yVelocity!=0)//In the air
+            else
             {
-                animationTimer = 0;
-                if(facing ==Direction.Right)
+                switch(facing)
                 {
-                    if (Math.Abs(yVelocity) >= 23)//Max Y
-                    {
-                        sourceRectangle.X = 4 * 64;
-                        sourceRectangle.Y = 2 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 23 && Math.Abs(yVelocity) >= 19)
-                    {
-                        sourceRectangle.X = 5* 64;
-                        sourceRectangle.Y = 2 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
-                    {
-                        sourceRectangle.X = 0;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
-                    {
-                        sourceRectangle.X = 1 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 2 && Math.Abs(yVelocity) > 0)//Almost 0 Velocity
-                    {
+                    case Direction.Left:
                         sourceRectangle.X = 2 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                }
-                if (facing == Direction.Left)
-                {
-                    if(Math.Abs(yVelocity)>=23)//Max Y
-                    {
-                        sourceRectangle.X = 2 * 64;
-                        sourceRectangle.Y = 4 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 23&& Math.Abs(yVelocity)>=19)
-                    {
-                        sourceRectangle.X = 0;
-                        sourceRectangle.Y = 4 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 19 && Math.Abs(yVelocity) >= 13)
-                    {
-                        sourceRectangle.X = 5*64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 13 && Math.Abs(yVelocity) >= 7)
-                    {
-                        sourceRectangle.X = 4 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
-                    if (Math.Abs(yVelocity) < 7 && Math.Abs(yVelocity) >0)//Almost 0 Velocity
-                    {
+                        sourceRectangle.Y = 5 * 64;
+                        break;
+                    case Direction.Right:
                         sourceRectangle.X = 3 * 64;
-                        sourceRectangle.Y = 3 * 64;
-                    }
+                        sourceRectangle.Y = 5 * 64;
+                        break;
                 }
             }
         }
@@ -302,6 +319,10 @@ namespace KingOfTheCastle
                 {// can only dash down
                     yVelocity -= ((double)gamePad.ThumbSticks.Right.Y / normalizer) * (double)dashSpeed;
 
+                }
+                else
+                {
+                    yVelocity = 0;
                 }
                 dashTimer = dashDelay;
                 isDashing = true; 
@@ -494,7 +515,7 @@ namespace KingOfTheCastle
 
         public void gravityLogic()
         {
-            if (!onGround)
+            if (!onGround&&!isDashing)
             {
                 yVelocity += gravity; //gravity decreasing y movement
                 if (yVelocity > terminalVelocity)
