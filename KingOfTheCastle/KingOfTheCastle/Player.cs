@@ -23,10 +23,10 @@ namespace KingOfTheCastle
         public GamePadState oldGamePad;
         public Texture2D texture;
         public PlayerIndex playerIndex;
-        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash;
+        public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash, isKnocked;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
         Direction previousFacing;
@@ -63,8 +63,11 @@ namespace KingOfTheCastle
             isAlive = true;
             kills = 0;
             jumps = 0;
+            isKnocked = false;
             roundKills = 0;
             flash = false;
+            knockTimer = 0;
+            knockDelay = 30;
             facing = Direction.Right;
             completedMainQuest = false;
             sourceRectangle = new Rectangle(0, 0, 64, 64);
@@ -143,6 +146,8 @@ namespace KingOfTheCastle
 
             shieldBar.update(shieldHP);
 
+            knockbackLogic();
+
             oldGamePad = gamePad;
         }
 
@@ -167,6 +172,46 @@ namespace KingOfTheCastle
                     }
                 }
             }
+        }
+
+        public void knockbackLogic()
+        {
+            if (isKnocked)
+            {
+                knockTimer--;
+                if (knockTimer <= 0)
+                    isKnocked = false;
+                if (onGround)
+                {
+                    isKnocked = false;
+                    knockTimer = 0;
+                    
+                }
+            }
+        }
+
+        void knockback(Direction d)
+        {
+            
+            switch(d)
+            {
+                case Direction.Left:
+                    yVelocity -= 20;
+                    xVelocity = -20;
+                    break;
+                case Direction.Right:
+                    yVelocity -= 20;
+                    xVelocity = 20;
+                    break;
+            }
+            if (!onGround)
+            {
+                yVelocity = 60;
+                game.cheer.Play();
+                game.strongHit.Play();
+            }
+            isKnocked = true;
+            knockTimer = knockDelay;
         }
 
         public void animationLogic()
@@ -439,7 +484,7 @@ namespace KingOfTheCastle
 
         public void horizontalMovement(GamePadState gamePad)
         {
-            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing && !shielding) //When holding down a stick x change
+            if (Math.Abs(gamePad.ThumbSticks.Left.X) > 0 && !isDashing && !shielding&&!isKnocked) //When holding down a stick x change
             {
                 if(Math.Sign(xVelocity) != Math.Sign(gamePad.ThumbSticks.Left.X))
                 {
@@ -456,7 +501,7 @@ namespace KingOfTheCastle
                         break;
                 }
             }
-            else if (Math.Abs(xVelocity) > 0) //Slowing down when not holding a direction
+            else if (Math.Abs(xVelocity) > 0&&!isKnocked) //Slowing down when not holding a direction
             {
                 if (Math.Abs(xVelocity) < groundFrictionForce && xVelocity != 0) //Making sure the player actaully stops
                 {
@@ -483,7 +528,7 @@ namespace KingOfTheCastle
 
         public void jumpLogic(GamePadState gamePad)
         {
-            if (onGround && !shielding)
+            if (onGround && !shielding&&!isKnocked)
             {
                 if (gamePad.IsButtonDown(Buttons.A)) //jumping
                 {
@@ -522,7 +567,7 @@ namespace KingOfTheCastle
             if (!onGround&&!isDashing)
             {
                 yVelocity += gravity; //gravity decreasing y movement
-                if (yVelocity > terminalVelocity)
+                if (yVelocity > terminalVelocity&&!isKnocked)
                 {
                     yVelocity = terminalVelocity;
                 }
@@ -584,7 +629,7 @@ namespace KingOfTheCastle
             health = 0;
         }
 
-        public void damage(int damageAmount, int attacker)
+        public void damage(int damageAmount, int attacker,bool isSword)
         {
             Stage stage = (Stage)game.currentScreen;
             int healthDamage = 0, shieldDamage = 0;
@@ -614,8 +659,16 @@ namespace KingOfTheCastle
                 game.players[attacker - 1].kills += 1;
                 game.players[attacker - 1].roundKills++;
                 game.players[attacker - 1].gold += 10;
+                game.strongHit.Play();
             }
             stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
+            if(isSword)
+            {
+                if (game.players[attacker - 1].location.X > location.X)
+                    knockback(Direction.Left);
+                else
+                    knockback(Direction.Right);
+            }
         }
 
         public void revive()
@@ -663,7 +716,7 @@ namespace KingOfTheCastle
                 {
                     if (weaponHitbox.Intersects(p.location))
                     {
-                        p.damage(weaponDamage, playerNumber);
+                        p.damage(weaponDamage, playerNumber, true);
                     }
                 }
             }
