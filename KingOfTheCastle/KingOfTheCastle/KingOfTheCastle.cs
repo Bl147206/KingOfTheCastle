@@ -41,6 +41,8 @@ namespace KingOfTheCastle
         public Texture2D arrow;
         public Texture2D arrowF;
         public Texture2D armorTexture;
+        public SoundEffect cheer;
+        public SoundEffect strongHit;
         Server server;
 
         public KingOfTheCastle()
@@ -138,6 +140,8 @@ namespace KingOfTheCastle
             armorTexture = Content.Load<Texture2D>("Armor");
             shieldTex = Content.Load<Texture2D>("shield");
             smallerFont = Content.Load<SpriteFont>("SpriteFont2");
+            cheer = Content.Load<SoundEffect>("cheer");
+            strongHit = Content.Load<SoundEffect>("stronghit");
 
             for(int x = 0; x<backgrounds.Length;x++)
             {

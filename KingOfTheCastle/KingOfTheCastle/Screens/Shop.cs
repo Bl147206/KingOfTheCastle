@@ -20,20 +20,20 @@ namespace KingOfTheCastle
             Three
         };
         playerSelection[] p = new playerSelection[4];
-        Rectangle[] pSelect = new Rectangle[4];
-        GamePadState[] playerPad= new GamePadState[4];
-        GamePadState[] playerPad0 = new GamePadState[4];
-        Rectangle[,] items = new Rectangle[4,3];
-        Texture2D[,] itemsT = new Texture2D[4, 3];
-        Color[,] itemsC = new Color[4, 3];
+        Rectangle[] pSelect;
+        GamePadState[] playerPad;
+        GamePadState[] playerPad0;
+        Rectangle[,] items;
+        Texture2D[,] itemsT;
+        Color[,] itemsC;
         int[] goldTotals;
         Texture2D background;
         int frames;
         int seconds;
         String timeleft;
         Texture2D blank;
-        Inventory[] inventories = new Inventory[4];
-        string[,] stats = new string[4, 3];
+        Inventory[] inventories;
+        string[,] stats;
         SoundEffect buyItem;
         SoundEffect click;
         SpriteFont timerFont;
@@ -42,7 +42,13 @@ namespace KingOfTheCastle
 
         public Shop(KingOfTheCastle game)
         {
-            
+            inventories = new Inventory[game.getControllerCount()];
+            items = new Rectangle[game.getControllerCount(), 3];
+            itemsT = new Texture2D[game.getControllerCount(), 3];
+            stats = new string[game.getControllerCount(), 3];
+            itemsC = new Color[game.getControllerCount(), 3];
+            pSelect = new Rectangle[game.getControllerCount()];
+            p = new playerSelection[game.getControllerCount()];
             background = game.shopText;
             blank = game.test;
             buyItem = game.Content.Load<SoundEffect>("purchase");
@@ -51,10 +57,8 @@ namespace KingOfTheCastle
             {
                 p[x] = playerSelection.One;
             }
-            pSelect[0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//20,20,140,135
-            pSelect[1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,15,140,135
-            pSelect[2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//80,610,140,135
-            pSelect[3] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,600,140,135
+
+            
             for (int x = 0; x < inventories.Length; x++)
             {
                 inventories[x] = new Inventory(game.round, game);
@@ -63,7 +67,7 @@ namespace KingOfTheCastle
                     itemsT[x, y] = inventories[x].weapons[y].texture;
                     itemsC[x, y] = inventories[x].weapons[y].color;
                     string type = "";
-                    string speed = Math.Round(1/inventories[x].weapons[y].attackSpeed,2)+"";
+                    string speed = Math.Round(inventories[x].weapons[y].attackSpeed,2)+"";
                     if (inventories[x].weapons[y].texture == game.swordTexture)
                         type = "Melee";
                     else if (inventories[x].weapons[y].texture == game.bowTexture)
@@ -75,26 +79,48 @@ namespace KingOfTheCastle
                         + inventories[x].weapons[y].attack;
                     else
                         stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nArmor: " + inventories[x].weapons[y].armorBonus;
+                    if (x == 0)
+                    {
+                        pSelect[x] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//20,20,140,135
+                        items[x, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+                        items[x, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(185, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//185
+                        items[x, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(360, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//360
+                    }
+                    if (x == 1)
+                    {
+                        pSelect[x] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,15,140,135
+                        items[x, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+                        items[x, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(175, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//175
+                        items[x, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(350, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//350
+                    }
+                    if (x == 2)
+                    {
+                        pSelect[x] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//80,610,140,135
+                        items[x, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+                        items[x, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//770
+                        items[x, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//945
+                    }
+                    if (x == 3)
+                    {
+                        pSelect[x] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//1095,600,140,135
+                        items[x, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
+                        items[x, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//770
+                        items[x, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//945
+                    }
                 }
             }
-            items[0, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
-            items[0, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(185, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//185
-            items[0, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(360, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//360
-            items[1, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(15, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
-            items[1, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(175, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//175
-            items[1, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(350, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//350
-            items[2, 0] = new Rectangle(screenAdjust(80, "W"), screenAdjust(610, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
-            items[2, 1] = new Rectangle(screenAdjust(80, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//770
-            items[2, 2] = new Rectangle(screenAdjust(80, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//945
-            items[3, 0] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(600, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));
-            items[3, 1] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(770, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//770
-            items[3, 2] = new Rectangle(screenAdjust(1095, "W"), screenAdjust(945, "H"), screenAdjust(140, "W"), screenAdjust(130, "H"));//945
+            
+            
+            
+           
 
             frames = 0;
             startTime = 10;
             seconds = startTime;
             timeleft = "" + seconds;
             goldTotals = new int[game.getControllerCount()];
+            playerPad0 = new GamePadState[game.getControllerCount()];
+
             foreach(Player p in game.players)
             {
                 if(p != null)
@@ -103,21 +129,35 @@ namespace KingOfTheCastle
                 }
             }
             timerFont = game.Content.Load<SpriteFont>("storetimeFont");
+            playerPad = new GamePadState[game.getControllerCount()];
             this.game = game;
         }
         public override void Update(GameTime gameTime) {
             if (frames % 60 == 0&&frames!=0)
                 click.Play();
-            playerPad[0] = GamePad.GetState(PlayerIndex.One);
-            playerPad[1] = GamePad.GetState(PlayerIndex.Two);
-            playerPad[2] = GamePad.GetState(PlayerIndex.Three);
-            playerPad[3] = GamePad.GetState(PlayerIndex.Four);
             for (int x = 0; x < goldTotals.Length; x++)
             {
                 goldTotals[x] = game.players[x].gold;
             }
             for (int x = 0; x < playerPad.Length; x++)
             {
+                switch (x+1)
+                {
+                    case (1):
+                        playerPad[x] = GamePad.GetState(PlayerIndex.One);
+                        break;
+                    case (2):
+                        playerPad[x] = GamePad.GetState(PlayerIndex.Two);
+                        break;
+                    case (3):
+                        playerPad[x] = GamePad.GetState(PlayerIndex.Three);
+                        break;
+                    case (4):
+                        playerPad[x] = GamePad.GetState(PlayerIndex.Four);
+                        break;
+                }
+
+
                 
                 if (playerPad[x].ThumbSticks.Left.Y < -.5 && playerPad0[x].ThumbSticks.Left.Y > -.5)
                 {
@@ -225,65 +265,75 @@ namespace KingOfTheCastle
                             buyItem.Play();
                         }
                     }
+                    //Player 1
+                    if (x == 0)
+                    {
+                        if (p[x] == playerSelection.One)
+                        {
+                            pSelect[x].Y = screenAdjust(20, "H");
+                        }
+                        if (p[x] == playerSelection.Two)
+                        {
+                            pSelect[x].Y = screenAdjust(185, "H");
+                        }
+                        if (p[x] == playerSelection.Three)
+                        {
+                            pSelect[x].Y = screenAdjust(360, "H");
+                        }
+                    }
+                    //Player 2
+                    if (x == 1)
+                    {
+                        if (p[x] == playerSelection.One)
+                        {
+                            pSelect[x].Y = screenAdjust(15, "H");
+                        }
+                        if (p[x] == playerSelection.Two)
+                        {
+                            pSelect[x].Y = screenAdjust(175, "H");
+                        }
+                        if (p[x] == playerSelection.Three)
+                        {
+                            pSelect[x].Y = screenAdjust(350, "H");
+                        }
+                    }
+                    //Player 3
+                    if (x == 2)
+                    {
+                        if (p[x] == playerSelection.One)
+                        {
+                            pSelect[x].Y = screenAdjust(610, "H");
+                        }
+                        if (p[2] == playerSelection.Two)
+                        {
+                            pSelect[x].Y = screenAdjust(770, "H");
+                        }
+                        if (p[2] == playerSelection.Three)
+                        {
+                            pSelect[x].Y = screenAdjust(945, "H");
+                        }
+                    }
+                    //Player 4
+                    if (x == 3)
+                    {
+                        if (p[x] == playerSelection.One)
+                        {
+                            pSelect[x].Y = screenAdjust(600, "H");
+                        }
+                        if (p[x] == playerSelection.Two)
+                        {
+                            pSelect[x].Y = screenAdjust(770, "H");
+                        }
+                        if (p[x] == playerSelection.Three)
+                        {
+                            pSelect[x].Y = screenAdjust(945, "H");
+                        }
+                    }
+                    playerPad0[x] = playerPad[x];
                 }
             }
-            //Player 1
-            if (p[0] == playerSelection.One)
-            {
-                pSelect[0].Y = screenAdjust(20, "H");
-            }
-            if (p[0] == playerSelection.Two)
-            {
-                pSelect[0].Y = screenAdjust(185, "H");
-            }
-            if (p[0] == playerSelection.Three)
-            {
-                pSelect[0].Y = screenAdjust(360, "H");
-            }
-            //Player 2
-            if (p[1] == playerSelection.One)
-            {
-                pSelect[1].Y = screenAdjust(15, "H");
-            }
-            if (p[1] == playerSelection.Two)
-            {
-                pSelect[1].Y = screenAdjust(175, "H");
-            }
-            if (p[1] == playerSelection.Three)
-            {
-                pSelect[1].Y = screenAdjust(350, "H");
-            }
-            //Player 3
-            if (p[2] == playerSelection.One)
-            {
-                pSelect[2].Y = screenAdjust(610, "H");
-            }
-            if (p[2] == playerSelection.Two)
-            {
-                pSelect[2].Y = screenAdjust(770, "H");
-            }
-            if (p[2] == playerSelection.Three)
-            {
-                pSelect[2].Y = screenAdjust(945, "H");
-            }
-            //Player 4
-            if (p[3] == playerSelection.One)
-            {
-                pSelect[3].Y = screenAdjust(600, "H");
-            }
-            if (p[3] == playerSelection.Two)
-            {
-                pSelect[3].Y = screenAdjust(770, "H");
-            }
-            if (p[3] == playerSelection.Three)
-            {
-                pSelect[3].Y = screenAdjust(945,"H");
-            }
 
-            playerPad0[0] = playerPad[0];
-            playerPad0[1] = playerPad[1];
-            playerPad0[2] = playerPad[2];
-            playerPad0[3] = playerPad[3];
+
             frames++;
             timeleft = "" + ((60 * seconds - frames) / 60 + 1);
             if (frames >= 60 * (startTime))
@@ -313,6 +363,7 @@ namespace KingOfTheCastle
             {
                 switch (p[x])
                 {
+
                     case (playerSelection.One):
                         if (itemsT[x, 0] != blank)
                             drawStats(stats[x, 0], new Vector2(items[x, 0].X + screenAdjust(190, "W"), items[x, 0].Y - 10));

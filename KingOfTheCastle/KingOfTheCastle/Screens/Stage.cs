@@ -24,7 +24,6 @@ namespace KingOfTheCastle
         String timeleft;
         Quest quest;
         bool roundOver;
-        int overTimer;
         int platformThickness;
         Player winner;
         int background;
