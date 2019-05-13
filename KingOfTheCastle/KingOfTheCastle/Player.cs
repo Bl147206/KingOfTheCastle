@@ -501,7 +501,7 @@ namespace KingOfTheCastle
                         break;
                 }
             }
-            else if (Math.Abs(xVelocity) > 0&&!isKnocked) //Slowing down when not holding a direction
+            else if (Math.Abs(xVelocity) > 0/*&&(!isKnocked&&onGround)*/) //Slowing down when not holding a direction
             {
                 if (Math.Abs(xVelocity) < groundFrictionForce && xVelocity != 0) //Making sure the player actaully stops
                 {
@@ -629,7 +629,7 @@ namespace KingOfTheCastle
             health = 0;
         }
 
-        public void damage(int damageAmount, int attacker,bool isSword)
+        public void damage(int damageAmount, int attacker, bool isSword)
         {
             Stage stage = (Stage)game.currentScreen;
             int healthDamage = 0, shieldDamage = 0;
@@ -680,6 +680,13 @@ namespace KingOfTheCastle
             xVelocity = 0;
             y = location.Y;
             x = location.X;
+        }
+
+        public void knockback()
+        {
+            isKnocked = true;
+            yVelocity -= 20;
+            xVelocity -= 30;
         }
 
         public void spawn()
