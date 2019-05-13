@@ -64,7 +64,19 @@ namespace KingOfTheCastle
             kb = Keyboard.GetState();
             if (pad1.IsButtonDown(Buttons.A)&&!previous.IsButtonDown(Buttons.A))//Will added this so he does not have to get a controller to test
             {
-                game.currentScreen = new Stage(game.round,this.game);
+                for (int i = 0; i < game.getControllerCount(); i += 1) {
+                    Rectangle tempRec = new Rectangle(Globals.screenW / (2 * (i + 1)), Globals.screenH - (250 * (i + 1)), 60, 60);
+                    if (i == 0)
+                        game.players[i] = new Player(game, tempRec, game.character, /*index*/ i + 1, Color.IndianRed);
+                    if (i == 1)
+                        game.players[i] = new Player(game, tempRec, game.character, /*index*/ i + 1, Color.LightBlue);
+                    if (i == 2)
+                        game.players[i] = new Player(game, tempRec, game.character, /*index*/ i + 1, Color.LightGreen);
+                    if (i == 3)
+                        game.players[i] = new Player(game, tempRec, game.character, /*index*/ i + 1, Color.Goldenrod);
+                }
+
+                game.currentScreen = new Stage(game.round, game);
                 game.currentScreen.game = game;
                 musicControl.Stop();
             }
@@ -135,7 +147,8 @@ namespace KingOfTheCastle
             game.GraphicsDevice.Clear(bg);
             game.spriteBatch.Draw(logo, logoPos, Color.White);
             game.spriteBatch.DrawString(game.font, "  Press Start or A to Play\n     Press Y for Help\nPress Back or Escape to exit", textpos, Color.Black);
-            game.spriteBatch.DrawString(game.font, "Players Connected (" + game.getControllerCount() + " / 4)", new Vector2(screenAdjust(1300,"W"), screenAdjust(20,"H")), Color.Black);
+            game.spriteBatch.DrawString(game.font, "Players Connected (" + game.getControllerCount() + " / 4)", new Vector2(screenAdjust(1300, "W"), screenAdjust(20, "H")), Color.Black);
+            game.spriteBatch.DrawString(game.font, "Press X to start LAN server", new Vector2(screenAdjust(1300, "W"), screenAdjust(80, "H")), Color.Black);
         }
 
         public int screenAdjust(int value, string WorH)
