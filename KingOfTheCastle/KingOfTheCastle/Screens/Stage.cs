@@ -42,9 +42,9 @@ namespace KingOfTheCastle
             musicControl = music.CreateInstance();
             background = Globals.rng.Next(0, game.backgrounds.Length);
 
-            platformThickness = 15;
+            platformThickness = 25;
 
-            platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 200, platformThickness);
+            platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 500, platformThickness);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
