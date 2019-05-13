@@ -646,7 +646,7 @@ namespace KingOfTheCastle
                 else
                 { //if the shield blocks all the damage just return
                     shieldDamage = damageAmount;
-                    stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
+                    stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.damageFont));
                     return;
                 }
             }
@@ -661,7 +661,7 @@ namespace KingOfTheCastle
                 game.players[attacker - 1].gold += 10;
                 game.strongHit.Play();
             }
-            stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
+            stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.damageFont));
             if(isSword)
             {
                 if (game.players[attacker - 1].location.X > location.X)

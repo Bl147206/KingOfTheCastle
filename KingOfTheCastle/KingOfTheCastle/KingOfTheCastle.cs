@@ -38,6 +38,7 @@ namespace KingOfTheCastle
         public Texture2D[] backgrounds;
         public Texture2D swordAttackT;
         public SpriteFont playerFont;
+        public SpriteFont damageFont;
         public Texture2D arrow;
         public Texture2D arrowF;
         public Texture2D armorTexture;
@@ -132,6 +133,7 @@ namespace KingOfTheCastle
             playerFont = Content.Load<SpriteFont>("playerFont");
             test = Content.Load<Texture2D>("blank");
             smallFont = Content.Load<SpriteFont>("sFont");
+            damageFont = Content.Load<SpriteFont>("spritefont3");
             character = Content.Load<Texture2D>("Character");
             Coin = Content.Load<Texture2D>("Coin");
             swordAttackT = Content.Load<Texture2D>("swordSwipe");
