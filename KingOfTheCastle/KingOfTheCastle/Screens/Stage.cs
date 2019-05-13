@@ -47,7 +47,7 @@ namespace KingOfTheCastle
             platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 500, platformThickness);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
-                int z = x % 4;
+                int z = x % 4;//In case we want more than 5 platforms
                 platforms[x] = new Platform(new Vector2(Globals.rng.Next(platforms[0].destination.X+350, platforms[0].destination.X+ platforms[0].destination.Width-350), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness);
             }
             frames = 0;

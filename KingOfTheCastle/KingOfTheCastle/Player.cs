@@ -40,7 +40,7 @@ namespace KingOfTheCastle
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
             //stuff that gets shared by all players at the start
-            goldOnKill = 10;
+            goldOnKill = 20;
             health = 20;
             maxHealth = 20;
             maxShieldHP = 10;
@@ -51,7 +51,7 @@ namespace KingOfTheCastle
             xAccel = 3;
             gravity = 1;
             dashSpeed = 30;
-            gold = 20;
+            gold = 10;
             dashDelay = 60; //in frames
             groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
             jumpForce = 23; //intial force of a jump
