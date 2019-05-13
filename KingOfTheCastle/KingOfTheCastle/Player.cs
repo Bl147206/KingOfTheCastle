@@ -360,6 +360,10 @@ namespace KingOfTheCastle
             if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0 && !shielding)
             {// Dashing
                 double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
+                if(Math.Sign(gamePad.ThumbSticks.Right.X) != Math.Sign(xVelocity))
+                {
+                    xVelocity = 0;
+                }
                 xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * (double) dashSpeed;
                 if(gamePad.ThumbSticks.Right.Y < 0)
                 {// can only dash down
