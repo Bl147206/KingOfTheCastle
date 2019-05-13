@@ -36,7 +36,7 @@ namespace KingOfTheCastle
 
         public Stage(int round, KingOfTheCastle game)
         {
-            platforms = new Platform[Globals.rng.Next(round + 1) + 2];
+            platforms = new Platform[4];
             music = game.Content.Load<SoundEffect>("Heroic Intrusion");
             winSound = game.Content.Load<SoundEffect>("Applause");
             musicControl = music.CreateInstance();
@@ -48,7 +48,7 @@ namespace KingOfTheCastle
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW-300, "W")), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness);
+                platforms[x] = new Platform(new Vector2(Globals.rng.Next(platforms[0].destination.X+350, platforms[0].destination.X+ platforms[0].destination.Width-350), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness);
             }
             frames = 0;
             musicControl.Volume = .3f;
