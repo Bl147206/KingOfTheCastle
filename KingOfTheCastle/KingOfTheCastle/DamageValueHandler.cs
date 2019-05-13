@@ -28,7 +28,7 @@ namespace KingOfTheCastle
         {
             foreach (DamageValue d in DamageValues)
             {
-                d.draw(game.spriteBatch, game.smallFont);
+                d.draw(game.spriteBatch);
             }
         }
 
@@ -56,7 +56,7 @@ namespace KingOfTheCastle
             bool killed;
             Player damaged;
             SpriteFont font;
-            public int xPos, yPos, displayTime = 30;
+            public int xPos, yPos, displayTime = 60;
 
             public DamageValue(int shieldDamage, int healthDamage, bool killed, Player damaged, SpriteFont font)
             {
@@ -74,7 +74,7 @@ namespace KingOfTheCastle
                 yPos = damaged.location.Y - font.LineSpacing;
             }
 
-            public void draw(SpriteBatch spriteBatch, SpriteFont font)
+            public void draw(SpriteBatch spriteBatch)
             {
                 if(killed)
                 {
@@ -84,8 +84,8 @@ namespace KingOfTheCastle
                 {
                     if (shieldDamage > 0)
                     {
-                        spriteBatch.DrawString(font, shieldDamage.ToString(), new Vector2(xPos, yPos), Color.Black);
-                        xPos += font.LineSpacing * (shieldDamage.ToString().Length + 2);
+                        spriteBatch.DrawString(font, shieldDamage.ToString(), new Vector2(xPos, yPos), Color.White);
+                        xPos += font.LineSpacing * (shieldDamage.ToString().Length);
                     }
                     if (healthDamage > 0)
                     {

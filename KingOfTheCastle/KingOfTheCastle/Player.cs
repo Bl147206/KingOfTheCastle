@@ -26,7 +26,7 @@ namespace KingOfTheCastle
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash, isKnocked;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
         Direction previousFacing;
@@ -40,6 +40,7 @@ namespace KingOfTheCastle
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
             //stuff that gets shared by all players at the start
+            goldOnKill = 10;
             health = 20;
             maxHealth = 20;
             maxShieldHP = 10;
@@ -356,6 +357,10 @@ namespace KingOfTheCastle
             if ((gamePad.ThumbSticks.Right.Y != 0 || gamePad.ThumbSticks.Right.X != 0) && dashTimer == 0 && !shielding)
             {// Dashing
                 double normalizer = Math.Abs(gamePad.ThumbSticks.Right.Y) + Math.Abs(gamePad.ThumbSticks.Right.X);
+                if(Math.Sign(gamePad.ThumbSticks.Right.X) != Math.Sign(xVelocity))
+                {
+                    xVelocity = 0;
+                }
                 xVelocity += ((double)gamePad.ThumbSticks.Right.X / normalizer) * (double) dashSpeed;
                 if(gamePad.ThumbSticks.Right.Y < 0)
                 {// can only dash down
@@ -642,22 +647,22 @@ namespace KingOfTheCastle
                 else
                 { //if the shield blocks all the damage just return
                     shieldDamage = damageAmount;
-                    stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
+                    stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.damageFont));
                     return;
                 }
             }
             healthDamage = damageAmount;
             health -= damageAmount;
             if(health <= 0)
-            {
+            {// if the hit kiils this player
                 killed = true;
                 kill();
                 game.players[attacker - 1].kills += 1;
                 game.players[attacker - 1].roundKills++;
-                game.players[attacker - 1].gold += 10;
+                game.players[attacker - 1].gold += goldOnKill;
                 game.strongHit.Play();
             }
-            stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.playerFont));
+            stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.damageFont));
             if(isSword)
             {
                 if (game.players[attacker - 1].location.X > location.X)
