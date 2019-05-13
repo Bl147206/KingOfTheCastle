@@ -41,6 +41,7 @@ namespace KingOfTheCastle
         public Texture2D arrow;
         public Texture2D arrowF;
         public Texture2D armorTexture;
+        Server server;
 
         public KingOfTheCastle()
         {
@@ -86,7 +87,6 @@ namespace KingOfTheCastle
 
         public int getControllerCount() {
             int result = 0;
-
             for (int i = 0; i < 4; i += 1) {
                 PlayerIndex idx;
 
@@ -112,6 +112,11 @@ namespace KingOfTheCastle
             }
 
             return result;
+        }
+
+        public void startServer() {
+            server = new Server();
+            server.start();
         }
 
         /// <summary>

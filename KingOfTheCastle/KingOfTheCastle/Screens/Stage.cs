@@ -16,6 +16,7 @@ namespace KingOfTheCastle
     {
         Platform[] platforms;
         public ProjectileHandler projectiles;
+        public DamageValueHandler damageValues;
         KeyboardState kb;
         int frames;
         int seconds;
@@ -55,7 +56,8 @@ namespace KingOfTheCastle
             this.game = game;
 
             projectiles = new ProjectileHandler(game);
-
+            damageValues = new DamageValueHandler(game);
+            
             seconds = 100;
             timeleft = "" + seconds;
 
@@ -273,6 +275,7 @@ namespace KingOfTheCastle
             if (!roundOver)
             {
                 projectiles.Update();
+                damageValues.update();
                 quest.check();
             }
         }
@@ -300,6 +303,7 @@ namespace KingOfTheCastle
             timer.draw();
             //game.spriteBatch.Draw(game.test, new Rectangle(20, 20, 3 * int.Parse(timeleft), 50), Color.Gray); //Timer bar
             projectiles.draw();
+            damageValues.draw();
 
             if (isPaused) {
                 game.spriteBatch.Draw(game.test, new Rectangle(0, 0, 10000, 10000), Color.Black * .5f);

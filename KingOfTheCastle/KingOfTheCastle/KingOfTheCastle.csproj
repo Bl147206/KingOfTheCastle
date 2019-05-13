@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bar.cs" />
+    <Compile Include="DamageValueHandler.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Platform.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Screens\Stage.cs" />
     <Compile Include="Screens\TitleScreen.cs" />
     <Compile Include="Screens\Shop.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
