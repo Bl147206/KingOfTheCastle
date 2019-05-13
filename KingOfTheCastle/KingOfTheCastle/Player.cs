@@ -635,6 +635,7 @@ namespace KingOfTheCastle
             Stage stage = (Stage)game.currentScreen;
             int healthDamage = 0, shieldDamage = 0;
             bool killed = false;
+            this.attacker = attacker;
 
             if (shielding)
             { //Shield blocks
@@ -643,6 +644,7 @@ namespace KingOfTheCastle
                 if(shieldHP < 0)
                 { //if the attack did more damage than the shield can block
                     damageAmount = shieldHP * -1;
+                    
                 }
                 else
                 { //if the shield blocks all the damage just return
