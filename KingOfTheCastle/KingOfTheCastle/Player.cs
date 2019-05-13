@@ -26,7 +26,7 @@ namespace KingOfTheCastle
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash, isKnocked;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill, attacker;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
         Direction previousFacing;
