@@ -16,6 +16,7 @@ namespace KingOfTheCastle {
                 possibleWeapons.Add(x);
             }
             // generate 3 weapons
+
             while (index < 3) {
                 string part1 = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];
                 string part2 = Globals.weaponNames[Globals.rng.Next(Globals.weaponNames.Length)];

@@ -265,72 +265,74 @@ namespace KingOfTheCastle
                             buyItem.Play();
                         }
                     }
-                    //Player 1
-                    if (x == 0)
-                    {
-                        if (p[x] == playerSelection.One)
-                        {
-                            pSelect[x].Y = screenAdjust(20, "H");
-                        }
-                        if (p[x] == playerSelection.Two)
-                        {
-                            pSelect[x].Y = screenAdjust(185, "H");
-                        }
-                        if (p[x] == playerSelection.Three)
-                        {
-                            pSelect[x].Y = screenAdjust(360, "H");
-                        }
-                    }
-                    //Player 2
-                    if (x == 1)
-                    {
-                        if (p[x] == playerSelection.One)
-                        {
-                            pSelect[x].Y = screenAdjust(15, "H");
-                        }
-                        if (p[x] == playerSelection.Two)
-                        {
-                            pSelect[x].Y = screenAdjust(175, "H");
-                        }
-                        if (p[x] == playerSelection.Three)
-                        {
-                            pSelect[x].Y = screenAdjust(350, "H");
-                        }
-                    }
-                    //Player 3
-                    if (x == 2)
-                    {
-                        if (p[x] == playerSelection.One)
-                        {
-                            pSelect[x].Y = screenAdjust(610, "H");
-                        }
-                        if (p[2] == playerSelection.Two)
-                        {
-                            pSelect[x].Y = screenAdjust(770, "H");
-                        }
-                        if (p[2] == playerSelection.Three)
-                        {
-                            pSelect[x].Y = screenAdjust(945, "H");
-                        }
-                    }
-                    //Player 4
-                    if (x == 3)
-                    {
-                        if (p[x] == playerSelection.One)
-                        {
-                            pSelect[x].Y = screenAdjust(600, "H");
-                        }
-                        if (p[x] == playerSelection.Two)
-                        {
-                            pSelect[x].Y = screenAdjust(770, "H");
-                        }
-                        if (p[x] == playerSelection.Three)
-                        {
-                            pSelect[x].Y = screenAdjust(945, "H");
-                        }
-                    }
-                    playerPad0[x] = playerPad[x];
+                   
+                    
                 }
+                //Player 1
+                if (x == 0)
+                {
+                    if (p[x] == playerSelection.One)
+                    {
+                        pSelect[x].Y = screenAdjust(20, "H");
+                    }
+                    if (p[x] == playerSelection.Two)
+                    {
+                        pSelect[x].Y = screenAdjust(185, "H");
+                    }
+                    if (p[x] == playerSelection.Three)
+                    {
+                        pSelect[x].Y = screenAdjust(360, "H");
+                    }
+                }
+                //Player 2
+                if (x == 1)
+                {
+                    if (p[x] == playerSelection.One)
+                    {
+                        pSelect[x].Y = screenAdjust(15, "H");
+                    }
+                    if (p[x] == playerSelection.Two)
+                    {
+                        pSelect[x].Y = screenAdjust(175, "H");
+                    }
+                    if (p[x] == playerSelection.Three)
+                    {
+                        pSelect[x].Y = screenAdjust(350, "H");
+                    }
+                }
+                //Player 3
+                if (x == 2)
+                {
+                    if (p[x] == playerSelection.One)
+                    {
+                        pSelect[x].Y = screenAdjust(610, "H");
+                    }
+                    if (p[2] == playerSelection.Two)
+                    {
+                        pSelect[x].Y = screenAdjust(770, "H");
+                    }
+                    if (p[2] == playerSelection.Three)
+                    {
+                        pSelect[x].Y = screenAdjust(945, "H");
+                    }
+                }
+                //Player 4
+                if (x == 3)
+                {
+                    if (p[x] == playerSelection.One)
+                    {
+                        pSelect[x].Y = screenAdjust(600, "H");
+                    }
+                    if (p[x] == playerSelection.Two)
+                    {
+                        pSelect[x].Y = screenAdjust(770, "H");
+                    }
+                    if (p[x] == playerSelection.Three)
+                    {
+                        pSelect[x].Y = screenAdjust(945, "H");
+                    }
+                }
+                playerPad0[x] = playerPad[x];
             }
 
 
