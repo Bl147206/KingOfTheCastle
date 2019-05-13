@@ -146,7 +146,7 @@ namespace KingOfTheCastle
 
             shieldBar.update(shieldHP);
 
-            knockbackLogic();
+            knockbackLogic(gamePad);
 
             oldGamePad = gamePad;
         }
@@ -174,19 +174,15 @@ namespace KingOfTheCastle
             }
         }
 
-        public void knockbackLogic()
+        public void knockbackLogic(GamePadState gamePad)
         {
             if (isKnocked)
             {
                 knockTimer--;
-                if (knockTimer <= 0)
-                    isKnocked = false;
                 if (onGround)
-                {
                     isKnocked = false;
-                    knockTimer = 0;
-                    
-                }
+                if (Math.Abs(gamePad.ThumbSticks.Left.X) != 0 && knockTimer <= 0)
+                    isKnocked = false;          
             }
         }
 
@@ -206,7 +202,7 @@ namespace KingOfTheCastle
             }
             if (!onGround)
             {
-                yVelocity = 60;
+                yVelocity = 50;
                 game.cheer.Play();
                 game.strongHit.Play();
             }
@@ -501,7 +497,7 @@ namespace KingOfTheCastle
                         break;
                 }
             }
-            else if (Math.Abs(xVelocity) > 0/*&&(!isKnocked&&onGround)*/) //Slowing down when not holding a direction
+            else if (Math.Abs(xVelocity) > 0 && !isKnocked && onGround) //Slowing down when not holding a direction
             {
                 if (Math.Abs(xVelocity) < groundFrictionForce && xVelocity != 0) //Making sure the player actaully stops
                 {
@@ -680,13 +676,6 @@ namespace KingOfTheCastle
             xVelocity = 0;
             y = location.Y;
             x = location.X;
-        }
-
-        public void knockback()
-        {
-            isKnocked = true;
-            yVelocity -= 20;
-            xVelocity -= 30;
         }
 
         public void spawn()
