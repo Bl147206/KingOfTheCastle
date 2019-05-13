@@ -120,6 +120,13 @@ namespace KingOfTheCastle
                             if (p.location.Y > killLevel)
                             {
                                 p.kill();
+                                if(p.attacker!=0)
+                                {
+                                    game.players[p.attacker - 1].kills += 1;
+                                    game.players[p.attacker - 1].roundKills++;
+                                    game.players[p.attacker - 1].gold += p.goldOnKill;
+                                    game.strongHit.Play();
+                                }
                             }
                         }
                         else
