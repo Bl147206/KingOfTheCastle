@@ -379,6 +379,8 @@ namespace KingOfTheCastle
                 dashTimer--;
                 
             }
+            if (dashTimer == 0)
+                isDashing = false;
             if (dashTimer < 5&&dashTimer>0)
                 flash = true;
         }
