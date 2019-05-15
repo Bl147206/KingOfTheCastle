@@ -79,6 +79,9 @@ namespace KingOfTheCastle
                 game.currentScreen = new Stage(game.round, game);
                 game.currentScreen.game = game;
                 musicControl.Stop();
+
+                if (game.server != null)
+                    game.sendStart();
             }
             if (pad1.IsButtonDown(Buttons.Y))
             {
@@ -148,7 +151,7 @@ namespace KingOfTheCastle
             game.spriteBatch.Draw(logo, logoPos, Color.White);
             game.spriteBatch.DrawString(game.font, "  Press Start or A to Play\n     Press Y for Help\nPress Back or Escape to exit", textpos, Color.Black);
             game.spriteBatch.DrawString(game.font, "Players Connected (" + game.getControllerCount() + " / 4)", new Vector2(screenAdjust(1300, "W"), screenAdjust(20, "H")), Color.Black);
-            game.spriteBatch.DrawString(game.font, "Press X to start LAN server", new Vector2(screenAdjust(1300, "W"), screenAdjust(80, "H")), Color.Black);
+            game.spriteBatch.DrawString(game.font, KingOfTheCastle.serverStatus, new Vector2(screenAdjust(1300, "W"), screenAdjust(80, "H")), Color.Black);
         }
 
         public int screenAdjust(int value, string WorH)
