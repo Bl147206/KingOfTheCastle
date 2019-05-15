@@ -7,10 +7,15 @@ namespace KingOfTheCastle {
     class Inventory {
         public Weapon[] weapons;
         int index = 0;
+        int weaponStatPoints;
         List<int> possibleWeapons = new List<int>();
         int typeDecider;
         public Inventory(int currentRound,KingOfTheCastle game) {
             this.weapons = new Weapon[3];
+            weaponStatPoints = currentRound * 10;
+            int armorBonus=0;
+            int attack=0;
+            double attackSpeed=0;
             for (int x = 0; x < 3; x++) //Limit on for loop = number of KINDS of weapons
             {
                 possibleWeapons.Add(x);
@@ -25,10 +30,13 @@ namespace KingOfTheCastle {
                 var kind = (Weapon.Kind)(typeDecider);
                 possibleWeapons.Remove(typeDecider);
 
-
-                int attack = Globals.rng.Next(currentRound * 2) + currentRound + 2;
-                double attackSpeed = (Globals.rng.NextDouble() + .5) * .4 + currentRound * .5;
-                int armorBonus = Globals.rng.Next(currentRound * 2, currentRound * 10);
+                if (kind != Weapon.Kind.armor)
+                {
+                    attack = Globals.rng.Next(1, weaponStatPoints);
+                    attackSpeed = (weaponStatPoints - attack)*.1;
+                }
+                else
+                    armorBonus = Globals.rng.Next(1,weaponStatPoints);
 
                 switch (kind) {
                     case Weapon.Kind.melee:

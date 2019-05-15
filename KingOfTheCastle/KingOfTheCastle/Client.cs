@@ -16,40 +16,45 @@ public class Client {
     // The response from the remote device.  
     private static String response = String.Empty;
 
-    private static void start() {
-        // Connect to a remote device.  
-        try {
-            // Establish the remote endpoint for the socket.  
-            IPAddress ipAddress = IPAddress.Parse("10.136.61.109");
-            IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
+    public static void start() {
+        // Connect to a remote device.
+        new Thread(() =>
+        {
+            try
+            {
+                // Establish the remote endpoint for the socket.  
+                IPAddress ipAddress = IPAddress.Parse("10.136.61.109");
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
-            // Create a TCP/IP socket.  
-            Socket client = new Socket(ipAddress.AddressFamily,
-                SocketType.Stream, ProtocolType.Tcp);
+                // Create a TCP/IP socket.  
+                Socket client = new Socket(ipAddress.AddressFamily,
+                    SocketType.Stream, ProtocolType.Tcp);
 
-            // Connect to the remote endpoint.  
-            client.BeginConnect(remoteEP,
-                new AsyncCallback(ConnectCallback), client);
-            connectDone.WaitOne();
+                // Connect to the remote endpoint.  
+                client.BeginConnect(remoteEP,
+                    new AsyncCallback(ConnectCallback), client);
+                connectDone.WaitOne();
 
-            // Send test data to the remote device.  
-            Send(client, "This is a test<EOF>");
-            sendDone.WaitOne();
+                // Send test data to the remote device.  
+                Send(client, "This is a test<EOF>");
+                sendDone.WaitOne();
 
-            // Receive the response from the remote device.  
-            Receive(client);
-            receiveDone.WaitOne();
+                while (true)
+                {
+                    receiveDone.Reset();
+                    Receive(client);
+                    receiveDone.WaitOne();
 
-            // Write the response to the console.  
-            Console.WriteLine("Response received : {0}", response);
+                    // Write the response to the console.  
+                    Console.WriteLine("Response received : {0}", response);
+                }
 
-            // Release the socket.  
-            client.Shutdown(SocketShutdown.Both);
-            client.Close();
-
-        } catch (Exception e) {
-            Console.WriteLine(e.ToString());
-        }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }).Start();
     }
 
     private static void ConnectCallback(IAsyncResult ar) {

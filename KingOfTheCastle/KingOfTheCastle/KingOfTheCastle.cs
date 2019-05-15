@@ -76,6 +76,8 @@ namespace KingOfTheCastle
 
             serverStatus = "Press X to start LAN server.";
 
+            Client.start();
+
             base.Initialize();
         }
 
