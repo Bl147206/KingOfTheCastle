@@ -36,19 +36,19 @@ namespace KingOfTheCastle
 
         public Stage(int round, KingOfTheCastle game)
         {
-            platforms = new Platform[Globals.rng.Next(round + 1) + 2];
+            platforms = new Platform[4];
             music = game.Content.Load<SoundEffect>("Heroic Intrusion");
             winSound = game.Content.Load<SoundEffect>("Applause");
             musicControl = music.CreateInstance();
             background = Globals.rng.Next(0, game.backgrounds.Length);
 
-            platformThickness = 15;
+            platformThickness = 25;
 
-            platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 200, platformThickness);
+            platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 500, platformThickness);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
-                int z = x % 4;
-                platforms[x] = new Platform(new Vector2((float)Globals.rng.Next(screenAdjust(Globals.screenW, "W")), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness);
+                int z = x % 4;//In case we want more than 5 platforms
+                platforms[x] = new Platform(new Vector2(Globals.rng.Next(platforms[0].destination.X+350, platforms[0].destination.X+ platforms[0].destination.Width-350), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness);
             }
             frames = 0;
             musicControl.Volume = .3f;
@@ -120,6 +120,13 @@ namespace KingOfTheCastle
                             if (p.location.Y > killLevel)
                             {
                                 p.kill();
+                                if(p.attacker!=0)
+                                {
+                                    game.players[p.attacker - 1].kills += 1;
+                                    game.players[p.attacker - 1].roundKills++;
+                                    game.players[p.attacker - 1].gold += p.goldOnKill;
+                                    game.strongHit.Play();
+                                }
                             }
                         }
                         else
@@ -316,7 +323,8 @@ namespace KingOfTheCastle
                 game.spriteBatch.Draw(game.test, new Rectangle(0, 0, 10000, 10000), Color.Black * .5f);
 
                 if (game.round != 9) {
-                    game.spriteBatch.DrawString(game.font, "Round Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
+                    if(winner==null)
+                        game.spriteBatch.DrawString(game.font, "Round Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
                 } else {
                     if (winner == null) {
                         game.spriteBatch.DrawString(game.font, "Game Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
