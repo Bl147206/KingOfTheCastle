@@ -14,7 +14,7 @@ namespace KingOfTheCastle
 {
     class Stage: Screen
     {
-        Platform[] platforms;
+        public Platform[] platforms;
         public ProjectileHandler projectiles;
         public DamageValueHandler damageValues;
         KeyboardState kb;
