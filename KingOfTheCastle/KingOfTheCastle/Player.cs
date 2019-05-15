@@ -35,7 +35,7 @@ namespace KingOfTheCastle
         SoundEffect rangedSound;
         Bar shieldBar;
         //more specific x and y coords
-        public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity;
+        public double x, y, xVelocity, yVelocity, xAccel, gravity, groundFrictionForce, mAttackSpeed, rAttackSpeed, terminalVelocity, airDrag;
 
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
@@ -53,7 +53,8 @@ namespace KingOfTheCastle
             dashSpeed = 30;
             gold = 10;
             dashDelay = 60; //in frames
-            groundFrictionForce = 2; //decrease in x velocity when you're not holding a direction
+            groundFrictionForce = 2;//decrease in x velocity when you're not holding a direction
+            airDrag = 1.5;
             jumpForce = 23; //intial force of a jump
             shortJumpForce = 15;
             maxXVelocity = 15;
@@ -511,6 +512,17 @@ namespace KingOfTheCastle
                 else
                 {
                     xVelocity -= Math.Sign(xVelocity) * groundFrictionForce;
+                }
+            }
+            else if(Math.Abs(xVelocity) > 0 && !isKnocked && !onGround)
+            {
+                if (Math.Abs(xVelocity) < airDrag && xVelocity != 0) //Making sure the player actaully stops
+                {
+                    xVelocity = 0;
+                }
+                else
+                {
+                    xVelocity -= Math.Sign(xVelocity) * airDrag;
                 }
             }
 
