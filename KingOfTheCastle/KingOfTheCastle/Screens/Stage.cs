@@ -324,7 +324,9 @@ namespace KingOfTheCastle
 
                 if (game.round != 9) {
                     if(winner==null)
-                        game.spriteBatch.DrawString(game.font, "Round Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
+                        game.spriteBatch.DrawString(game.font, "Time Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
+                    else
+                        game.spriteBatch.DrawString(game.font, "Round Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), winner.playerColor);
                 } else {
                     if (winner == null) {
                         game.spriteBatch.DrawString(game.font, "Game Over!", new Vector2(Globals.screenW / 2 - 100, Globals.screenH / 2 - 100), Color.White);
