@@ -280,6 +280,7 @@ namespace KingOfTheCastle
                 if (frames >= 180 && game.round != 9)
                 {
                     game.currentScreen = new Shop(game);
+                    winner.gold += 10;
                     musicControl.Stop();
                 }
             }
