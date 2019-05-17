@@ -16,6 +16,7 @@ namespace KingOfTheCastle {
             int armorBonus=0;
             int attack=0;
             double attackSpeed=0;
+            int shieldBonus = 0;
             for (int x = 0; x < 3; x++) //Limit on for loop = number of KINDS of weapons
             {
                 possibleWeapons.Add(x);
@@ -33,10 +34,13 @@ namespace KingOfTheCastle {
                 if (kind != Weapon.Kind.armor)
                 {
                     attack = Globals.rng.Next(1, weaponStatPoints);
-                    attackSpeed = (weaponStatPoints - attack)*.1;
+                    attackSpeed = (weaponStatPoints - attack) * .1;
                 }
                 else
-                    armorBonus = Globals.rng.Next(1,weaponStatPoints);
+                {
+                    armorBonus = Globals.rng.Next(1, weaponStatPoints);
+                    shieldBonus = weaponStatPoints - armorBonus;
+                }
 
                 switch (kind) {
                     case Weapon.Kind.melee:
@@ -47,7 +51,7 @@ namespace KingOfTheCastle {
                         weapons[index]=(new Ranged(name, attack, attackSpeed, 2*attack+(int)((1/attackSpeed)*(3/2)), game.bowTexture));
                         break;
                     case Weapon.Kind.armor:
-                        weapons[index] = (new Armor(name, armorBonus, armorBonus+(armorBonus/3), game.armorTexture));
+                        weapons[index] = (new Armor(name, armorBonus, armorBonus+(armorBonus/3)+shieldBonus, shieldBonus, game.armorTexture));
                         break;
 
                 }

@@ -51,7 +51,7 @@ namespace KingOfTheCastle
             xAccel = 3;
             gravity = 1;
             dashSpeed = 30;
-            gold = 10;
+            gold = 300;
             dashDelay = 60; //in frames
             groundFrictionForce = 2;//decrease in x velocity when you're not holding a direction
             airDrag = 1.5;
