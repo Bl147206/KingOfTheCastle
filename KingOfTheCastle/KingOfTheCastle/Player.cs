@@ -729,6 +729,8 @@ namespace KingOfTheCastle
             completedMainQuest = false;
             jumps = 0;
             roundKills = 0;
+            dashes = 0;
+            projectilesLanded = 0;
             shieldHP = maxShieldHP;
         }
 
