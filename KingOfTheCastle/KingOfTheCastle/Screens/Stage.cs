@@ -57,7 +57,7 @@ namespace KingOfTheCastle
             projectiles = new ProjectileHandler(game);
             damageValues = new DamageValueHandler(game);
             
-            seconds = 2;
+            seconds = 100;
             timeleft = "" + seconds;
 
             foreach (Player p in game.players)
