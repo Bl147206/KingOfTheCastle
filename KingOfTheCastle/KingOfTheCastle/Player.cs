@@ -26,7 +26,7 @@ namespace KingOfTheCastle
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash, isKnocked;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill, attacker, projectilesLanded;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill, attacker, projectilesLanded, dashes;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
         Direction previousFacing;
@@ -51,6 +51,7 @@ namespace KingOfTheCastle
             xAccel = 3;
             gravity = 1;
             dashSpeed = 30;
+            dashes = 0;
             gold = 10;
             dashDelay = 60; //in frames
             groundFrictionForce = 2;//decrease in x velocity when you're not holding a direction
@@ -374,7 +375,8 @@ namespace KingOfTheCastle
                     yVelocity = 0;
                 }
                 dashTimer = dashDelay;
-                isDashing = true; 
+                isDashing = true;
+                dashes++;
             }
             else if(dashTimer > 0)
             {
