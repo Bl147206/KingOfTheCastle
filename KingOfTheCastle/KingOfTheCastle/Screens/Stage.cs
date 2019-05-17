@@ -65,13 +65,16 @@ namespace KingOfTheCastle
                 if (p != null)
                     p.spawn();
             }
-            switch (Globals.rng.Next(1, 3))
+            switch (Globals.rng.Next(1, 4))
             {
                 case 1:
                     quest = new FirstKillQuest(this.game);
                     break;
                 case 2:
                     quest = new JumpQuest(this.game);
+                    break;
+                case 3:
+                    quest = new ProjectileQuest(this.game);
                     break;
             }
                 
