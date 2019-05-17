@@ -41,7 +41,7 @@ namespace KingOfTheCastle
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
             //stuff that gets shared by all players at the start
-            goldOnKill = 20;
+            goldOnKill = 7;
             health = 20;
             maxHealth = 20;
             maxShieldHP = 10;
