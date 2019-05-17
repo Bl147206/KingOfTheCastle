@@ -27,6 +27,7 @@ namespace KingOfTheCastle
         Texture2D[,] itemsT;
         Color[,] itemsC;
         int[] goldTotals;
+        SpriteFont[] goldFont;
         Texture2D background;
         int frames;
         int seconds;
@@ -38,6 +39,7 @@ namespace KingOfTheCastle
         SoundEffect click;
         SpriteFont timerFont;
         int startTime;
+        int[] goldDisplayAdjust;
 
 
         public Shop(KingOfTheCastle game)
@@ -47,8 +49,10 @@ namespace KingOfTheCastle
             itemsT = new Texture2D[game.getControllerCount(), 3];
             stats = new string[game.getControllerCount(), 3];
             itemsC = new Color[game.getControllerCount(), 3];
+            goldFont = new SpriteFont[game.getControllerCount()];
             pSelect = new Rectangle[game.getControllerCount()];
             p = new playerSelection[game.getControllerCount()];
+            goldDisplayAdjust= new int[game.getControllerCount()];
             background = game.shopText;
             blank = game.test;
             buyItem = game.Content.Load<SoundEffect>("purchase");
@@ -56,6 +60,9 @@ namespace KingOfTheCastle
             for (int x = 0; x < pSelect.Length; x++)
             {
                 p[x] = playerSelection.One;
+                goldFont[x] = game.font;
+                goldDisplayAdjust[x] = 0;
+
             }
 
             
@@ -78,7 +85,8 @@ namespace KingOfTheCastle
                     stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nAttack Speed: " + speed + "\nDamage: " 
                         + inventories[x].weapons[y].attack;
                     else
-                        stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nArmor: " + inventories[x].weapons[y].armorBonus;
+                        stats[x, y] = "Name: " + inventories[x].weapons[y].name + "\nType: " + type + "\nCost: " + inventories[x].weapons[y].cost + "\nArmor: " + inventories[x].weapons[y].armorBonus+"\nShield: "
+                            + inventories[x].weapons[y].shieldBonus;
                     if (x == 0)
                     {
                         pSelect[x] = new Rectangle(screenAdjust(80, "W"), screenAdjust(20, "H"), screenAdjust(140, "W"), screenAdjust(135, "H"));//20,20,140,135
@@ -138,6 +146,11 @@ namespace KingOfTheCastle
             for (int x = 0; x < goldTotals.Length; x++)
             {
                 goldTotals[x] = game.players[x].gold;
+                if (goldTotals[x] >= 100)
+                {
+                    goldFont[x] = game.smallFont;
+                    goldDisplayAdjust[x] = 15;
+                }
             }
             for (int x = 0; x < playerPad.Length; x++)
             {
@@ -203,6 +216,7 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[0].texture == game.armorTexture)
                             {
                                 game.players[x].maxHealth = 20 + inventories[x].weapons[0].armorBonus;
+                                game.players[x].maxShieldHP = (10 + game.round * 2) + inventories[x].weapons[0].shieldBonus;
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
 
@@ -230,6 +244,7 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[1].texture == game.armorTexture)
                             {
                                 game.players[x].maxHealth = 20 + inventories[x].weapons[0].armorBonus;
+                                game.players[x].maxShieldHP = (10 + game.round * 2) + inventories[x].weapons[1].shieldBonus;
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
 
@@ -257,6 +272,7 @@ namespace KingOfTheCastle
                             if (inventories[x].weapons[2].texture == game.armorTexture)
                             {
                                 game.players[x].maxHealth = 20 + inventories[x].weapons[2].armorBonus;
+                                game.players[x].maxShieldHP = (10 + game.round * 2) + inventories[x].weapons[2].shieldBonus;
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
 
@@ -342,6 +358,14 @@ namespace KingOfTheCastle
             {
                 game.round++;
                 game.currentScreen = new Stage(game.round, this.game);
+                foreach(Player p in game.players)
+                {
+                    if(p!= null)
+                    {
+                        p.maxShieldHP += 2;
+                        p.updateShieldBar();
+                    }
+                }
             }
         }
 
@@ -384,23 +408,23 @@ namespace KingOfTheCastle
                 {
                     case (0):
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), 70, 70), Color.White);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800,"W"), (float)screenAdjust(400,"H")), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[0], "$" + goldTotals[0], new Vector2((float)screenAdjust(800,"W"), (float)screenAdjust(400,"H") + goldDisplayAdjust[0]), Color.Gold);
                     
                         break;
                     case (1):
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), 70, 70), Color.White);
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), 70, 70), Color.White);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[0], "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H") + goldDisplayAdjust[0]), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[1], "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H") + goldDisplayAdjust[1]), Color.Gold);
                    
                     break;
                     case (2):
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(392, "H"), 70, 70), Color.White);
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), 70, 70), Color.White);
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(992, "H"), 70, 70), Color.White);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000,"H")), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[0], "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H") + goldDisplayAdjust[0]), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[1], "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H") + goldDisplayAdjust[1]), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[2], "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000,"H") + goldDisplayAdjust[2]), Color.Gold);
                     
                     break;
                     case (3):
@@ -408,10 +432,10 @@ namespace KingOfTheCastle
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(392, "H"), 70, 70), Color.White);
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(795, "W"), screenAdjust(992, "H"), 70, 70), Color.White);
                     game.spriteBatch.Draw(game.Coin, new Rectangle(screenAdjust(1845, "W"), screenAdjust(992, "H"), 70, 70), Color.White);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
-                    game.spriteBatch.DrawString(game.font, "$" + goldTotals[3], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(1000, "H")), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[0], "$" + goldTotals[0], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(400, "H") + goldDisplayAdjust[0]), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[1], "$" + goldTotals[1], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(400, "H") + goldDisplayAdjust[1]), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[2], "$" + goldTotals[2], new Vector2((float)screenAdjust(800, "W"), (float)screenAdjust(1000, "H") + goldDisplayAdjust[2]), Color.Gold);
+                    game.spriteBatch.DrawString(goldFont[3], "$" + goldTotals[3], new Vector2((float)screenAdjust(1850, "W"), (float)screenAdjust(1000, "H") + goldDisplayAdjust[3]), Color.Gold);
                     
                     break;
                 }

@@ -26,7 +26,8 @@ namespace KingOfTheCastle
         public bool onGround, fallingThroughPlatform, isAlive, isMAttacking, isRAttacking, airJumpUsed, isDashing, completedMainQuest, shielding, flash, isKnocked;
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
-            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill, attacker, projectilesLanded, dashes;
+            maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill, attacker,
+            shieldDegradeTime, shieldDegradeTimer, projectilesLanded, dashes;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
         Direction previousFacing;
@@ -46,6 +47,7 @@ namespace KingOfTheCastle
             maxShieldHP = 10;
             shieldHP = maxShieldHP;
             shieldRechargeRate = 20; //Recharges 1 point every x game ticks
+            shieldDegradeTime = 60; //Ticks per shield lost when held
             xVelocity = 0;
             yVelocity = 0;
             xAccel = 3;
@@ -155,16 +157,29 @@ namespace KingOfTheCastle
             oldGamePad = gamePad;
         }
 
+        public void updateShieldBar()
+        {
+            shieldBar.max = maxShieldHP;
+            shieldHP = maxShieldHP;
+        }
+
         public void shieldLogic(GamePadState gamePad)
         {
             shielding = false;
             if(gamePad.IsButtonDown(Buttons.RightShoulder) && shieldHP > 0)
             {
                 shieldTimer = 0;
+                shieldDegradeTimer++;
                 shielding = true;
+                if(shieldDegradeTimer == shieldDegradeTime)
+                {
+                    shieldHP--;
+                    shieldDegradeTimer = 0;
+                }
             }
             else
             {
+                shieldDegradeTimer = 0;
                 shieldTimer++;
                 if(shieldTimer == shieldRechargeRate)
                 {
@@ -661,7 +676,7 @@ namespace KingOfTheCastle
                 if(shieldHP < 0)
                 { //if the attack did more damage than the shield can block
                     damageAmount = shieldHP * -1;
-                    
+                    shieldHP = 0;
                 }
                 else
                 { //if the shield blocks all the damage just return
