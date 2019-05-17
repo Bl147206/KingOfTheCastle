@@ -115,7 +115,7 @@ namespace KingOfTheCastle
            
 
             frames = 0;
-            startTime = 10;
+            startTime = 20;
             seconds = startTime;
             timeleft = "" + seconds;
             goldTotals = new int[game.getControllerCount()];

@@ -76,10 +76,10 @@ namespace KingOfTheCastle
             this.playerColor = rangedColor = meleeColor = color;
             animationTimer = 0;//Used for walking animation so the character does not bounce too quickly
             mAttack = 2;
-            mAttackSpeed = 2;
+            mAttackSpeed = 1.2;
 
             rAttack = 2;
-            rAttackSpeed = .65;
+            rAttackSpeed = .85;
 
             this.game = game;
             location = spawnLocation;
