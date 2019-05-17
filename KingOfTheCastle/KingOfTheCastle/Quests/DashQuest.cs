@@ -19,7 +19,7 @@ namespace KingOfTheCastle
         public DashQuest(KingOfTheCastle game)
         {
             this.game = game;
-            requiredDashAmt = (int)Math.Round((double)(game.round) / 3 * Globals.rng.Next(5, 10));
+            requiredDashAmt = (int)Math.Round((double)(game.round) / 4 * Globals.rng.Next(10, 15));
             title = "Dash " + requiredDashAmt + " TIMES";
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
             yLoc = display.Y;

@@ -19,7 +19,7 @@ namespace KingOfTheCastle
         public JumpQuest(KingOfTheCastle game)
         {
             this.game = game;
-            requiredJumpAmt = (int)Math.Round((double)(game.round)/3 * Globals.rng.Next(5,10));
+            requiredJumpAmt = (int)Math.Round((double)(game.round)/4 * Globals.rng.Next(10,15));
             title = "JUMP " + requiredJumpAmt + " TIMES";            
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
             yLoc = display.Y;

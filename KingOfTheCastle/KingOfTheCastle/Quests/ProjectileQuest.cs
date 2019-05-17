@@ -19,7 +19,7 @@ namespace KingOfTheCastle
         public ProjectileQuest(KingOfTheCastle game)
         {
             this.game = game;
-            requiredProjAmt = (int)Math.Round((double)(game.round) / 2 * Globals.rng.Next(1, 5));
+            requiredProjAmt = (int)Math.Round((double)(game.round) / 4 * Globals.rng.Next(10, 15));
             title = "LAND " + requiredProjAmt + " PROJECTILES";
             titleLoc = new Vector2(Globals.screenW / 2 - 140, 0);
             yLoc = display.Y;
