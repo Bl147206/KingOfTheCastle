@@ -72,16 +72,17 @@ namespace KingOfTheCastle
             flash = false;
             knockTimer = 0;
             knockDelay = 30;
+            projectilesLanded = 0;
             facing = Direction.Right;
             completedMainQuest = false;
             sourceRectangle = new Rectangle(0, 0, 64, 64);
             this.playerColor = rangedColor = meleeColor = color;
             animationTimer = 0;//Used for walking animation so the character does not bounce too quickly
             mAttack = 2;
-            mAttackSpeed = 20;
+            mAttackSpeed = 1.2;
 
             rAttack = 2;
-            rAttackSpeed = 20.65;
+            rAttackSpeed = .85;
 
             this.game = game;
             location = spawnLocation;

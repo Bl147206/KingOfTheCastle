@@ -84,6 +84,7 @@ namespace KingOfTheCastle
                     {
                         p.damage(damageValue, playerWhoFired,false);
                         playersHits.Add(p.playerNumber);
+                        players[playerWhoFired-1].projectilesLanded++;
                         dispose = true;
                     }
                 }
