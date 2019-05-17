@@ -23,6 +23,7 @@ namespace KingOfTheCastle {
         public Texture2D texture;
         public Color color;
         public int armorBonus;
+        public int shieldBonus;
     }
 
     class Melee: Weapon {
@@ -56,11 +57,12 @@ namespace KingOfTheCastle {
     {
         public new readonly Kind kind = Kind.armor;
 
-        public Armor(string name, int armorBonus, int cost, Texture2D armor)
+        public Armor(string name, int armorBonus, int cost, int shieldBonus, Texture2D armor)
         {
             this.name = name;
             this.armorBonus= armorBonus;
             this.cost = cost;
+            this.shieldBonus = shieldBonus;
             texture = armor;
             color = new Color(Globals.rng.Next(50, 200), Globals.rng.Next(50, 200), Globals.rng.Next(50, 200));
         }

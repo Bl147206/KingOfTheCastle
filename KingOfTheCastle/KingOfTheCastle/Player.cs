@@ -53,6 +53,7 @@ namespace KingOfTheCastle
             xAccel = 3;
             gravity = 1;
             dashSpeed = 30;
+            dashes = 0;
             gold = 10;
             dashDelay = 60; //in frames
             groundFrictionForce = 2;//decrease in x velocity when you're not holding a direction
@@ -389,7 +390,8 @@ namespace KingOfTheCastle
                     yVelocity = 0;
                 }
                 dashTimer = dashDelay;
-                isDashing = true; 
+                isDashing = true;
+                dashes++;
             }
             else if(dashTimer > 0)
             {
@@ -727,6 +729,8 @@ namespace KingOfTheCastle
             completedMainQuest = false;
             jumps = 0;
             roundKills = 0;
+            dashes = 0;
+            projectilesLanded = 0;
             shieldHP = maxShieldHP;
         }
 
