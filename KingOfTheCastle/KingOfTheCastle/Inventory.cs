@@ -8,11 +8,12 @@ namespace KingOfTheCastle {
         public Weapon[] weapons;
         int index = 0;
         int weaponStatPoints;
+
         List<int> possibleWeapons = new List<int>();
         int typeDecider;
         public Inventory(int currentRound,KingOfTheCastle game) {
             this.weapons = new Weapon[3];
-            weaponStatPoints = currentRound * 10;
+            weaponStatPoints = currentRound * 6;
             int armorBonus=0;
             int attack=0;
             double attackSpeed=0;
@@ -33,8 +34,8 @@ namespace KingOfTheCastle {
 
                 if (kind != Weapon.Kind.armor)
                 {
-                    attack = Globals.rng.Next(1, weaponStatPoints);
-                    attackSpeed = (weaponStatPoints - attack) * .1;
+                    attack = Globals.rng.Next(currentRound * 2, weaponStatPoints);
+                    attackSpeed = Globals.rng.NextDouble() + .7 + currentRound * .1;
                 }
                 else
                 {
@@ -44,11 +45,11 @@ namespace KingOfTheCastle {
 
                 switch (kind) {
                     case Weapon.Kind.melee:
-                        weapons[index]=(new Melee(name, attack, attackSpeed, 2*attack + (int)(1/(attackSpeed) * (3/2)), game.swordTexture));
+                        weapons[index]=(new Melee(name, attack, attackSpeed, 2 * attack + (int)(1 / (attackSpeed) * (3/2)), game.swordTexture));
 
                         break;
                     case Weapon.Kind.ranged:
-                        weapons[index]=(new Ranged(name, attack, attackSpeed, 2*attack+(int)((1/attackSpeed)*(3/2)), game.bowTexture));
+                        weapons[index]=(new Ranged(name, attack, attackSpeed, 2 * attack + (int)((1 / attackSpeed) * (3/2)), game.bowTexture));
                         break;
                     case Weapon.Kind.armor:
                         weapons[index] = (new Armor(name, armorBonus, armorBonus+(armorBonus/3)+shieldBonus, shieldBonus, game.armorTexture));
