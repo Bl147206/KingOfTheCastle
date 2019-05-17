@@ -342,6 +342,14 @@ namespace KingOfTheCastle
             {
                 game.round++;
                 game.currentScreen = new Stage(game.round, this.game);
+                foreach(Player p in game.players)
+                {
+                    if(p!= null)
+                    {
+                        p.maxShieldHP += 2;
+                        p.updateShieldBar();
+                    }
+                }
             }
         }
 
