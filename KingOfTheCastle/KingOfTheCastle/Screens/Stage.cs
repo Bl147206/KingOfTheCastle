@@ -301,6 +301,7 @@ namespace KingOfTheCastle
                     game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Brown);
                 }
             }
+            quest.Draw();
             foreach (Player p in game.players)
             {
                 if (p != null && p.IsAlive())
@@ -308,7 +309,7 @@ namespace KingOfTheCastle
                     p.draw();
                 }
             }
-            quest.Draw();
+            
             timer.draw();
             //game.spriteBatch.Draw(game.test, new Rectangle(20, 20, 3 * int.Parse(timeleft), 50), Color.Gray); //Timer bar
             projectiles.draw();
