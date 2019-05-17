@@ -19,7 +19,7 @@ public class StateObject {
 
 public class Server {
     public static ManualResetEvent allDone = new ManualResetEvent(false);
-    static List<Socket> clients = new List<Socket>();
+    static List<StateObject> clients = new List<StateObject>();
 
     public void start() {
         new Thread(() => {
@@ -28,7 +28,7 @@ public class Server {
             foreach (var address in info.AddressList) {
                 if (address.AddressFamily == AddressFamily.InterNetwork) {
                     ip = address;
-                    KingOfTheCastle.KingOfTheCastle.serverStatus = "IP Address @ " + ip;
+                    //KingOfTheCastle.KingOfTheCastle.serverStatus = "IP Address @ " + ip;
                     break;
                 }
             }
@@ -60,11 +60,11 @@ public class Server {
         // Get the socket that handles the client request.  
         Socket listener = (Socket)ar.AsyncState;
         Socket handler = listener.EndAccept(ar);
-        clients.Add(handler);
 
         // Create the state object.  
         StateObject state = new StateObject();
         state.workSocket = handler;
+        clients.Add(state);
         handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
             new AsyncCallback(ReadCallback), state);
     }
@@ -107,7 +107,7 @@ public class Server {
     // Send data to all clients
     public static void Send(String data) {
         foreach (var client in clients) {
-            Send(client, data);
+            Send(client.workSocket, data);
         }
     }
 
@@ -128,9 +128,6 @@ public class Server {
             // Complete sending the data to the remote device.  
             int bytesSent = handler.EndSend(ar);
             Console.WriteLine("Sent {0} bytes to client.", bytesSent);
-
-            handler.Shutdown(SocketShutdown.Both);
-            handler.Close();
 
         } catch (Exception e) {
             Console.WriteLine(e.ToString());

@@ -22,7 +22,8 @@ public class Client {
         {
             try
             {
-                // Establish the remote endpoint for the socket.  
+                // Establish the remote endpoint for the socket.
+                // FIXME: This is hardcoded.
                 IPAddress ipAddress = IPAddress.Parse("10.136.61.109");
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 

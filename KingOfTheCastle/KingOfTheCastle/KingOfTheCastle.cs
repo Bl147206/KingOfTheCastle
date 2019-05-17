@@ -44,8 +44,8 @@ namespace KingOfTheCastle
         public Texture2D armorTexture;
         public SoundEffect cheer;
         public SoundEffect strongHit;
-        public Server server;
-        public static string serverStatus;
+        //public Server server;
+        //public static string serverStatus;
 
         public KingOfTheCastle()
         {
@@ -74,9 +74,9 @@ namespace KingOfTheCastle
 
             oldGamePadStates = new GamePadState[4];
 
-            serverStatus = "Press X to start LAN server.";
+            //serverStatus = "Press X to start LAN server.";
 
-            Client.start();
+            //Client.start();
 
             base.Initialize();
         }
@@ -110,10 +110,12 @@ namespace KingOfTheCastle
             return result;
         }
 
+        /*
         public void startServer() {
             server = new Server();
             server.start();
         }
+        */
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -210,6 +212,7 @@ namespace KingOfTheCastle
             base.Draw(gameTime);
         }
 
+        /*
         public void sendStart() {
             // Get current platform and send to it clients. Tell them to start the game.
             Server.Send("s?EOF");
@@ -220,6 +223,7 @@ namespace KingOfTheCastle
                 Server.Send("p?" + dest.X + "," + dest.Y + "," + dest.Width + "," + dest.Height + "EOF");
             }
         }
+        */
 
     }
 }
