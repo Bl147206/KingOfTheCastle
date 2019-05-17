@@ -151,6 +151,11 @@ namespace KingOfTheCastle
                     goldFont[x] = game.smallFont;
                     goldDisplayAdjust[x] = 15;
                 }
+                else
+                {
+                    goldFont[x] = game.font;
+                    goldDisplayAdjust[x] = 0;
+                }
             }
             for (int x = 0; x < playerPad.Length; x++)
             {
@@ -217,6 +222,7 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].maxHealth = 20 + inventories[x].weapons[0].armorBonus;
                                 game.players[x].maxShieldHP = (10 + game.round * 2) + inventories[x].weapons[0].shieldBonus;
+                                game.players[x].updateShieldBar();
                             }
                             game.players[x].gold -= inventories[x].weapons[0].cost;
 
@@ -245,6 +251,7 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].maxHealth = 20 + inventories[x].weapons[0].armorBonus;
                                 game.players[x].maxShieldHP = (10 + game.round * 2) + inventories[x].weapons[1].shieldBonus;
+                                game.players[x].updateShieldBar();
                             }
                             game.players[x].gold -= inventories[x].weapons[1].cost;
 
@@ -273,6 +280,7 @@ namespace KingOfTheCastle
                             {
                                 game.players[x].maxHealth = 20 + inventories[x].weapons[2].armorBonus;
                                 game.players[x].maxShieldHP = (10 + game.round * 2) + inventories[x].weapons[2].shieldBonus;
+                                game.players[x].updateShieldBar();
                             }
                             game.players[x].gold -= inventories[x].weapons[2].cost;
 
