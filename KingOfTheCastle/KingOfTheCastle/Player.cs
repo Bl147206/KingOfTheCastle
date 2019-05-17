@@ -27,7 +27,7 @@ namespace KingOfTheCastle
         public int playerNumber, maxXVelocity, jumpForce, gold, maxHealth, health, rAttackTimer, shortJumpForce, dashSpeed,
             mAttack, rAttack, mAttackTimer, intersectingPlatforms, heightUpToNotFallThrough, kills, jumps, dashTimer, dashDelay, maxYVelocity,
             maxShieldHP, shieldHP, shieldRechargeRate, shieldTimer, roundKills, numRoundsWon, knockTimer,knockDelay, goldOnKill, attacker,
-            shieldDegradeTime, shieldDegradeTimer;
+            shieldDegradeTime, shieldDegradeTimer, projectilesLanded, dashes;
         public Color playerColor, rangedColor, meleeColor;
         public Rectangle sourceRectangle;
         Direction previousFacing;
@@ -159,6 +159,7 @@ namespace KingOfTheCastle
         public void updateShieldBar()
         {
             shieldBar.max = maxShieldHP;
+            shieldHP = maxShieldHP;
         }
 
         public void shieldLogic(GamePadState gamePad)
