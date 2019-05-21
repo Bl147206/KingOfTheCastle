@@ -44,6 +44,7 @@ namespace KingOfTheCastle
         public Texture2D armorTexture;
         public SoundEffect cheer;
         public SoundEffect strongHit;
+        public Texture2D[] platformTextures;
         //public Server server;
         //public static string serverStatus;
 
@@ -71,6 +72,7 @@ namespace KingOfTheCastle
             currentScreen = new TitleScreen(this);
             backgrounds = new Texture2D[7];
             players = new Player[4];
+            platformTextures = new Texture2D[7];
 
             oldGamePadStates = new GamePadState[4];
 
@@ -143,6 +145,11 @@ namespace KingOfTheCastle
             for(int x = 0; x<backgrounds.Length;x++)
             {
                 backgrounds[x] = Content.Load<Texture2D>("backdrop" + x);
+                if(x!=5)
+                    platformTextures[x] = Content.Load<Texture2D>("plat" + x);
+                else
+                    platformTextures[x]= Content.Load<Texture2D>("plat1");
+
             }
             foreach (Player p in players)
             {

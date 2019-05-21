@@ -44,11 +44,11 @@ namespace KingOfTheCastle
 
             platformThickness = 25;
 
-            platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 500, platformThickness);
+            platforms[0] = new Platform(new Vector2(Globals.screenW / 2, Globals.screenH - 100), Globals.screenW - 500, platformThickness, game.platformTextures[background],true);
             for (int x = 1; x < platforms.Length; x++) //Makes random platforms
             {
                 int z = x % 4;//In case we want more than 5 platforms
-                platforms[x] = new Platform(new Vector2(Globals.rng.Next(platforms[0].destination.X+350, platforms[0].destination.X+ platforms[0].destination.Width-350), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness);
+                platforms[x] = new Platform(new Vector2(Globals.rng.Next(platforms[0].destination.X+350, platforms[0].destination.X+ platforms[0].destination.Width-350), (float)(platforms[0].destination.Y - z * screenAdjust(120, "H") - screenAdjust(120, "H"))), Globals.rng.Next(100, 750), platformThickness, game.platformTextures[background],false);
             }
             frames = 0;
             musicControl.Volume = .3f;
@@ -298,13 +298,7 @@ namespace KingOfTheCastle
             game.GraphicsDevice.Clear(Color.Navy);
             game.spriteBatch.Draw(game.backgrounds[background], new Rectangle(0, 0, Globals.screenW, Globals.screenH),Color.White);
             game.spriteBatch.Draw(game.test, new Rectangle(0, Globals.screenH - screenAdjust(60, "H"), Globals.screenW, screenAdjust(60, "H")),Color.Black);
-            for (int x = 0; x < platforms.Length; x++)
-            {
-                if(platforms[x] != null)
-                {
-                    game.spriteBatch.Draw(game.test, platforms[x].destination, Color.Brown);
-                }
-            }
+            
             quest.Draw();
             foreach (Player p in game.players)
             {
@@ -313,7 +307,18 @@ namespace KingOfTheCastle
                     p.draw();
                 }
             }
-            
+            for (int x = 0; x < platforms.Length; x++)
+            {
+                if (platforms[x] != null)
+                {
+                    if(x==0)
+                        game.spriteBatch.Draw(game.test, platforms[x].destination, Color.MediumPurple);
+                    else
+                        game.spriteBatch.Draw(game.platformTextures[background], platforms[x].textureD, Color.MediumPurple);
+
+                }
+            }
+
             timer.draw();
             //game.spriteBatch.Draw(game.test, new Rectangle(20, 20, 3 * int.Parse(timeleft), 50), Color.Gray); //Timer bar
             projectiles.draw();
