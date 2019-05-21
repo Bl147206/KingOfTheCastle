@@ -13,7 +13,7 @@ namespace KingOfTheCastle {
         int typeDecider;
         public Inventory(int currentRound,KingOfTheCastle game) {
             this.weapons = new Weapon[3];
-            weaponStatPoints = currentRound * 6;
+            weaponStatPoints = currentRound * 4;
             int armorBonus=0;
             int attack=0;
             double attackSpeed=0;
@@ -39,7 +39,7 @@ namespace KingOfTheCastle {
                 }
                 else
                 {
-                    armorBonus = Globals.rng.Next(1, weaponStatPoints);
+                    armorBonus = Globals.rng.Next(2*game.round, weaponStatPoints);
                     shieldBonus = weaponStatPoints - armorBonus;
                 }
 

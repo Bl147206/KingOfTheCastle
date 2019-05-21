@@ -41,7 +41,7 @@ namespace KingOfTheCastle
         public Player(KingOfTheCastle game, Rectangle spawnLocation, Texture2D texture, int playerIndex, Color color)
         {
             //stuff that gets shared by all players at the start
-            goldOnKill = 7;
+            goldOnKill = 2;
             health = 20;
             maxHealth = 20;
             maxShieldHP = 10;
@@ -693,7 +693,7 @@ namespace KingOfTheCastle
                 kill();
                 game.players[attacker - 1].kills += 1;
                 game.players[attacker - 1].roundKills++;
-                game.players[attacker - 1].gold += goldOnKill;
+                game.players[attacker - 1].gold += goldOnKill * game.round;
                 game.strongHit.Play();
             }
             stage.damageValues.addDamageValue(new DamageValueHandler.DamageValue(shieldDamage, healthDamage, killed, this, game.damageFont));

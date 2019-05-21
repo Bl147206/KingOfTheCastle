@@ -104,7 +104,7 @@ namespace KingOfTheCastle
             }
             if (timer < 599)
                 game.spriteBatch.Draw(game.questBackdrop, display, Color.White);
-            game.spriteBatch.DrawString(game.font, title, titleLoc, titleColor);
+            game.spriteBatch.DrawString(game.playerFont, title, titleLoc, titleColor);
             for (int i = 0; i < playerCompletionLocs.Length; i++)
             {
                 if (game.players[i] != null)

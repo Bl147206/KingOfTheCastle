@@ -24,6 +24,7 @@ namespace KingOfTheCastle
         GamePadState[] playerPad;
         GamePadState[] playerPad0;
         Rectangle[,] items;
+        Rectangle roundRec;
         Texture2D[,] itemsT;
         Color[,] itemsC;
         int[] goldTotals;
@@ -40,6 +41,7 @@ namespace KingOfTheCastle
         SpriteFont timerFont;
         int startTime;
         int[] goldDisplayAdjust;
+        
 
 
         public Shop(KingOfTheCastle game)
@@ -123,7 +125,7 @@ namespace KingOfTheCastle
            
 
             frames = 0;
-            startTime = 20;
+            startTime = 10;
             seconds = startTime;
             timeleft = "" + seconds;
             goldTotals = new int[game.getControllerCount()];
@@ -452,6 +454,7 @@ namespace KingOfTheCastle
             else
                 game.spriteBatch.DrawString(timerFont, "Time Left\n         " + (startTime - (frames / 60)), new Vector2(Globals.screenW / 2 - 80, Globals.screenH / 2 - 70), Color.White);
 
+            game.spriteBatch.DrawString(game.playerFont, "Round " + game.round, new Vector2(Globals.screenW / 2 - 50, 10), Color.Black);
             //Gold placement: P1: 800,400   P2: 1850,400    P3: 800,1000    P4: 1850,1000
 
         }
