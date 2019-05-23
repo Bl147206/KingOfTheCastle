@@ -141,8 +141,10 @@ namespace KingOfTheCastle
                         }
                     }
                 }
-
-            frames++;
+            if(!isPaused)
+            {
+                frames++;
+            }
             if (!roundOver)
             {
                 timeleft = "" + ((60 * seconds - frames) / 60 + 1);
@@ -188,7 +190,10 @@ namespace KingOfTheCastle
                     }
                 }
             }
-            timer.update(int.Parse(timeleft));
+            if(!isPaused)
+            {
+                timer.update(int.Parse(timeleft));
+            }
             if (roundOver)
             {
                 if (game.round == 9) {
@@ -273,7 +278,10 @@ namespace KingOfTheCastle
 
                     if (frames >= 200) {
                         game.currentScreen = new TitleScreen(game);
+                        game.round = 1;
                         musicControl.Stop();
+
+                        return;
                     }
                 }
 
